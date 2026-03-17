@@ -1,4 +1,4 @@
-package fr.eni.enchere.article.bo;
+package fr.eni.enchere.categorie.bo;
 
 public class Categorie {
     Long id;
