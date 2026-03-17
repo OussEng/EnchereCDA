@@ -1,4 +1,4 @@
-package fr.eni.enchere.categorie.dal.dao;
+package fr.eni.enchere.categorie.dal;
 
 import fr.eni.enchere.article.bo.Article;
 import org.springframework.stereotype.Repository;
