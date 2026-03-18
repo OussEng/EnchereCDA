@@ -5,7 +5,6 @@ import fr.eni.enchere.enchere.bo.Enchere;
 import fr.eni.enchere.retrait.bo.Retrait;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;

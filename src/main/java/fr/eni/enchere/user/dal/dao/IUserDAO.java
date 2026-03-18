@@ -1,7 +1,6 @@
 package fr.eni.enchere.user.dal.dao;
 
 import fr.eni.enchere.user.bo.User;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
