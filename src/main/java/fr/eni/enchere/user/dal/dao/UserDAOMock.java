@@ -16,9 +16,9 @@ public class UserDAOMock implements IUserDAO{
         utilisateurs = new ArrayList<>();
 
         utilisateurs.addAll(List.of(
-                new User(1L, "the_nina",     "Nina",     "Vincent", "nina.vincent23@proton.me",         "+33 6 91 88 42 76", "mdp123"),
-                new User(2L, "the_gabriel",  "Gabriel",  "Roux",    "gabriel.roux18@laposte.net",        "+33 6 42 72 75 67", "mdp123"),
-                new User(3L, "the_baptiste", "Baptiste", "Vincent", "baptiste.vincent93@gmail.com",      "+33 6 41 71 49 27", "mdp123")
+                new User(1L, "the_nina",     "Nina",     "Vincent", "nina.vincent23@proton.me","+33 6 91 88 42 76", "mdp123"),
+                new User(2L, "the_gabriel",  "Gabriel",  "Roux",    "gabriel.roux18@laposte.net","+33 6 42 72 75 67", "mdp123"),
+                new User(3L, "the_baptiste", "Baptiste", "Vincent", "baptiste.vincent93@gmail.com","+33 6 41 71 49 27", "mdp123")
         ));
 
     }

@@ -9,34 +9,33 @@ import java.util.Optional;
 
 @Repository
 public class UserRepository {
-    private UserDAOMock mock;
 
     public void save(User user){
-        mock.save(user);
+
     }
 
     public void update(Long id, User user){
-        mock.update(id, user);
+
     }
 
     public void deleteById(Long id){
-        mock.deleteById(id);
+
     }
 
     public List<User> getAll(){
-        return mock.getAll();
+        return null;
     }
 
     public Optional<User> getById(Long id){
-        return mock.getById(id);
+        return null;
     }
 
     public Optional<User> getByEmail(String email){
-        return mock.getByEmail(email);
+        return null;
     }
 
     public Optional<User> getByPseudo(String pseudo){
-        return mock.getByPseudo(pseudo);
+        return null;
     }
 
 }
