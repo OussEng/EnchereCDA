@@ -30,7 +30,6 @@ CREATE TABLE `categories` (
 CREATE TABLE `retraits` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
   `utilisateur_id` bigint NOT NULL,
-  `type_address` enum('DOMICILE', 'RETRAIT') NOT NULL,
   `rue` varchar(255) NOT NULL,
   `code_postal` varchar(10) NOT NULL,
   `ville` varchar(100) NOT NULL
@@ -102,12 +101,12 @@ INSERT INTO utilisateurs (pseudo, nom, prenom, email, telephone, mot_de_passe, c
 ('tmoreau',   'Moreau',   'Thomas',  'thomas.moreau@email.com',  '0656789012', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 150);
 
 -- Retraits (adresses de retrait liées aux vendeurs)
-INSERT INTO retraits (utilisateur_id, type_address, rue, code_postal, ville) VALUES
-(1, 'DOMICILE', '12 Rue de la Paix',       '75001', 'Paris'),
-(2, 'RETRAIT',  '45 Avenue des Fleurs',     '69002', 'Lyon'),
-(3, 'DOMICILE', '8 Boulevard Gambetta',     '13001', 'Marseille'),
-(4, 'RETRAIT',  '22 Rue du Commerce',       '31000', 'Toulouse'),
-(5, 'DOMICILE', '3 Impasse des Lilas',      '33000', 'Bordeaux');
+INSERT INTO retraits (utilisateur_id, rue, code_postal, ville) VALUES
+(1,  '12 Rue de la Paix',       '75001', 'Paris'),
+(2,  '45 Avenue des Fleurs',     '69002', 'Lyon'),
+(3, '8 Boulevard Gambetta',     '13001', 'Marseille'),
+(4,  '22 Rue du Commerce',       '31000', 'Toulouse'),
+(5, '3 Impasse des Lilas',      '33000', 'Bordeaux');
 
 -- Articles
 -- Terminée avec acheteur (etat=TERMINEES, prix_vente rempli)
