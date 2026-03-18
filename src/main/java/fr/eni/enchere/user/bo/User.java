@@ -3,19 +3,36 @@ package fr.eni.enchere.user.bo;
 import fr.eni.enchere.article.bo.Article;
 import fr.eni.enchere.enchere.bo.Enchere;
 import fr.eni.enchere.retrait.bo.Retrait;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class User {
     private Long id;
+
+    @NotBlank(message = "Le pseudo ne peut pas etre vide." )
     private String pseudo;
+
+    @NotBlank(message = "Le prénom ne peut pas etre vide." )
     private String prenom;
+
+    @NotBlank(message = "Le nom ne peut pas etre vide." )
     private String nom;
+
+    @Email
+    @NotBlank(message = "Le mail ne peut pas etre vide." )
     private String email;
+
+    @Size(min = 9, max = 10)
     private String telephone;
+
     private String motDePasse;
-    private int credit;
+
+    @Size(min = 0)
+    private int credit = 0;
 
     private final List<Retrait> adresses = new ArrayList<>();
 
@@ -23,6 +40,16 @@ public class User {
     private final List<Enchere> encheres = new ArrayList<>();
 
     public User() {
+    }
+
+    public User(Long id, String pseudo, String prenom, String nom, String email, String telephone, String motDePasse) {
+        this.id = id;
+        this.pseudo = pseudo;
+        this.prenom = prenom;
+        this.nom = nom;
+        this.email = email;
+        this.telephone = telephone;
+        this.motDePasse = motDePasse;
     }
 
     public Long getId() {
