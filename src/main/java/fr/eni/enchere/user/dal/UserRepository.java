@@ -22,19 +22,19 @@ public class UserRepository {
 
     }
 
-    public List<User> getAll(){
+    public List<User> findAll(){
         return null;
     }
 
-    public Optional<User> getById(Long id){
+    public Optional<User> findById(Long id){
         return null;
     }
 
-    public Optional<User> getByEmail(String email){
+    public Optional<User> findByEmail(String email){
         return null;
     }
 
-    public Optional<User> getByPseudo(String pseudo){
+    public Optional<User> findByPseudo(String pseudo){
         return null;
     }
 

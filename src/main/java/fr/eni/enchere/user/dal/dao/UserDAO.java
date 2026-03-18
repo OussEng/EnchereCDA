@@ -31,21 +31,21 @@ public class UserDAO implements IUserDAO{
 
     @Override
     public List<User> getAll() {
-        return userRepository.getAll();
+        return userRepository.findAll();
     }
 
     @Override
     public Optional<User> getById(Long id) {
-        return userRepository.getById(id);
+        return userRepository.findById(id);
     }
 
     @Override
     public Optional<User> getByEmail(String email) {
-        return userRepository.getByEmail(email);
+        return userRepository.findByEmail(email);
     }
 
     @Override
     public Optional<User> getByPseudo(String pseudo) {
-        return userRepository.getByPseudo(pseudo);
+        return userRepository.findByPseudo(pseudo);
     }
 }
