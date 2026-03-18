@@ -1,25 +1,15 @@
 package fr.eni.enchere.retrait.bo;
 
-import fr.eni.enchere.retrait.bo.enums.Type_Address;
-
 public class Retrait {
     private Long id;
     private String rue;
     private String codePostal;
     private String ville;
-    private Type_Address typeAddress;
+
 
     public Retrait() {
     }
 
-
-    public Type_Address getTypeAddress() {
-        return typeAddress;
-    }
-
-    public void setTypeAddress(Type_Address typeAddress) {
-        this.typeAddress = typeAddress;
-    }
 
     public String getVille() {
         return ville;
