@@ -42,7 +42,7 @@ CREATE TABLE `articles` (
   `date_debut_encheres` datetime NOT NULL,
   `date_fin_encheres` datetime NOT NULL,
   `mise_a_prix` int NOT NULL,
-  `prix_vente` int,
+  `prix_vente` int NOT NULL,
   `etat_vente` enum('CREEE','ANNULEE','EN_COURS','TERMINEES','EFFECTUE') NOT NULL DEFAULT 'CREEE',
   `vendeur_id` bigint NOT NULL,
   `acheteur_id` bigint,
