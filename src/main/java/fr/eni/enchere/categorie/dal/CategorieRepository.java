@@ -1,13 +1,27 @@
 package fr.eni.enchere.categorie.dal;
 
 import fr.eni.enchere.article.bo.Article;
+import fr.eni.enchere.categorie.bo.Categorie;
+import fr.eni.enchere.categorie.dal.CategorieRowMapper.CategorieRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public class CategorieRepository {
-    public List<Article> findAll() {
-        return List.of();
+
+    private final JdbcTemplate jdbcTemplate;
+    private final CategorieRowMapper categorieRowMapper;
+
+    public CategorieRepository(JdbcTemplate jdbcTemplate, CategorieRowMapper categorieRowMapper) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.categorieRowMapper = categorieRowMapper;
+    }
+
+    public List<Categorie> findAll() {
+
+        return jdbcTemplate.query("SELECT * FROM categories", categorieRowMapper);
+
     }
 }

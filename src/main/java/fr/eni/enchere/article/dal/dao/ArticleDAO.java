@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Profile("mysql")
 @Component
+@Profile("mysql")
 public class ArticleDAO implements IArticleDAO{
 
     private final ArticleRepository articleRepository;
