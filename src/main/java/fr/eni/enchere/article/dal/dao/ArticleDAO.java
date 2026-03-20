@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
-@Profile("mysql")
+
 @Component
 @Profile("mysql")
 public class ArticleDAO implements IArticleDAO{
@@ -26,19 +26,28 @@ public class ArticleDAO implements IArticleDAO{
         return articleRepository.findAll();
     }
 
+    @Override
+    public Optional<Article> findById(Long id) {
+        return articleRepository.findById(id);
+    }
+
+    @Override
+    public List<Article> findByVendeurId(Long vendeurId) {
+        return List.of();
+    }
 
     @Override
     public void save(Article article) {
-        //TODO
+
     }
 
     @Override
     public void update(Article article) {
-        //TODO
+
     }
 
     @Override
     public void deleteById(Long id) {
-        //TODO
+
     }
 }

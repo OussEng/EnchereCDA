@@ -10,6 +10,8 @@ public interface IArticleDAO {
 
     public List<Article> findAll();
 
+    Optional<Article> findById(Long id);
+
 
     List<Article> findByVendeurId(Long vendeurId);
 
