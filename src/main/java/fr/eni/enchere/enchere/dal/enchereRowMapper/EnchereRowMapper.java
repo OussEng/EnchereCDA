@@ -13,12 +13,6 @@ import java.sql.SQLException;
 @Component
 public class EnchereRowMapper implements RowMapper<Enchere> {
 
-    private final  JdbcTemplate jdbcTemplate;
-
-    public EnchereRowMapper(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
     @Nullable
     @Override
     public Enchere mapRow(ResultSet rs, int rowNum) throws SQLException {

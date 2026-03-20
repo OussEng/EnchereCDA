@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface IArticleDAO {
 
-    public List<Article> findAll();
+    List<Article> findAll();
 
     Optional<Article> findById(Long id);
 
