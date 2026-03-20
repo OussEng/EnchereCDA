@@ -19,7 +19,9 @@ CREATE TABLE `utilisateurs` (
   `email` varchar(100) UNIQUE NOT NULL,
   `telephone` varchar(20),
   `mot_de_passe` varchar(255) NOT NULL,
-  `credit` int NOT NULL DEFAULT 0
+  `credit` int NOT NULL DEFAULT 0,
+  `actif` boolean NOT NULL DEFAULT 1,
+  `role` varchar(50) enum('ROLE_USER','ROLE_ADMIN','ROLE_SUPER_ADMIN') NOT NULL DEFAULT 'ROLE_USER'
 );
 
 CREATE TABLE `categories` (

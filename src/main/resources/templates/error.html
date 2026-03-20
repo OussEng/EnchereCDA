@@ -1,0 +1,8 @@
+<html data-th-replace="~{layout::layout(title=~{::title},content=~{::main})}" lang="eng">
+<title>Erreur</title>
+<main>
+    <h1>Une erreur s'est produite</h1>
+    <p th:text="${erreur}"></p>
+    <a th:href="@{/}">Retour à l'accueil</a>
+</main>
+</html>
