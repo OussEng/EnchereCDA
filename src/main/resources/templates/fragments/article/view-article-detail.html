@@ -1,0 +1,161 @@
+<html data-th-replace="~{layout::layout(title=~{::title},content=~{::main})}" lang="fr">
+<title th:text="${article.nom}">Détail article</title>
+<main class="container py-5">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-primary">Accueil</a></li>
+            <li class="breadcrumb-item active text-muted" th:text="${article.nom}">Article</li>
+        </ol>
+    </nav>
+
+    <div class="row g-5">
+
+        <!-- Colonne gauche : Image -->
+        <div class="col-lg-5">
+            <div class="sticky-top" style="top: 1.5rem;">
+                <img src="https://placehold.co/600x450/0d6efd/ffffff?text=Photo"
+                     class="img-fluid rounded-4 shadow w-100"
+                     style="object-fit: cover; max-height: 420px;"
+                     alt="Photo de l'article">
+                <div class="text-center mt-3">
+                    <span class="badge rounded-pill px-4 py-2 fs-6"
+                          style="background-color: #0a3d91;"
+                          th:text="${article.categorie.getLibelle()}"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Colonne droite : Détails -->
+        <div class="col-lg-7">
+
+            <!-- Titre & Catégorie -->
+            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 mb-2"
+                  th:text="${article.categorie.libelle}">Catégorie</span>
+            <h1 class="display-6 fw-bold text-dark mb-1" th:text="${article.nom}">Nom de l'article</h1>
+            <p class="text-muted mb-4">
+                Vendu par
+                <strong class="text-primary"
+                        th:text="${article.vendeur.nom} + ' ' + ${article.vendeur.prenom}">Vendeur</strong>
+            </p>
+
+            <!-- ─── Bloc prix ──────────────────────────────────────── -->
+            <div class="p-4 rounded-4 mb-4 text-white"
+                 style="background: linear-gradient(135deg, #0d6efd, #0a3d91);">
+                <div class="row text-center g-0">
+
+                    <!-- Prix de départ : fixé par le vendeur, immuable -->
+                    <div class="col-4 border-end border-white border-opacity-25 px-2">
+                        <small class="d-block opacity-75 mb-1">Prix de départ</small>
+                        <div class="d-flex align-items-center justify-content-center gap-1">
+                            <span class="fs-5 fw-semibold" th:text="${article.prixVente}">—</span>
+                            <img src="/assets/mj.png" alt="MJ"
+                                 style="width:22px;height:22px;object-fit:contain;">
+                        </div>
+                    </div>
+
+                    <!-- Mise à prix : = prixVente par défaut, augmente à chaque enchère -->
+                    <div class="col-4 border-end border-white border-opacity-25 px-2">
+                        <small class="d-block opacity-75 mb-1">Meilleure enchère</small>
+                        <div class="d-flex align-items-center justify-content-center gap-1">
+                            <span class="fs-4 fw-bold" th:text="${article.miseAPrix}">—</span>
+                            <img src="/assets/mj.png" alt="MJ"
+                                 style="width:26px;height:26px;object-fit:contain;">
+                        </div>
+                    </div>
+
+                    <!-- Fin des enchères -->
+                    <div class="col-4 px-2">
+                        <small class="d-block opacity-75 mb-1">Fin des enchères</small>
+                        <span class="fs-6 fw-semibold"
+                              th:text="${#temporals.format(article.dateFinEncheres, 'dd/MM HH:mm')}">—</span>
+                    </div>
+                </div>
+            </div>
+            <!-- ─────────────────────────────────────────────────────── -->
+
+            <!-- Bouton enchérir -->
+            <div class="d-grid mb-5">
+                <button class="btn btn-primary btn-lg rounded-pill fw-bold py-3 shadow">
+                    ⚡ Placer une enchère
+                </button>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-4">
+                <h5 class="fw-bold text-dark mb-2">📄 Description</h5>
+                <p class="text-secondary lh-lg" th:text="${article.description}">
+                    Aucune description disponible.
+                </p>
+            </div>
+
+            <hr class="text-muted">
+
+            <!-- Lieu de retrait -->
+            <div class="mt-4">
+                <h5 class="fw-bold text-dark mb-3">📍 Lieu de retrait</h5>
+                <div class="d-flex align-items-start gap-3 p-3 bg-light rounded-3 border">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width:42px;height:42px;font-size:1.1rem;">🏠</div>
+                    <address class="mb-0 text-secondary lh-lg">
+                        <span th:text="${article.lieuRetrait.rue}">Rue</span><br>
+                        <span th:text="${article.lieuRetrait.codePostal}">Code postal</span>
+                        <span th:text="${article.lieuRetrait.ville}">Ville</span>
+                    </address>
+                </div>
+            </div>
+
+            <!-- ─── Historique des enchères ──────────────────────────── -->
+            <div class="mt-5">
+                <h5 class="fw-bold text-dark mb-3">
+                    🏷️ Historique des enchères
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill ms-2"
+                          th:text="${#lists.size(article.encheres)}">0</span>
+                </h5>
+
+                <!-- Aucune enchère placée -->
+                <div class="alert alert-light border text-center text-muted py-4"
+                     th:if="${#lists.isEmpty(article.encheres)}">
+                    Aucune enchère placée pour le moment. Soyez le premier !
+                </div>
+
+                <!-- Liste des enchères (de la plus ancienne → plus récente) -->
+                <ul class="list-group list-group-flush" th:unless="${#lists.isEmpty(article.getSortedEncheres())}">
+                    <li class="list-group-item px-0 py-3 d-flex justify-content-between align-items-center"
+                        th:each="enchere, iter : ${article.getSortedEncheres()}">
+
+                        <div class="d-flex align-items-center gap-3">
+                            <!-- Numéro d'ordre -->
+                            <span class="badge rounded-circle d-flex align-items-center justify-content-center fw-bold"
+                                  th:classappend="${iter.last} ? 'text-bg-primary' : 'text-bg-light border text-muted'"
+                                  style="width:32px;height:32px;font-size:.8rem;"
+                                  th:text="${iter.count}">1</span>
+
+                            <!-- Enchérisseur + date -->
+                            <div>
+                                <span class="fw-semibold"
+                                      th:classappend="${iter.last} ? 'text-primary' : 'text-dark'"
+                                      th:text="${enchere.encherit.prenom} + ' ' + ${enchere.encherit.nom}">Nom</span>
+                                <small class="d-block text-muted"
+                                       th:text="${#temporals.format(enchere.dateEnchere, 'dd/MM/yyyy à HH:mm')}">date</small>
+                            </div>
+                        </div>
+
+                        <!-- Montant de l'enchère -->
+                        <div class="d-flex align-items-center gap-2">
+                            <strong th:classappend="${iter.last} ? 'text-primary fs-5' : 'text-muted'"
+                                    th:text="${enchere.montant}">0</strong>
+                            <img src="/assets/mj.png" alt="MJ"
+                                 style="width:22px;height:22px;object-fit:contain;">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- ─────────────────────────────────────────────────────── -->
+
+        </div>
+    </div>
+
+</main>
+</html>
