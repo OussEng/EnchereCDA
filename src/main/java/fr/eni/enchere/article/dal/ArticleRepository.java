@@ -2,12 +2,16 @@ package fr.eni.enchere.article.dal;
 
 import fr.eni.enchere.article.bo.Article;
 import fr.eni.enchere.article.dal.ArticleRowMapper.ArticleRowMapper;
+
 import fr.eni.enchere.categorie.bo.Categorie;
 import fr.eni.enchere.categorie.dal.CategorieRowMapper.CategorieRowMapper;
 import fr.eni.enchere.enchere.bo.Enchere;
 import fr.eni.enchere.enchere.dal.enchereRowMapper.EnchereRowMapper;
+import fr.eni.enchere.enchere.bo.Enchere;
+import fr.eni.enchere.enchere.dal.enchereRowMapper.EnchereRowMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -166,6 +170,7 @@ public class ArticleRepository {
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
+
 
     }
 }
