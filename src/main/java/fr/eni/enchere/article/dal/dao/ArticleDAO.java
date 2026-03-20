@@ -32,10 +32,6 @@ public class ArticleDAO implements IArticleDAO{
         return articleRepository.findById(id);
     }
 
-    @Override
-    public Optional<Article> findById(Long id) {
-        return articleRepository.findById(id);
-    }
 
     @Override
     public List<Article> findByVendeurId(Long vendeurId) {

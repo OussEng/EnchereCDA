@@ -5,10 +5,12 @@ import fr.eni.enchere.user.bo.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Component
 public class EnchereRowMapper implements RowMapper<Enchere> {
 
     private final  JdbcTemplate jdbcTemplate;

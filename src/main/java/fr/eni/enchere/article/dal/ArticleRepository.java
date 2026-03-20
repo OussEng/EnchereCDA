@@ -70,7 +70,21 @@ public class ArticleRepository {
 
 
         for (Article article : articles) {
-            List<Enchere> encheres = jdbcTemplate.query("SELECT * FROM encheres e JOIN articles a where a.id = ? ", enchereRowMapper, article.getId());
+            List<Enchere> encheres = jdbcTemplate.query("""
+                                                          SELECT
+                                                           e.id,
+                                                           e.date_enchere,
+                                                           e.montant,
+                                                           e.utilisateur_id,
+                                                           u.nom         AS utilisateur_nom,
+                                                           u.prenom      AS utilisateur_prenom,
+                                                            u.pseudo      AS utilisateur_pseudo,
+                                                            u.email       AS utilisateur_email,
+                                                             u.telephone   AS utilisateur_telephone
+                                                              FROM encheres e
+                                                             INNER JOIN utilisateurs u ON u.id = e.utilisateur_id
+                                                             WHERE e.article_id = ?
+                                                        """, enchereRowMapper, article.getId());
 
             for (Enchere enchere : encheres){
                 article.getEncheres().add(enchere);
@@ -123,6 +137,29 @@ public class ArticleRepository {
                 INNER JOIN retraits r      ON r.id  = a.lieu_retrait_id
                 WHERE a.id = ?
                 """, articleRowMapper, id);
+
+
+            List<Enchere> encheres = jdbcTemplate.query("""
+                                                          SELECT
+                                                           e.id,
+                                                           e.date_enchere,
+                                                           e.montant,
+                                                           e.utilisateur_id,
+                                                           u.nom         AS utilisateur_nom,
+                                                           u.prenom      AS utilisateur_prenom,
+                                                            u.pseudo      AS utilisateur_pseudo,
+                                                            u.email       AS utilisateur_email,
+                                                             u.telephone   AS utilisateur_telephone
+                                                              FROM encheres e
+                                                             INNER JOIN utilisateurs u ON u.id = e.utilisateur_id
+                                                             WHERE e.article_id = ?
+                                                        """, enchereRowMapper, id);
+
+
+            for (Enchere enchere : encheres){
+                assert article != null;
+                article.getEncheres().add(enchere);
+            }
 
 
             return Optional.ofNullable(article);
