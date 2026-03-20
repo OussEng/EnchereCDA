@@ -2,8 +2,10 @@ package fr.eni.enchere.article.dal;
 
 import fr.eni.enchere.article.bo.Article;
 import fr.eni.enchere.article.dal.ArticleRowMapper.ArticleRowMapper;
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -110,6 +112,7 @@ public class ArticleRepository {
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
+
 
     }
 }
