@@ -9,6 +9,7 @@ import fr.eni.enchere.user.bo.User;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Article {
@@ -125,6 +126,12 @@ public class Article {
 
     public List<Enchere> getEncheres() {
         return encheres;
+    }
+
+    public List<Enchere> getSortedEncheres() {
+        return encheres.stream()
+                .sorted(Comparator.comparingInt(Enchere::getMontant).reversed())
+                .toList();
     }
 
     public Retrait getLieuRetrait() {
