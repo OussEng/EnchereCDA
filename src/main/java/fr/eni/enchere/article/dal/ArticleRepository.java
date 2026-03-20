@@ -2,6 +2,10 @@ package fr.eni.enchere.article.dal;
 
 import fr.eni.enchere.article.bo.Article;
 import fr.eni.enchere.article.dal.ArticleRowMapper.ArticleRowMapper;
+import fr.eni.enchere.categorie.bo.Categorie;
+import fr.eni.enchere.categorie.dal.CategorieRowMapper.CategorieRowMapper;
+import fr.eni.enchere.enchere.bo.Enchere;
+import fr.eni.enchere.enchere.dal.enchereRowMapper.EnchereRowMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,15 +20,17 @@ public class ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private final ArticleRowMapper articleRowMapper;
+    private final EnchereRowMapper enchereRowMapper;
 
-    public ArticleRepository(JdbcTemplate jdbcTemplate, ArticleRowMapper articleRowMapper) {
+    public ArticleRepository(JdbcTemplate jdbcTemplate, ArticleRowMapper articleRowMapper, EnchereRowMapper enchereRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.articleRowMapper = articleRowMapper;
+        this.enchereRowMapper = enchereRowMapper;
     }
 
     public List<Article> findAll() {
 
-        return jdbcTemplate.query("""
+       List<Article> articles =     jdbcTemplate.query("""
             SELECT
                 a.id,
                 a.nom_article,
@@ -59,7 +65,20 @@ public class ArticleRepository {
             LEFT  JOIN utilisateurs ac ON ac.id = a.acheteur_id
             INNER JOIN categories c    ON c.id  = a.categorie_id
             INNER JOIN retraits r      ON r.id  = a.lieu_retrait_id
+            INNER JOIN encheres e ON e.article_id = a.id
             """, articleRowMapper);
+
+
+        for (Article article : articles) {
+            List<Enchere> encheres = jdbcTemplate.query("SELECT * FROM encheres e JOIN articles a where a.id = ? ", enchereRowMapper, article.getId());
+
+            for (Enchere enchere : encheres){
+                article.getEncheres().add(enchere);
+            }
+        }
+
+
+        return articles;
 
     }
 
