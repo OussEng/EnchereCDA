@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface IArticleDAO {
 
-    public List<Article> findAll();
+    List<Article> findAll();
 
     Optional<Article> findById(Long id);
 
@@ -16,6 +16,7 @@ public interface IArticleDAO {
     List<Article> findByVendeurId(Long vendeurId);
 
     void save(Article article);
+
 
     void update(Article article);
 

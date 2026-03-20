@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 
+
 @Component
 @Profile("mysql")
 public class ArticleDAO implements IArticleDAO{
@@ -30,6 +31,7 @@ public class ArticleDAO implements IArticleDAO{
     public Optional<Article> findById(Long id) {
         return articleRepository.findById(id);
     }
+
 
     @Override
     public List<Article> findByVendeurId(Long vendeurId) {

@@ -141,4 +141,11 @@ public class Article {
     public void setLieuRetrait(Retrait lieuRetrait) {
         this.lieuRetrait = lieuRetrait;
     }
+
+    public int getCurrentPrice() {
+        return encheres.stream()
+                .mapToInt(Enchere::getMontant)
+                .max()
+                .orElse(this.miseAPrix);
+    }
 }

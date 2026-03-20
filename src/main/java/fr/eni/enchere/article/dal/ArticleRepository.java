@@ -3,6 +3,12 @@ package fr.eni.enchere.article.dal;
 import fr.eni.enchere.article.bo.Article;
 import fr.eni.enchere.article.dal.ArticleRowMapper.ArticleRowMapper;
 
+import fr.eni.enchere.categorie.bo.Categorie;
+import fr.eni.enchere.categorie.dal.CategorieRowMapper.CategorieRowMapper;
+import fr.eni.enchere.enchere.bo.Enchere;
+import fr.eni.enchere.enchere.dal.enchereRowMapper.EnchereRowMapper;
+import fr.eni.enchere.enchere.bo.Enchere;
+import fr.eni.enchere.enchere.dal.enchereRowMapper.EnchereRowMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
@@ -18,15 +24,17 @@ public class ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private final ArticleRowMapper articleRowMapper;
+    private final EnchereRowMapper enchereRowMapper;
 
-    public ArticleRepository(JdbcTemplate jdbcTemplate, ArticleRowMapper articleRowMapper) {
+    public ArticleRepository(JdbcTemplate jdbcTemplate, ArticleRowMapper articleRowMapper, EnchereRowMapper enchereRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.articleRowMapper = articleRowMapper;
+        this.enchereRowMapper = enchereRowMapper;
     }
 
     public List<Article> findAll() {
 
-        return jdbcTemplate.query("""
+       List<Article> articles =     jdbcTemplate.query("""
             SELECT
                 a.id,
                 a.nom_article,
@@ -61,7 +69,34 @@ public class ArticleRepository {
             LEFT  JOIN utilisateurs ac ON ac.id = a.acheteur_id
             INNER JOIN categories c    ON c.id  = a.categorie_id
             INNER JOIN retraits r      ON r.id  = a.lieu_retrait_id
+            INNER JOIN encheres e ON e.article_id = a.id
             """, articleRowMapper);
+
+
+        for (Article article : articles) {
+            List<Enchere> encheres = jdbcTemplate.query("""
+                                                          SELECT
+                                                           e.id,
+                                                           e.date_enchere,
+                                                           e.montant,
+                                                           e.utilisateur_id,
+                                                           u.nom         AS utilisateur_nom,
+                                                           u.prenom      AS utilisateur_prenom,
+                                                            u.pseudo      AS utilisateur_pseudo,
+                                                            u.email       AS utilisateur_email,
+                                                             u.telephone   AS utilisateur_telephone
+                                                              FROM encheres e
+                                                             INNER JOIN utilisateurs u ON u.id = e.utilisateur_id
+                                                             WHERE e.article_id = ?
+                                                        """, enchereRowMapper, article.getId());
+
+            for (Enchere enchere : encheres){
+                article.getEncheres().add(enchere);
+            }
+        }
+
+
+        return articles;
 
     }
 
@@ -106,6 +141,29 @@ public class ArticleRepository {
                 INNER JOIN retraits r      ON r.id  = a.lieu_retrait_id
                 WHERE a.id = ?
                 """, articleRowMapper, id);
+
+
+            List<Enchere> encheres = jdbcTemplate.query("""
+                                                          SELECT
+                                                           e.id,
+                                                           e.date_enchere,
+                                                           e.montant,
+                                                           e.utilisateur_id,
+                                                           u.nom         AS utilisateur_nom,
+                                                           u.prenom      AS utilisateur_prenom,
+                                                            u.pseudo      AS utilisateur_pseudo,
+                                                            u.email       AS utilisateur_email,
+                                                             u.telephone   AS utilisateur_telephone
+                                                              FROM encheres e
+                                                             INNER JOIN utilisateurs u ON u.id = e.utilisateur_id
+                                                             WHERE e.article_id = ?
+                                                        """, enchereRowMapper, id);
+
+
+            for (Enchere enchere : encheres){
+                assert article != null;
+                article.getEncheres().add(enchere);
+            }
 
 
             return Optional.ofNullable(article);

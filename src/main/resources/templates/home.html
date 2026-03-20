@@ -32,12 +32,12 @@
                     <!-- Prix de mise à prix -->
                     <div class="mt-auto">
                         <div class="d-flex align-items-center justify-content-between mb-3">
-                            <small class="text-muted">Mise à prix</small>
+                            <small class="text-muted">Prix actuel  :</small>
                             <span class="fs-5 fw-bold text-primary d-flex align-items-center gap-1">
                                 <img src="/assets/mj.png"
                                      alt="MAJOU"
                                      style="width: 22px; height: 22px; object-fit: contain;">
-                                <span th:text="${article.miseAPrix}">0</span>
+                                <span th:text="${article.getCurrentPrice()}">0</span>
                             </span>
                         </div>
 
