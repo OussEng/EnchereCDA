@@ -173,4 +173,10 @@ public class ArticleRepository {
 
 
     }
+
+    public void save(Article article){
+
+        jdbcTemplate.update("INSERT INTO articles(nom_article, description, date_debut_encheres, date_fin_encheres, mise_a_prix, prix_vente, vendeur_id, categorie_id, lieu_retrait_id) VALUES (?,?,?,?,?,?,?,?,?)", article.getNom(), article.getDescription(), article.getDateDebutEncheres(), article.getDateFinEncheres(), article.getMiseAPrix(), article.getPrixVente(), article.getVendeur().getId(), article.getCategorie().getId(), article.getLieuRetrait().getId());
+
+    }
 }
