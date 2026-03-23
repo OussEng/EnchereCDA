@@ -1,7 +1,12 @@
 package fr.eni.enchere.article.bll;
 
 import fr.eni.enchere.article.bo.Article;
+import fr.eni.enchere.article.bo.enums.Etat_Article;
 import fr.eni.enchere.article.dal.dao.IArticleDAO;
+import fr.eni.enchere.categorie.bll.CategorieService;
+import fr.eni.enchere.categorie.bo.Categorie;
+import fr.eni.enchere.retrait.bll.RetraitService;
+import fr.eni.enchere.user.bo.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,16 +16,26 @@ import java.util.Optional;
 public class ArticleService {
 
     private final IArticleDAO articleDAO;
+    private final CategorieService categorieService;
+    private final RetraitService retraitService;
 
-    public ArticleService(IArticleDAO articleDAO) {
+    public ArticleService(IArticleDAO articleDAO, CategorieService categorieService, RetraitService retraitService) {
         this.articleDAO = articleDAO;
+        this.categorieService = categorieService;
+        this.retraitService = retraitService;
     }
 
     public List<Article> getAll(){
         return articleDAO.findAll();
     }
 
-    public void create(Article article){
+    public void create(Article article, Long idUser){
+        article.setCategorie(categorieService.getById(article.getCategorie().getId()).orElse(null));
+        article.setEtatEnchere(Etat_Article.CREEE);
+        article.setLieuRetrait(retraitService.getRetraitById(article.getLieuRetrait().getId()).orElse(null));
+        article.setPrixVente(article.getMiseAPrix());
+        //TODO : set vendeur
+        article.setVendeur(new User("Osselot", "CONRAD"));
         articleDAO.save(article);
     }
 
@@ -38,6 +53,10 @@ public class ArticleService {
 
     public void deleteById(Long id){
         articleDAO.deleteById(id);
+    }
+
+    public List<Article> getByFilter(){
+        return articleDAO.findAll();
     }
 
 }

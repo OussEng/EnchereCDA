@@ -52,6 +52,11 @@ public class User {
         this.motDePasse = motDePasse;
     }
 
+    public User(String prenom, String nom) {
+        this.prenom = prenom;
+        this.nom = nom;
+    }
+
     public Long getId() {
         return id;
     }

@@ -128,14 +128,14 @@
                         <div class="d-flex align-items-center gap-3">
                             <!-- Numéro d'ordre -->
                             <span class="badge rounded-circle d-flex align-items-center justify-content-center fw-bold"
-                                  th:classappend="${iter.last} ? 'text-bg-primary' : 'text-bg-light border text-muted'"
+                                  th:classappend="${iter.first} ? 'text-bg-primary' : 'text-bg-light border text-muted'"
                                   style="width:32px;height:32px;font-size:.8rem;"
                                   th:text="${iter.count}">1</span>
 
                             <!-- Enchérisseur + date -->
                             <div>
                                 <span class="fw-semibold"
-                                      th:classappend="${iter.last} ? 'text-primary' : 'text-dark'"
+                                      th:classappend="${iter.first} ? 'text-primary' : 'text-dark'"
                                       th:text="${enchere.encherit.prenom} + ' ' + ${enchere.encherit.nom}">Nom</span>
                                 <small class="d-block text-muted"
                                        th:text="${#temporals.format(enchere.dateEnchere, 'dd/MM/yyyy à HH:mm')}">date</small>
@@ -144,7 +144,7 @@
 
                         <!-- Montant de l'enchère -->
                         <div class="d-flex align-items-center gap-2">
-                            <strong th:classappend="${iter.last} ? 'text-primary fs-5' : 'text-muted'"
+                            <strong th:classappend="${iter.first} ? 'text-primary fs-5' : 'text-muted'"
                                     th:text="${enchere.montant}">0</strong>
                             <img src="/assets/mj.png" alt="MJ"
                                  style="width:22px;height:22px;object-fit:contain;">

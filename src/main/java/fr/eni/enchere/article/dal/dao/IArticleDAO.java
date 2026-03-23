@@ -5,7 +5,6 @@ import fr.eni.enchere.article.bo.enums.Etat_Article;
 
 import java.util.List;
 import java.util.Optional;
-
 public interface IArticleDAO {
 
     public List<Article> findAll();
