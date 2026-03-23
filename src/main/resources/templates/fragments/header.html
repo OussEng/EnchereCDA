@@ -1,4 +1,4 @@
-<div th:fragment="header">
+<div th:fragment="header" xmlns:sec="http://www.w3.org/1999/xhtml">
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
@@ -16,11 +16,18 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/categories">Catégories</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/profile">Mon Profil</a>
+                        <li class="nav-item" sec:authorize="isAnonymous()">
+                            <a class="nav-link btn btn-primary text-white ms-2" th:href="@{/auth}">Connexion</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-primary text-white ms-2" href="/login">Connexion</a>
+
+                        <li class="nav-item" sec:authorize="isAuthenticated()">
+                            <a class="nav-link" th:href="@{/profile}">Mon Profil</a>
+                        </li>
+
+                        <li class="nav-item" sec:authorize="isAuthenticated()">
+                            <form class="nav-item" th:action="@{/deconection}" method="post">
+                                <button type="submit" class="nav-link btn btn-primary text-white ms-2">Déconnexion</button>
+                            </form>
                         </li>
                     </ul>
                 </div>

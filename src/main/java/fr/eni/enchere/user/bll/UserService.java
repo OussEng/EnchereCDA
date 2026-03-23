@@ -61,17 +61,11 @@ public class UserService {
         throw new UserNotFoundException("Utilisateur introuvable.");
     }
 
-    public Optional<User> getByEmail( String email){
-        if(userDAO.getByEmail(email).isPresent()){
-            return userDAO.getByEmail(email);
-        }
-        throw new UserNotFoundException("Utilisateur introuvable.");
+    public User getByEmail( String email){
+        return userDAO.getByEmail(email).orElseThrow(() -> new UserNotFoundException("Utilisateur introuvable."));
     }
 
-    public Optional<User> getByPseudo( String pseudo){
-        if(userDAO.getByPseudo(pseudo).isPresent()){
-            return userDAO.getByPseudo(pseudo);
-        }
-        throw new UserNotFoundException("Utilisateur introuvable.");
+    public User getByPseudo(String pseudo) {
+        return userDAO.getByPseudo(pseudo).orElseThrow(() -> new UserNotFoundException("Utilisateur introuvable."));
     }
 }
