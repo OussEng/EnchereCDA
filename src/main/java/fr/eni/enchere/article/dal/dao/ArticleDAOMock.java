@@ -56,6 +56,12 @@ public class ArticleDAOMock implements IArticleDAO {
         retrait3.setCodePostal("44000");
         retrait3.setVille("Nantes");
 
+        Retrait retrait4 = new Retrait();
+        retrait4.setId(4L);
+        retrait4.setRue("5 impasse des Roses");
+        retrait4.setCodePostal("13000");
+        retrait4.setVille("Marseille");
+
         // ─── Utilisateurs ─────────────────────────────────────────────
         User alice = new User();
         alice.setId(1L);
@@ -65,6 +71,9 @@ public class ArticleDAOMock implements IArticleDAO {
         alice.setEmail("alice.martin@mail.com");
         alice.setTelephone("0612345678");
         alice.setCredit(200);
+        // Alice possède 2 adresses de retrait
+        alice.getAdresses().add(retrait1);
+        alice.getAdresses().add(retrait4);
 
         User bob = new User();
         bob.setId(2L);
@@ -74,6 +83,8 @@ public class ArticleDAOMock implements IArticleDAO {
         bob.setEmail("bob.lemaire@mail.com");
         bob.setTelephone("0698765432");
         bob.setCredit(50);
+        // Bob possède 1 adresse de retrait
+        bob.getAdresses().add(retrait2);
 
         User charlie = new User();
         charlie.setId(3L);
@@ -83,6 +94,8 @@ public class ArticleDAOMock implements IArticleDAO {
         charlie.setEmail("charlie.nguyen@mail.com");
         charlie.setTelephone("0755443322");
         charlie.setCredit(500);
+        // Charlie possède 1 adresse de retrait
+        charlie.getAdresses().add(retrait3);
 
         // ─── Articles ─────────────────────────────────────────────────
         // prixVente  = prix de BASE fixé par le vendeur (immuable)
