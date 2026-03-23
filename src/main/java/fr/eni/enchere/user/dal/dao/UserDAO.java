@@ -2,10 +2,14 @@ package fr.eni.enchere.user.dal.dao;
 
 import fr.eni.enchere.user.bo.User;
 import fr.eni.enchere.user.dal.UserRepository;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Profile("mysql")
+@Repository
 public class UserDAO implements IUserDAO{
     private final UserRepository userRepository;
 
@@ -13,15 +17,15 @@ public class UserDAO implements IUserDAO{
         this.userRepository = userRepository;
     }
 
-
     @Override
     public void save(User user) {
         userRepository.save(user);
     }
 
     @Override
-    public void update(Long id, User user) {
+    public User update(Long id, User user) {
         userRepository.update(id, user);
+        return user;
     }
 
     @Override

@@ -1,13 +1,13 @@
 package fr.eni.enchere.user.dal.dao;
 
 import fr.eni.enchere.user.bo.User;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Profile("mock")
 public class UserDAOMock implements IUserDAO{
     List<User> utilisateurs;
 
@@ -16,11 +16,10 @@ public class UserDAOMock implements IUserDAO{
         utilisateurs = new ArrayList<>();
 
         utilisateurs.addAll(List.of(
-                new User(1L, "the_nina",     "Nina",     "Vincent", "nina.vincent23@proton.me","+33 6 91 88 42 76", "mdp123"),
-                new User(2L, "the_gabriel",  "Gabriel",  "Roux",    "gabriel.roux18@laposte.net","+33 6 42 72 75 67", "mdp123"),
-                new User(3L, "the_baptiste", "Baptiste", "Vincent", "baptiste.vincent93@gmail.com","+33 6 41 71 49 27", "mdp123")
+                new User(1L, "the_nina", "Nina","Vincent","nina.vincent23@proton.me","0691884276", "mdp123"),
+                new User(2L, "the_gabriel",  "Gabriel",  "Roux",    "gabriel.roux18@laposte.net","0642727567", "mdp123"),
+                new User(3L, "the_baptiste", "Baptiste", "Vincent", "baptiste.vincent93@gmail.com","0617149270", "mdp123")
         ));
-
     }
 
     @Override
@@ -29,7 +28,7 @@ public class UserDAOMock implements IUserDAO{
     }
 
     @Override
-    public void update(Long id, User user) {
+    public User update(Long id, User user) {
         utilisateurs.stream()
                 .filter(u -> u.getId().equals(id))
                 .findFirst()
@@ -45,6 +44,7 @@ public class UserDAOMock implements IUserDAO{
                             user.getMotDePasse()  != null ? user.getMotDePasse()  : u.getMotDePasse()
                     ));
                 });
+        return user;
     }
 
     @Override

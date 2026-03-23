@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Paramètre</title>
+</head>
+<body>
+<h1>Users</h1>
+<ul>
+  <li th:each="user : ${users}" th:text="${user.pseudo}"></li>
+</ul>
+<p th:text="${userById}"></p>
+</body>
+</html>
