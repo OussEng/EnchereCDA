@@ -1,76 +1,77 @@
 package fr.eni.enchere.user.bll;
 
-import fr.eni.enchere.record.ServiceResponse;
+import fr.eni.enchere.exeception.AlreadyExistsException;
+import fr.eni.enchere.exeception.UserNotFoundException;
 import fr.eni.enchere.user.bo.User;
 import fr.eni.enchere.user.dal.dao.IUserDAO;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import java.util.List;
+import java.util.Optional;
 
 @Service
+@Profile("mysql")
 public class UserService {
     private final IUserDAO userDAO;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(IUserDAO userDAO) {
+    public UserService(IUserDAO userDAO, PasswordEncoder passwordEncoder) {
         this.userDAO = userDAO;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public ResponseEntity<ServiceResponse<User>> save(@Valid @RequestBody User user){
+    public void save(User user) {
+        if (userDAO.getByEmail(user.getEmail()).isPresent()) {
+            throw new AlreadyExistsException("L'email existe déjà, connectez-vous !");
+        }
+        if (userDAO.getByPseudo(user.getPseudo()).isPresent()) {
+            throw new AlreadyExistsException("Le pseudo " + user.getPseudo() + " est déjà utilisé !");
+        }
+        user.setMotDePasse(passwordEncoder.encode(user.getMotDePasse()));
         userDAO.save(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-                new ServiceResponse(HttpStatus.CREATED.value(), "Element enregistré avec succes", user));
-        // TODO : Mettre exeception
     }
 
-    public ResponseEntity<ServiceResponse<User>> update(Long id, @Valid @RequestBody User user){
+    public void update(Long id, User user){
+        if (userDAO.getByEmail(user.getEmail()).isPresent()) {
+            throw new AlreadyExistsException("L'email existe déjà, connectez-vous !");
+        }
+        if (userDAO.getByPseudo(user.getPseudo()).isPresent()) {
+            throw new AlreadyExistsException("Le pseudo " + user.getPseudo() + " est déjà utilisé !");
+        }
+        user.setMotDePasse(passwordEncoder.encode(user.getMotDePasse()));
         userDAO.update(id, user);
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ServiceResponse(HttpStatus.OK.value(), "Element enregistré avec succes", user));
-        // TODO : Mettre exeception
     }
 
-    public ResponseEntity<ServiceResponse> deleteById(@PathVariable Long id){
+    public void deleteById( Long id){
         if(userDAO.getById(id).isPresent()){
             userDAO.deleteById(id);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ServiceResponse(HttpStatus.OK.value(), "Element supprimé avec succes", null));
         }
-        // TODO : Mettre exeception
-        return null;
+        throw new UserNotFoundException("Utilisateur introuvable.");
     }
 
-    public ResponseEntity<ServiceResponse> getAll(){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ServiceResponse(HttpStatus.OK.value(), "Liste de tous les éléments", userDAO.getAll()));
+    public List<User> getAll(){
+        return userDAO.getAll();
     }
 
-    public ResponseEntity<ServiceResponse> getById(@PathVariable Long id){
+    public Optional<User> getById( Long id){
         if(userDAO.getById(id).isPresent()){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ServiceResponse(HttpStatus.OK.value(), "Element trouvé avec succes", userDAO.getById(id)));
+            return userDAO.getById(id);
         }
-        return null;
-        // TODO : Mettre exeception
+        throw new UserNotFoundException("Utilisateur introuvable.");
     }
 
-    public ResponseEntity<ServiceResponse> getByEmail(@Valid @RequestBody String email){
+    public Optional<User> getByEmail( String email){
         if(userDAO.getByEmail(email).isPresent()){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ServiceResponse(HttpStatus.OK.value(), "Element trouvé avec succes", userDAO.getByEmail(email)));
+            return userDAO.getByEmail(email);
         }
-        return null;
-        // TODO : Mettre exeception
+        throw new UserNotFoundException("Utilisateur introuvable.");
     }
 
-    public ResponseEntity<ServiceResponse> getByPseudo(@Valid @RequestBody String pseudo){
+    public Optional<User> getByPseudo( String pseudo){
         if(userDAO.getByPseudo(pseudo).isPresent()){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ServiceResponse(HttpStatus.OK.value(), "Element trouvé avec succes", userDAO.getByPseudo(pseudo)));
+            return userDAO.getByPseudo(pseudo);
         }
-        // TODO : Mettre exeception
-        return null;
+        throw new UserNotFoundException("Utilisateur introuvable.");
     }
 }

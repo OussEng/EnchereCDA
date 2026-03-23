@@ -1,9 +1,9 @@
 package fr.eni.enchere.user.controller;
 
-
 import fr.eni.enchere.user.bll.UserService;
 import fr.eni.enchere.user.bo.User;
 import jakarta.validation.Valid;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,44 +21,43 @@ public class UserController {
     @GetMapping
     public String getAllUsers(Model model){
         model.addAttribute("users", userService.getAll());
-        return "user";
+        return "utilisateur";
     }
 
-    @GetMapping("/${id}")
-    public String getUserById(Long id, Model model){
-        model.addAttribute("user", userService.deleteById(id));
-        return "user";
+    @GetMapping("/{id}")
+    public String getUserById(@PathVariable Long id, Model model){
+        model.addAttribute("message", "Utilisateur récupéré avec succes");
+        model.addAttribute("userById", userService.getById(id));
+        return "utilisateur";
     }
 
     @PostMapping
-    public String createUser(@Valid User user, Model model){
-        model.addAttribute("newUser", userService.save(user));
-        return "user";
+    public String createUser(@Valid @RequestBody User user, Model model){
+        model.addAttribute("newUser", "Utilisateur créer avec succes");
+        return "utilisateur";
     }
 
     @PatchMapping
-    public String updateUser(@Valid User user, Model model){
-        model.addAttribute("updateUser", userService.save(user));
-        return "user";
+    public String updateUser(@Valid @RequestBody User user, Model model){
+        model.addAttribute("updateUser", "Utilisateur modifié avec succes");
+        return "utilisateur";
     }
 
-    @DeleteMapping("/${id}")
-    public String deleteUser(Long id ,Model model){
-        model.addAttribute("deleteUser", userService.deleteById(id));
-        return "user";
+    @DeleteMapping("supprimer/{id}")
+    public String deleteUser(@PathVariable Long id ,Model model){
+        model.addAttribute("deleteUser", "Utilisateur supprimé avec succes");
+        return "utilisateur";
     }
 
-    @GetMapping("/email")
+    @GetMapping("recherche/email")
     public String getUserByEmail(@Valid @RequestParam String email, Model model){
-        model.addAttribute("user", userService.getByEmail(email));
-        return "user";
+        model.addAttribute("userEmail", userService.getByEmail(email));
+        return "utilisateur";
     }
 
+    @GetMapping("recherche/pseudo")
     public String getUserByPseudo(@Valid @RequestParam String pseudo , Model model){
-        model.addAttribute("user", userService.getByPseudo(pseudo));
-        return "user";
+        model.addAttribute("userPseudo", userService.getByPseudo(pseudo));
+        return "utilisateur";
     }
-
-
-
 }
