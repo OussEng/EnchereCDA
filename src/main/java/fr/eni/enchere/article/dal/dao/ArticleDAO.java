@@ -47,7 +47,7 @@ public class ArticleDAO implements IArticleDAO{
 
     @Override
     public void update(Article article) {
-
+        articleRepository.update(article);
     }
 
     @Override
