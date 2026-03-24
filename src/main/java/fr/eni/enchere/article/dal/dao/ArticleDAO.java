@@ -1,13 +1,13 @@
 package fr.eni.enchere.article.dal.dao;
 
 import fr.eni.enchere.article.bo.Article;
-import fr.eni.enchere.article.bo.enums.Etat_Article;
 import fr.eni.enchere.article.dal.ArticleRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+
 
 
 
@@ -47,7 +47,7 @@ public class ArticleDAO implements IArticleDAO{
 
     @Override
     public void update(Article article) {
-
+        articleRepository.update(article);
     }
 
     @Override

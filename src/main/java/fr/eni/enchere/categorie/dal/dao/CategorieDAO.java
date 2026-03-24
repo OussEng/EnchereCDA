@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Profile("mysql")
 @Component
@@ -20,5 +21,10 @@ public class CategorieDAO implements ICategorieDAO{
     @Override
     public List<Categorie> findAll() {
         return categorieRepository.findAll();
+    }
+
+    @Override
+    public Optional<Categorie> findById(Long id) {
+        return categorieRepository.findById(id);
     }
 }
