@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class RetraitRepository {
@@ -37,5 +38,9 @@ public class RetraitRepository {
 
     public void update(Retrait retrait) {
         jdbcTemplate.update("UPDATE retraits SET rue = ?, code_postal = ?, ville = ? WHERE retraits.id = ? ", retrait.getRue(),retrait.getCodePostal(),retrait.getVille(),retrait.getId());
+    }
+
+    public Optional<Retrait> findByid(Long id) {
+        return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT r.id as retrait_id, r.rue as retrait_rue, r.code_postal as retrait_code_postal, r.ville as retraits_ville FROM retraits r WHERE r.id = ?", retraitRowMapper, id));
     }
 }

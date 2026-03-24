@@ -76,7 +76,7 @@ public class ArticleController {
     @PostMapping("/create")
     public String createVente(@ModelAttribute("venteForm") Article article){
 
-    articleService.create(article,2L);
+    articleService.create(article);
         return "redirect:/article";
     }
 

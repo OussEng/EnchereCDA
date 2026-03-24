@@ -30,7 +30,7 @@ public class RetraitDAO implements IRetraitDAO{
 
     @Override
     public Optional<Retrait> findById(Long id) {
-        return Optional.empty();
+        return retraitRepository.findByid(id);
     }
 
     @Override

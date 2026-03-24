@@ -61,6 +61,11 @@ public class RetraitDAOMock implements IRetraitDAO {
         retraitTable.put(3L, new ArrayList<>(List.of(retrait3)));
     }
 
+    @Override
+    public void save(Retrait retrait, Long id) {
+
+    }
+
     /**
      * Équivaut à : SELECT * FROM retrait WHERE user_id = :id
      */
@@ -78,5 +83,15 @@ public class RetraitDAOMock implements IRetraitDAO {
                 .flatMap(List::stream)
                 .filter(r -> r.getId().equals(id))
                 .findFirst();
+    }
+
+    @Override
+    public void delete(Long id) {
+
+    }
+
+    @Override
+    public void update(Retrait retrait) {
+
     }
 }
