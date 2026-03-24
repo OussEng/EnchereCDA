@@ -2,6 +2,7 @@ package fr.eni.enchere.user.bll;
 
 import fr.eni.enchere.exeception.AlreadyExistsException;
 import fr.eni.enchere.exeception.UserNotFoundException;
+import fr.eni.enchere.security.AuthenticatedUser;
 import fr.eni.enchere.user.bo.User;
 import fr.eni.enchere.user.dal.dao.IUserDAO;
 import org.springframework.context.annotation.Profile;
@@ -50,18 +51,23 @@ public class UserService {
                 .ifPresent(u -> { throw new AlreadyExistsException("Le pseudo existe déjà !"); });
 
         user.setMotDePasse(passwordEncoder.encode(user.getMotDePasse()));
+
         userDAO.update(id, user);
     }
 
     public void deleteById(Long id) {
-        userDAO.getById(id)
-                .orElseThrow(() -> new UserNotFoundException("Utilisateur introuvable."));
+        userDAO.getById(id).orElseThrow(() -> new UserNotFoundException("Utilisateur introuvable."));
     // TODO : vérifier si l'user a des enchère en cours
         // Supprimer les données liées d'abord
         //enchereDAO.deleteByUserId(id);
         //articleDAO.deleteByUserId(id);
         //retraitDAO.deleteByUserId(id);
         userDAO.deleteById(id);
+    }
+
+    public void desactivateAccount(Long id) {
+        userDAO.getById(id).orElseThrow(() -> new UserNotFoundException("Utilisateur introuvable."));
+        userDAO.desactivateAccount(id);
     }
 
     public List<User> getAll(){

@@ -1,5 +1,9 @@
 package fr.eni.enchere.user.controller;
 
+import fr.eni.enchere.article.bll.ArticleService;
+import fr.eni.enchere.article.bo.Article;
+import fr.eni.enchere.enchere.bll.EnchereService;
+import fr.eni.enchere.security.AuthenticatedUser;
 import fr.eni.enchere.security.UserPrincipal;
 import fr.eni.enchere.user.bll.UserService;
 import fr.eni.enchere.user.bo.User;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -28,15 +33,27 @@ public class UserController {
 
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
+    private final AuthenticatedUser authenticatedUser;
+    private final ArticleService articleService;
+    private final EnchereService enchereService;
 
-    public UserController(AuthenticationManager authenticationManager, UserService userService) {
+    public UserController(AuthenticationManager authenticationManager, UserService userService, AuthenticatedUser authenticatedUser, ArticleService articleService, EnchereService enchereService) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
+        this.authenticatedUser = authenticatedUser;
+        this.articleService = articleService;
+        this.enchereService = enchereService;
     }
 
     @GetMapping
-    public String getUser(@AuthenticationPrincipal UserPrincipal userPrincipal, Model model) {
-        model.addAttribute("user", userPrincipal.getUser());
+    public String getUser( Model model) {
+        User user = userService.getById(authenticatedUser.get().getId());
+        model.addAttribute("user", user);
+        System.out.println(user.getTelephone());
+        //model.addAttribute("enchere", enchereService.)
+        List<Article> articles = articleService.findByVendeurId(2L);
+        System.out.println(articles);
+        model.addAttribute("articles", articles);
         return "/userProfil/profile";
     }
 
@@ -60,9 +77,11 @@ public class UserController {
     }
 
     @PostMapping("/modif")
-    public String updateUser(@ModelAttribute User user, BindingResult bindingResult,
-                             @RequestParam String motDePasseActuel, RedirectAttributes redirectAttributes,
-                             HttpServletRequest request) {
+    public String updateUser(@Valid @ModelAttribute User user,
+                             BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes
+                             ) {
+
         if (bindingResult.hasErrors()) {
             Map<String, String> erreurs = new HashMap<>();
             bindingResult.getFieldErrors()
@@ -71,28 +90,23 @@ public class UserController {
             return "redirect:/profile";
         }
 
-        // Vérifie le mot de passe actuel via authenticate()
-        try {
-            String pseudoActuel = SecurityContextHolder.getContext().getAuthentication().getName();
-
-            UsernamePasswordAuthenticationToken token =
-                    new UsernamePasswordAuthenticationToken(pseudoActuel, motDePasseActuel);
-            authenticationManager.authenticate(token); // lève une exception si incorrect
-
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("erreur", "Mot de passe actuel incorrect.");
-            return "redirect:/profile";
-        }
-
-        userService.update(user.getId(), user); // gère le nouveau mot de passe en interne
+        userService.update(user.getId(), user);
 
         redirectAttributes.addFlashAttribute("succes", "Profil mis à jour avec succès !");
+
         return "redirect:/profile";
     }
 
-    @DeleteMapping("/supprimer/{id}")
+    @DeleteMapping("/supprimer-compte/{id}")
     public String deleteUser(@PathVariable Long id, HttpServletRequest request) {
         userService.deleteById(id);
+        request.getSession().invalidate();
+        return "redirect:/";
+    }
+
+    @PostMapping("/supprimer/{id}")
+    public String desactivateAccount(@PathVariable Long id, HttpServletRequest request) {
+        userService.desactivateAccount(id);
         request.getSession().invalidate();
         return "redirect:/";
     }
