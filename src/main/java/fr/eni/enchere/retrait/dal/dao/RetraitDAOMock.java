@@ -63,7 +63,7 @@ public class RetraitDAOMock implements IRetraitDAO {
 
     @Override
     public void save(Retrait retrait, Long id) {
-        
+
     }
 
     /**
