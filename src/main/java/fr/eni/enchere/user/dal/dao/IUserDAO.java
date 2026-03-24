@@ -14,4 +14,6 @@ public interface IUserDAO {
     Optional<User> getById(Long id);
     Optional<User> getByEmail(String email);
     Optional<User> getByPseudo(String pseudo);
+
+    void updateCredit(User user);
 }

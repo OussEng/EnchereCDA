@@ -3,9 +3,8 @@ package fr.eni.enchere.enchere.bo;
 import fr.eni.enchere.article.bo.Article;
 import fr.eni.enchere.user.bo.User;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Optional;
 
 public class Enchere {
 

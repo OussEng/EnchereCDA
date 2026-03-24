@@ -7,9 +7,11 @@ import fr.eni.enchere.article.bo.enums.Etat_Article;
 import fr.eni.enchere.categorie.bll.CategorieService;
 import fr.eni.enchere.categorie.bo.Categorie;
 import fr.eni.enchere.retrait.bll.RetraitService;
+import fr.eni.enchere.security.AuthenticatedUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,12 +24,13 @@ public class ArticleController {
     private final ArticleService articleService;
     private final CategorieService categorieService;
     private final RetraitService retraitService;
-    private List<Article> articles;
+    private final AuthenticatedUser auth;
 
-    public ArticleController(ArticleService articleService, CategorieService categorieService, RetraitService retraitService) {
+    public ArticleController(ArticleService articleService, CategorieService categorieService, RetraitService retraitService, AuthenticatedUser authenticatedUser, AuthenticatedUser auth) {
         this.articleService = articleService;
         this.categorieService = categorieService;
         this.retraitService = retraitService;
+        this.auth = auth;
     }
     @GetMapping("")
     public String Redirect(){
@@ -81,7 +84,9 @@ public class ArticleController {
     public String createVente(@ModelAttribute("venteForm") Article article){
 
     articleService.create(article);
-        return "redirect:/article";
+        System.out.println(article);
+
+        return "redirect:/encheres";
     }
 
     @PutMapping("/update")
@@ -94,6 +99,47 @@ public class ArticleController {
         articleService.deleteById(id);
         return "home";
     }
+
+    @PostMapping("/{id}/encherir")
+    public String bid(@PathVariable Long id, @RequestParam int amount, RedirectAttributes redirectAttributes) {
+
+        Article article = articleService.getById(id).get();
+
+        if (amount > auth.get().getCredit() ){
+            redirectAttributes.addFlashAttribute("error", "Vous n'aves pas assez de credit");
+            return "redirect:/encheres/" + id;
+        }
+        if (article.getEtatEnchere() == Etat_Article.CREEE){
+            redirectAttributes.addFlashAttribute("warning", "L'enchére n'est pas encore cemmencé");
+            return "redirect:/encheres/" + id;
+        }
+
+        if (article.getEtatEnchere() == Etat_Article.TERMINEES){
+            redirectAttributes.addFlashAttribute("warning", "Cette enchère est terminée");
+            return "redirect:/encheres/" + id;
+        }
+
+
+        if (amount <= article.getCurrentPrice()){
+            redirectAttributes.addFlashAttribute("error", "Le montant d'enchère doit être supérieur à " + article.getCurrentPrice());
+            return "redirect:/encheres/" + id;
+        }
+
+        if (article.getEtatEnchere() == Etat_Article.EN_COURS){
+            articleService.bid(amount,article);
+            redirectAttributes.addFlashAttribute("success", "Vous avez encherit avec " + amount + " crédit");
+
+            return "redirect:/encheres/" + id;
+        }
+
+
+
+        System.out.println(amount + " " + id);
+        return "redirect:/encheres/" + id;
+    }
+
+
+
 
 
 

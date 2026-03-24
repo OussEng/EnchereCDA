@@ -30,6 +30,7 @@ public class EnchereRowMapper implements RowMapper<Enchere> {
         encherit.setPseudo(rs.getString("utilisateur_pseudo"));
         encherit.setEmail(rs.getString("utilisateur_email"));
         encherit.setTelephone(rs.getString("utilisateur_telephone"));
+        encherit.setCredit(rs.getInt("utilisateur_credit"));
         enchere.setEncherit(encherit);
 
 

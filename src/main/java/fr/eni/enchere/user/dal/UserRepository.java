@@ -87,4 +87,8 @@ public class UserRepository {
             WHERE pseudo = ?         
         """, userRowMapper, pseudo).stream().findFirst();
     }
+
+    public void updateCredit(User user) {
+        jdbc.update(" UPDATE utilisateurs SET credit = ? WHERE id = ? ", user.getCredit(), user.getId());
+    }
 }

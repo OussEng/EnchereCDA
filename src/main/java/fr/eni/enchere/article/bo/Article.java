@@ -148,4 +148,11 @@ public class Article {
                 .max()
                 .orElse(this.miseAPrix);
     }
+
+    public User getCurrentBidder() {
+        return encheres.stream()
+                .max(Comparator.comparingInt(Enchere::getMontant))
+                .map(Enchere::getEncherit)
+                .orElse(null);
+    }
 }

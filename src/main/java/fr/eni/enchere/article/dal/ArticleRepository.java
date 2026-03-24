@@ -84,7 +84,8 @@ public class ArticleRepository {
                                                            u.prenom      AS utilisateur_prenom,
                                                             u.pseudo      AS utilisateur_pseudo,
                                                             u.email       AS utilisateur_email,
-                                                             u.telephone   AS utilisateur_telephone
+                                                             u.telephone   AS utilisateur_telephone,
+                                                          u.credit AS utilisateur_credit
                                                               FROM encheres e
                                                              INNER JOIN utilisateurs u ON u.id = e.utilisateur_id
                                                              WHERE e.article_id = ?
@@ -144,16 +145,17 @@ public class ArticleRepository {
 
 
             List<Enchere> encheres = jdbcTemplate.query("""
-                                                          SELECT
-                                                           e.id,
-                                                           e.date_enchere,
-                                                           e.montant,
-                                                           e.utilisateur_id,
-                                                           u.nom         AS utilisateur_nom,
-                                                           u.prenom      AS utilisateur_prenom,
-                                                            u.pseudo      AS utilisateur_pseudo,
-                                                            u.email       AS utilisateur_email,
-                                                             u.telephone   AS utilisateur_telephone
+                                                        SELECT
+                                                        e.id,
+                                                        e.date_enchere,
+                                                        e.montant,
+                                                        e.utilisateur_id,
+                                                        u.nom         AS utilisateur_nom,
+                                                        u.prenom      AS utilisateur_prenom,
+                                                        u.pseudo      AS utilisateur_pseudo,
+                                                        u.email       AS utilisateur_email,
+                                                        u.telephone   AS utilisateur_telephone,
+                                                        u.credit AS utilisateur_credit
                                                               FROM encheres e
                                                              INNER JOIN utilisateurs u ON u.id = e.utilisateur_id
                                                              WHERE e.article_id = ?
