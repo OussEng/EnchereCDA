@@ -7,8 +7,8 @@ import fr.eni.enchere.user.dal.dao.IUserDAO;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Profile("mysql")
@@ -21,44 +21,55 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     public void save(User user) {
-        if (userDAO.getByEmail(user.getEmail()).isPresent()) {
-            throw new AlreadyExistsException("L'email existe déjà, connectez-vous !");
-        }
-        if (userDAO.getByPseudo(user.getPseudo()).isPresent()) {
-            throw new AlreadyExistsException("Le pseudo " + user.getPseudo() + " est déjà utilisé !");
-        }
+        userDAO.getByEmail(user.getEmail()).ifPresent(u -> {
+            throw new AlreadyExistsException("L'email existe déjà !");
+        });
+
+        userDAO.getByPseudo(user.getPseudo()).ifPresent(u -> {
+            throw new AlreadyExistsException("Le pseudo existe déjà !");
+        });
         user.setMotDePasse(passwordEncoder.encode(user.getMotDePasse()));
         userDAO.save(user);
     }
 
-    public void update(Long id, User user){
-        if (userDAO.getByEmail(user.getEmail()).isPresent()) {
-            throw new AlreadyExistsException("L'email existe déjà, connectez-vous !");
-        }
-        if (userDAO.getByPseudo(user.getPseudo()).isPresent()) {
-            throw new AlreadyExistsException("Le pseudo " + user.getPseudo() + " est déjà utilisé !");
-        }
+    @Transactional
+    public void update(Long id, User user) {
+        User existing = userDAO.getById(id)
+                .orElseThrow(() -> new UserNotFoundException("Utilisateur introuvable."));
+
+        // Vérifie si email est utilisé par un autre
+        userDAO.getByEmail(user.getEmail())
+                .filter(u -> !u.getId().equals(id))
+                .ifPresent(u -> { throw new AlreadyExistsException("L'email existe déjà !"); });
+
+        // Vérifie si pseudo est utilisé par un autre
+        userDAO.getByPseudo(user.getPseudo())
+                .filter(u -> !u.getId().equals(id))
+                .ifPresent(u -> { throw new AlreadyExistsException("Le pseudo existe déjà !"); });
+
         user.setMotDePasse(passwordEncoder.encode(user.getMotDePasse()));
         userDAO.update(id, user);
     }
 
-    public void deleteById( Long id){
-        if(userDAO.getById(id).isPresent()){
-            userDAO.deleteById(id);
-        }
-        throw new UserNotFoundException("Utilisateur introuvable.");
+    public void deleteById(Long id) {
+        userDAO.getById(id)
+                .orElseThrow(() -> new UserNotFoundException("Utilisateur introuvable."));
+    // TODO : vérifier si l'user a des enchère en cours
+        // Supprimer les données liées d'abord
+        //enchereDAO.deleteByUserId(id);
+        //articleDAO.deleteByUserId(id);
+        //retraitDAO.deleteByUserId(id);
+        userDAO.deleteById(id);
     }
 
     public List<User> getAll(){
         return userDAO.getAll();
     }
 
-    public Optional<User> getById( Long id){
-        if(userDAO.getById(id).isPresent()){
-            return userDAO.getById(id);
-        }
-        throw new UserNotFoundException("Utilisateur introuvable.");
+    public User getById( Long id){
+        return userDAO.getById(id).orElseThrow(() -> new UserNotFoundException("Utilisateur introuvable."));
     }
 
     public User getByEmail( String email){

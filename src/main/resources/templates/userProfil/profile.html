@@ -25,6 +25,9 @@
             <a class="nav-link active rounded-3 fw-semibold" href="#">
               <i class="fas fa-user me-2"></i>Informations personnelles
             </a>
+
+            <p th:if="${success}" th:text="${success}" class="text-success"></p>
+
             <a class="nav-link rounded-3 fw-semibold" href="#">
               <i class="fas fa-gavel me-2"></i>Mes enchères
             </a>
@@ -32,13 +35,13 @@
               <i class="fas fa-box me-2"></i>Mes articles
             </a>
             <hr>
-            <form th:action="@{/deconection}" method="post">
+            <form th:action="@{/deconection}" method="POST">
               <button type="submit"
                       class="nav-link rounded-3 fw-semibold text-danger w-100 text-start border-0 bg-transparent">
                 <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
               </button>
             </form>
-            <form th:action="@{/supprimer-compte}" method="POST">
+            <form th:action="@{'/profile/supprimer/' + ${user.id}}" method="POST">
               <button type="submit"
                       class="nav-link rounded-3 fw-semibold text-danger w-100 text-start border-0 bg-transparent">
                 <i class="fas fa-sign-out-alt me-2"></i>Supprimer mon compte
@@ -58,64 +61,84 @@
             <i class="fas fa-user me-2 text-primary"></i>Informations personnelles
           </h5>
 
-          <form th:action="@{/profil/modifier}" method="POST">
-            <input type="hidden" name="_method" value="PATCH"/>
+          <form th:action="@{/profile/modif}" method="POST">
+            <input type="hidden" name="id" th:value="${user.id}" />
             <div class="row g-3">
 
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Prénom</label>
                 <input type="text" class="form-control rounded-3"
                        name="prenom" th:value="${user.getPrenom()}" />
+                <span th:if="${erreurs != null and erreurs['prenom'] != null}"
+                      th:text="${erreurs['prenom']}"
+                      class="text-danger small"></span>
               </div>
 
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Nom</label>
                 <input type="text" class="form-control rounded-3"
                        name="nom" th:value="${user.getNom()}" />
+                <span th:if="${erreurs != null and erreurs['nom'] != null}"
+                      th:text="${erreurs['nom']}"
+                      class="text-danger small"></span>
               </div>
 
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Pseudo</label>
                 <input type="text" class="form-control rounded-3"
                        name="pseudo" th:value="${user.getPseudo()}" />
+                <span th:if="${erreurs != null and erreurs['pseudo'] != null}"
+                      th:text="${erreurs['pseudo']}"
+                      class="text-danger small"></span>
               </div>
 
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Email</label>
                 <input type="email" class="form-control rounded-3"
                        name="email" th:value="${user.getEmail()}" />
+                <span th:if="${erreurs != null and erreurs['email'] != null}"
+                      th:text="${erreurs['email']}"
+                      class="text-danger small"></span>
               </div>
 
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Téléphone</label>
                 <input type="tel" class="form-control rounded-3"
                        name="telephone" th:value="${user.getTelephone()}" />
+                <span th:if="${erreurs != null and erreurs['telephone'] != null}"
+                      th:text="${erreurs['telephone']}"
+                      class="text-danger small"></span>
               </div>
 
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Crédit</label>
                 <div class="input-group">
-                  <input type="text" class="form-control rounded-start-3"
-                         th:value="${user.getCredit()}" readonly />
+                  <input type="text" class="form-control rounded-start-3" th:value="${user.getCredit()}" readonly />
                   <span class="input-group-text rounded-end-3">
                     <img src="/assets/mj.png" alt="MAJOU" style="width: 20px; height: 20px; object-fit: contain;">
-                    <a href=""> Ajouter des crédits</a>
+                    <a href="@{/ajouter-des-credits}"> Ajouter des crédits</a>
                   </span>
+                  <span th:if="${erreurs != null and erreurs['credit'] != null}"
+                        th:text="${erreurs['credit']}"
+                        class="text-danger small"></span>
                 </div>
-
               </div>
 
-              <div class="col-md-6">
-                <label class="form-label fw-semibold">Mot de passe actuel</label>
+              <div class="col-12">
+                <label class="form-label fw-semibold">Mot de passe actuel <span class="text-danger">*</span></label>
                 <input type="password" class="form-control rounded-3"
-                       name="motDePasseActuel"  />
+                       name="motDePasseActuel"
+                       placeholder="Requis pour confirmer les modifications" />
               </div>
 
-              <div class="col-md-6">
-                <label class="form-label fw-semibold">Mot de passe</label>
-                <input type="password" class="form-control rounded-3"
-                       name="motDePasse"  />
-              </div>
+<!--              <div class="col-md-6">-->
+<!--                <label class="form-label fw-semibold">Nouveau Mot de passe</label>-->
+<!--                <input type="password" class="form-control rounded-3"-->
+<!--                       name="motDePasse"  />-->
+<!--                <span th:if="${erreurs != null and erreurs['motDePasse'] != null}"-->
+<!--                      th:text="${erreurs['motDePasse']}"-->
+<!--                      class="text-danger small"></span>-->
+<!--              </div>-->
 
               <div class="col-12 d-flex justify-content-end gap-2 mt-2">
                 <a th:href="@{/}" class="btn btn-outline-secondary rounded-pill px-4">
