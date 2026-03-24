@@ -4,11 +4,13 @@ import fr.eni.enchere.categorie.bo.Categorie;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
-@Component
+
 public interface ICategorieDAO {
 
     List<Categorie> findAll();
 
+    Optional<Categorie> findById(Long id);
 
 }

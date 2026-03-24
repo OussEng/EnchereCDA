@@ -5,6 +5,7 @@ import fr.eni.enchere.categorie.dal.dao.ICategorieDAO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategorieService {
@@ -19,6 +20,8 @@ public class CategorieService {
     public List<Categorie> getAll(){
         return categorieDAO.findAll();
     }
+
+    public Optional<Categorie> getById(Long id) { return categorieDAO.findById(id); }
 
 
 }

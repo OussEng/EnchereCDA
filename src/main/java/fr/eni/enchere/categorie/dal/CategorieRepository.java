@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CategorieRepository {
@@ -23,5 +24,9 @@ public class CategorieRepository {
 
         return jdbcTemplate.query("SELECT * FROM categories", categorieRowMapper);
 
+    }
+
+    public Optional<Categorie> findById(Long id) {
+        return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM categories c WHERE c.id = ?", categorieRowMapper, id));
     }
 }
