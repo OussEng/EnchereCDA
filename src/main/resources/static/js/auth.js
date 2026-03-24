@@ -8,11 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.classList.toggle('active', btn.dataset.tab === tab);
         });
 
-        // 💾 On sauvegarde l'onglet choisi
+        // On sauvegarde l'onglet choisi
         localStorage.setItem('activeTab', tab);
     }
 
-    // 🔁 On récupère l'onglet sauvegardé
+    // On récupère l'onglet sauvegardé
     const savedTab = localStorage.getItem('activeTab') || 'connexion';
     showTab(savedTab);
 
