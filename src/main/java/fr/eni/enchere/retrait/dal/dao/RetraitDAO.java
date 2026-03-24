@@ -39,7 +39,7 @@ public class RetraitDAO implements IRetraitDAO{
     }
 
     @Override
-    public void update(Retrait retrait) {
+    public void update( Retrait retrait) {
         retraitRepository.update(retrait);
     }
 }

@@ -27,6 +27,9 @@
             <a class="nav-link active rounded-3 fw-semibold" href="#" onclick="showSection('formulaire', this)">
               <i class="fas fa-user me-2"></i>Mon profile
             </a>
+            <a class="nav-link rounded-3 fw-semibold" href="#" onclick="showSection('retraits', this)">
+              <i class="fas fa-box me-2"></i>Mes adresses de retrait
+            </a>
 
             <a class="nav-link rounded-3 fw-semibold" href="#" onclick="showSection('encheres', this)">
               <i class="fas fa-gavel me-2"></i>Mes enchères
@@ -178,7 +181,7 @@
 
                       <a th:href="'/articles/' + ${enchere.id}"
                          class="btn btn-primary w-100 rounded-pill fw-semibold">
-                        🔍 Voir l'enchère
+                        Voir l'enchère
                       </a>
                     </div>
                   </div>
@@ -225,7 +228,7 @@
 
                       <a th:href="'/articles/' + ${article.id}"
                          class="btn btn-primary w-100 rounded-pill fw-semibold">
-                        🔍 Voir l'article
+                        Voir l'article
                       </a>
                     </div>
                   </div>
@@ -238,8 +241,97 @@
             </div>
           </div>
         <!-- fin Article -->
-      </div>
-    </div>
-  </div>
+          <!-- Début Retrait -->
+          <div id="retraits" style="display:none;">
+            <h5 class="fw-bold mt-3 mb-3">
+              <i class="fas fa-map-marker-alt me-2 text-primary"></i>Mes adresses de retrait
+            </h5>
+
+            <div class="row g-3">
+              <div class="col-md-6" th:each="retrait : ${retraits}">
+                <div class="card rounded-3 shadow-sm border-0 retrait-card h-100">
+                  <div class="card-body d-flex flex-column">
+
+                    <!-- Affichage -->
+                    <div class="retrait-display">
+                      <address class="mb-3">
+                        <p class="mb-1" th:text="${retrait.getRue()}">Rue exemple</p>
+                        <p class="mb-0"
+                           th:text="${retrait.getCodePostal()} + ' ' + ${retrait.getVille()}">
+                          75000 Paris
+                        </p>
+                      </address>
+
+                      <div class="d-flex gap-2">
+                        <button type="button"
+                                class="btn btn-outline-primary w-50 rounded-pill fw-semibold"
+                                onclick="toggleForm(this)">
+                          Modifier
+                        </button>
+
+                        <form th:action="@{'/retraits/supprimer/' + ${retrait.id}}"
+                              method="POST"
+                              class="w-50">
+                          <button type="submit"
+                                  class="btn btn-outline-danger w-100 rounded-pill fw-semibold">
+                            Supprimer
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+
+                    <!-- Formulaire -->
+                    <form th:action="@{'/retraits/modifier/' + ${retrait.id}}"
+                          method="POST"
+                          class="retrait-form mt-3"
+                          style="display:none;">
+
+                      <div class="mb-2">
+                        <label class="form-label fw-semibold">Rue</label>
+                        <input type="text" class="form-control"
+                               name="rue"
+                               th:value="${retrait.getRue()}" required>
+                      </div>
+
+                      <div class="mb-2">
+                        <label class="form-label fw-semibold">Code Postal</label>
+                        <input type="text" class="form-control"
+                               name="codePostal"
+                               th:value="${retrait.getCodePostal()}" required>
+                      </div>
+
+                      <div class="mb-2">
+                        <label class="form-label fw-semibold">Ville</label>
+                        <input type="text" class="form-control"
+                               name="ville"
+                               th:value="${retrait.getVille()}" required>
+                      </div>
+
+                      <div class="d-flex gap-2 mt-2">
+                        <button type="submit"
+                                class="btn btn-primary w-50 rounded-pill fw-semibold">
+                          Sauvegarder
+                        </button>
+
+                        <button type="button"
+                                class="btn btn-secondary w-50 rounded-pill fw-semibold"
+                                onclick="toggleForm(this, true)">
+                          Annuler
+                        </button>
+                      </div>
+
+                    </form>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> <!-- fin retraits -->
+
+        </div> <!-- card-body -->
+      </div> <!-- card -->
+    </div> <!-- col-lg-9 -->
+
+  </div> <!-- row -->
 </main>
 </html>
