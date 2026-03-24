@@ -1,0 +1,148 @@
+<html data-th-replace="~{layout::layout(title=~{::title},content=~{::main})}" lang="fr">
+<title>Authentification — Enchères</title>
+<main class="container py-5">
+
+  <!-- Hero Banner -->
+  <div class="p-5 mb-5 rounded-4 text-white text-center"
+       style="background: linear-gradient(135deg, #0d6efd 0%, #0a3d91 100%);">
+    <h1 class="display-5 fw-bold">🏷️ EnchèresPro</h1>
+    <p class="lead mb-0">Connectez-vous ou créez un compte pour participer</p>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-4">
+
+          <!-- Tabs -->
+          <ul class="nav nav-pills nav-fill mb-4" id="authTabs">
+            <li class="nav-item">
+              <button class="nav-link active rounded-pill fw-semibold" data-tab="connexion">
+                🔐 Connexion
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link rounded-pill fw-semibold" data-tab="inscription">
+                📝 Inscription
+              </button>
+            </li>
+          </ul>
+
+          <!-- Erreur globale -->
+          <div th:if="${erreur != null}"
+               class="alert alert-danger rounded-3"
+               th:text="${erreur}">
+          </div>
+
+          <!-- ===== CONNEXION ===== -->
+          <div id="tab-connexion">
+            <form th:action="@{/auth}" method="POST">
+
+              <div th:if="${param.error}"
+                   class="alert alert-danger rounded-3 mb-3">
+                Pseudo ou mot de passe incorrect.
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Pseudo</label>
+                <input type="text" class="form-control rounded-3"
+                       name="pseudo" value="John123" />
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label fw-semibold">Mot de passe</label>
+                <input type="password" class="form-control rounded-3"
+                       name="motDePasse" value="John1234" />
+              </div>
+
+              <div class="d-grid">
+                <button type="submit"
+                        class="btn btn-primary rounded-pill fw-semibold py-2">
+                  Se connecter
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- ===== INSCRIPTION ===== -->
+          <div id="tab-inscription" style="display: none;">
+            <form th:action="@{/auth/inscription}" method="POST">
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label fw-semibold">Prénom</label>
+                  <input type="text" class="form-control rounded-3"
+                         name="prenom" value="John" />
+                  <span th:if="${erreurs != null and erreurs['prenom'] != null}"
+                        th:text="${erreurs['prenom']}"
+                        class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label fw-semibold">Nom</label>
+                  <input type="text" class="form-control rounded-3"
+                         name="nom" value="Doe" />
+                  <span th:if="${erreurs != null and erreurs['nom'] != null}"
+                        th:text="${erreurs['nom']}"
+                        class="text-danger small"></span>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Pseudo</label>
+                <input type="text" class="form-control rounded-3"
+                       name="pseudo" value="John123" />
+                <span th:if="${erreurs != null and erreurs['pseudo'] != null}"
+                      th:text="${erreurs['pseudo']}"
+                      class="text-danger small"></span>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Email</label>
+                <input type="email" class="form-control rounded-3"
+                       name="email" value="John123@gmail.com" />
+                <span th:if="${erreurs != null and erreurs['email'] != null}"
+                      th:text="${erreurs['email']}"
+                      class="text-danger small"></span>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Téléphone</label>
+                <input type="text" class="form-control rounded-3"
+                       name="telephone" value="" />
+                <span th:if="${erreurs != null and erreurs['telephone'] != null}"
+                      th:text="${erreurs['telephone']}"
+                      class="text-danger small"></span>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label fw-semibold">Mot de passe</label>
+                  <input type="password" class="form-control rounded-3"
+                         name="motDePasse" value="John1234" />
+                  <span th:if="${erreurs != null and erreurs['motDePasse'] != null}"
+                        th:text="${erreurs['motDePasse']}"
+                        class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label fw-semibold">Confirmer mot de passe</label>
+                  <input type="password" class="form-control rounded-3"
+                         name="confirmMotDePasse" value="John1234" />
+                </div>
+              </div>
+
+              <div class="d-grid">
+                <button type="submit"
+                        class="btn btn-primary rounded-pill fw-semibold py-2">
+                  S'inscrire
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</html>

@@ -25,6 +25,6 @@ public class CategorieDAO implements ICategorieDAO{
 
     @Override
     public Optional<Categorie> findById(Long id) {
-        return Optional.empty();
+        return categorieRepository.findById(id);
     }
 }

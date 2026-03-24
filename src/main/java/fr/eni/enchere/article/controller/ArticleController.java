@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/article")
+@RequestMapping("/encheres")
 public class ArticleController {
 
     private final ArticleService articleService;
@@ -29,9 +29,13 @@ public class ArticleController {
         this.categorieService = categorieService;
         this.retraitService = retraitService;
     }
-
-
     @GetMapping("")
+    public String Redirect(){
+        return "redirect:/encheres/";
+    }
+
+
+    @GetMapping("/")
     public String listArticles(Model model){
         List<Article> articles = articleService.getAll();
 
@@ -40,7 +44,7 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    public String findById(@PathVariable Long id, Model model){
+    public String detail(@PathVariable Long id, Model model){
         Optional<Article> article = articleService.getById(id);
        model.addAttribute("article", article.orElse(null));
         return "fragments/article/view-article-detail";
@@ -76,7 +80,7 @@ public class ArticleController {
     @PostMapping("/create")
     public String createVente(@ModelAttribute("venteForm") Article article){
 
-    articleService.create(article,2L);
+    articleService.create(article);
         return "redirect:/article";
     }
 
@@ -86,7 +90,7 @@ public class ArticleController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public String deleteById(@PathVariable Long id){
+    public String delete(@PathVariable Long id){
         articleService.deleteById(id);
         return "home";
     }

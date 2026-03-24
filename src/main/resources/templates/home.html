@@ -9,15 +9,6 @@
         <p class="lead mb-0">Découvrez et remportez les meilleures enchères du moment</p>
     </div>
 
-    <!-- Barre de recherche -->
-    <div class="search-bar">
-        <form class="d-flex" th:action="@{/article}" method="get">
-            <input class="form-control me-2" type="search" name="v" placeholder="Rechercher un article..."
-                   aria-label="Search">
-            <button class="btn btn-outline-primary" type="submit">Rechercher</button>
-        </form>
-    </div>
-
     <!-- Grille des articles -->
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
         <div class="col" th:each="article: ${articles}">

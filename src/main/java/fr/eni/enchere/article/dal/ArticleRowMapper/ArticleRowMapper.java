@@ -3,6 +3,7 @@ package fr.eni.enchere.article.dal.ArticleRowMapper;
 import fr.eni.enchere.article.bo.Article;
 import fr.eni.enchere.article.bo.enums.Etat_Article;
 import fr.eni.enchere.categorie.bo.Categorie;
+import fr.eni.enchere.enchere.bo.Enchere;
 import fr.eni.enchere.retrait.bo.Retrait;
 import fr.eni.enchere.user.bo.User;
 import org.springframework.jdbc.core.RowMapper;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ArticleRowMapper implements RowMapper<Article> {
