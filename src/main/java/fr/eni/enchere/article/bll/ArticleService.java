@@ -4,10 +4,8 @@ import fr.eni.enchere.article.bo.Article;
 import fr.eni.enchere.article.bo.enums.Etat_Article;
 import fr.eni.enchere.article.dal.dao.IArticleDAO;
 import fr.eni.enchere.categorie.bll.CategorieService;
-import fr.eni.enchere.categorie.bo.Categorie;
 import fr.eni.enchere.retrait.bll.RetraitService;
 import fr.eni.enchere.security.AuthenticatedUser;
-import fr.eni.enchere.user.bo.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -58,8 +56,8 @@ public class ArticleService {
         articleDAO.deleteById(id);
     }
 
-    public List<Article> getByFilter(){
-        return articleDAO.findAll();
+    public List<Article> getByFilter(String v){
+        return articleDAO.getByName(v);
     }
 
 }

@@ -3,9 +3,7 @@ package fr.eni.enchere.article.controller;
 
 import fr.eni.enchere.article.bll.ArticleService;
 import fr.eni.enchere.article.bo.Article;
-import fr.eni.enchere.article.bo.enums.Etat_Article;
 import fr.eni.enchere.categorie.bll.CategorieService;
-import fr.eni.enchere.categorie.bo.Categorie;
 import fr.eni.enchere.retrait.bll.RetraitService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +20,6 @@ public class ArticleController {
     private final ArticleService articleService;
     private final CategorieService categorieService;
     private final RetraitService retraitService;
-    private List<Article> articles;
 
     public ArticleController(ArticleService articleService, CategorieService categorieService, RetraitService retraitService) {
         this.articleService = articleService;
@@ -41,6 +38,18 @@ public class ArticleController {
 
         model.addAttribute("articles", articles);
         return "home";
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam String value, Model model){
+
+        if (!value.isEmpty()){
+            List<Article> articles = articleService.getByFilter(value);
+            model.addAttribute("articles", articles);
+            return "home";
+        } else {
+            return "redirect:/encheres";
+        }
     }
 
     @GetMapping("/{id}")
