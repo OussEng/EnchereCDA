@@ -1,6 +1,7 @@
 package fr.eni.enchere.article.dal.dao;
 
 import fr.eni.enchere.article.bo.Article;
+import fr.eni.enchere.article.bo.enums.Etat_Article;
 
 import java.util.List;
 import java.util.Optional;

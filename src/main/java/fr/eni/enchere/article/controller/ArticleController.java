@@ -96,7 +96,6 @@ public class ArticleController {
     public String createVente(@ModelAttribute("venteForm") Article article){
 
     articleService.create(article);
-        System.out.println(article);
 
         return "redirect:/encheres";
     }
