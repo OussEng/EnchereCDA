@@ -11,19 +11,20 @@
                             <a class="nav-link" href="/">Accueil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/articles">Articles</a>
+                            <a class="nav-link" href="/encheres">Articles</a>
                         </li>
-                        <li class="nav-item" sec:authorize="isAuthenticated() and hasRole('ADMIN')" >
+                        <li class="nav-item" sec:authorize="isAuthenticated() and hasRole('ROLE_ADMIN')" >
                             <a class="nav-link" href="/categories">Catégories</a>
+                        </li>
+                        <li class="nav-item" sec:authorize="isAuthenticated() and hasRole('ROLE_SUPER_ADMIN')" >
+                            <a class="nav-link" href="/admin">Adminitration</a>
                         </li>
                         <li class="nav-item" sec:authorize="isAnonymous()">
                             <a class="nav-link btn btn-primary text-white ms-2" th:href="@{/auth}">Connexion</a>
                         </li>
-
                         <li class="nav-item" sec:authorize="isAuthenticated()">
                             <a class="nav-link" th:href="@{/profile}">Mon Profil</a>
                         </li>
-
                         <li class="nav-item" sec:authorize="isAuthenticated()">
                             <form class="nav-item" th:action="@{/deconection}" method="post">
                                 <button type="submit" class="nav-link btn btn-primary text-white ms-2">Déconnexion</button>
