@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const sections = ['formulaire', 'encheres', 'articles'];
+    const sections = ['formulaire', 'encheres', 'articles', 'retraits'];
     const navLinks = document.querySelectorAll('.nav-link');
 
     function showSection(sectionId, clickedLink) {
@@ -18,6 +18,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const defaultLink = document.querySelector('.nav-link.active');
     if (defaultLink) showSection('formulaire', defaultLink);
 
-    // Expose la fonction globalement pour onclick inline
+    // Expose les fonctions globalement pour onclick inline
     window.showSection = showSection;
+
+    function toggleForm(button, hide=false) {
+        const cardBody = button.closest('.card-body');
+        const displayDiv = cardBody.querySelector('.retrait-display');
+        const form = cardBody.querySelector('.retrait-form');
+
+        if(hide) {
+            displayDiv.style.display = 'block';
+            form.style.display = 'none';
+        } else {
+            displayDiv.style.display = 'none';
+            form.style.display = 'block';
+        }
+    }
+
+    window.toggleForm = toggleForm; // <-- exposer pour le HTML
 });

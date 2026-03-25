@@ -3,6 +3,8 @@ package fr.eni.enchere.user.controller;
 import fr.eni.enchere.article.bll.ArticleService;
 import fr.eni.enchere.article.bo.Article;
 import fr.eni.enchere.enchere.bll.EnchereService;
+import fr.eni.enchere.retrait.bll.RetraitService;
+import fr.eni.enchere.retrait.bo.Retrait;
 import fr.eni.enchere.security.AuthenticatedUser;
 import fr.eni.enchere.security.UserPrincipal;
 import fr.eni.enchere.user.bll.UserService;
@@ -36,24 +38,29 @@ public class UserController {
     private final AuthenticatedUser authenticatedUser;
     private final ArticleService articleService;
     private final EnchereService enchereService;
+    private final RetraitService retraitService;
 
-    public UserController(AuthenticationManager authenticationManager, UserService userService, AuthenticatedUser authenticatedUser, ArticleService articleService, EnchereService enchereService) {
+    public UserController(AuthenticationManager authenticationManager, UserService userService, AuthenticatedUser authenticatedUser, ArticleService articleService, EnchereService enchereService, RetraitService retraitService) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.authenticatedUser = authenticatedUser;
         this.articleService = articleService;
         this.enchereService = enchereService;
+        this.retraitService = retraitService;
     }
 
     @GetMapping
     public String getUser( Model model) {
         User user = userService.getById(authenticatedUser.get().getId());
         model.addAttribute("user", user);
-        System.out.println(user.getTelephone());
         //model.addAttribute("enchere", enchereService.)
-        List<Article> articles = articleService.findByVendeurId(2L);
-        System.out.println(articles);
+
+        List<Retrait> retraits = retraitService.getRetraitsByUserId(1L);
+        model.addAttribute("retraits", retraits);
+
+        List<Article> articles = articleService.findByVendeurId(authenticatedUser.get().getId());
         model.addAttribute("articles", articles);
+
         return "/userProfil/profile";
     }
 

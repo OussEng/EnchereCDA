@@ -23,4 +23,12 @@ public class RetraitService {
     public Optional<Retrait> getRetraitById(Long id) {
         return retraitDAO.findById(id);
     }
+
+    public void deleteRetrait(Long id){
+        retraitDAO.delete(id);
+    }
+
+    public void updateRetrait( Retrait retrait){
+        retraitDAO.update( retrait);
+    }
 }
