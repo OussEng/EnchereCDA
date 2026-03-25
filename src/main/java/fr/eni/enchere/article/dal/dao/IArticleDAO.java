@@ -25,4 +25,6 @@ public interface IArticleDAO {
     List<Article> findActive();
 
     List<Article> findByUserId(Long id);
+
+    List<Article> findFinished();
 }
