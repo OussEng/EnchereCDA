@@ -102,13 +102,13 @@ public class ArticleController {
     @PostMapping("/create")
     public String createVente(@ModelAttribute("venteForm") @Valid Article article,
                               BindingResult bindingResult, RedirectAttributes redirectAttributes){
-        if (bindingResult.hasErrors()) {
-            Map<String, String> erreurs = new HashMap<>();
-            bindingResult.getFieldErrors()
-                    .forEach(e -> erreurs.put(e.getField(), e.getDefaultMessage()));
-            redirectAttributes.addFlashAttribute("erreurs", erreurs);
-            return "redirect:/encheres";
-        }
+//        if (bindingResult.hasErrors()) {
+//            Map<String, String> erreurs = new HashMap<>();
+//            bindingResult.getFieldErrors()
+//                    .forEach(e -> erreurs.put(e.getField(), e.getDefaultMessage()));
+//            redirectAttributes.addFlashAttribute("erreurs", erreurs);
+//            return "redirect:/encheres/create";
+//        }
 
         articleService.create(article);
         redirectAttributes.addFlashAttribute("success", "Article créer avec succes!");
@@ -116,9 +116,19 @@ public class ArticleController {
         return "redirect:/encheres";
     }
 
-    @PutMapping("/update")
-    public String update(){
-        return "home";
+
+
+
+
+    @GetMapping("/update/{id}")
+    public String update(@PathVariable Long id, Model model){
+
+        Article article = articleService.getById(id).get();
+
+        model.addAttribute("article", article);
+
+
+        return "fragments/article/view-article-modifie.html";
     }
 
     @DeleteMapping("/delete/{id}")

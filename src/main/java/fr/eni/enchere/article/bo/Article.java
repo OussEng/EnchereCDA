@@ -38,25 +38,25 @@ public class Article {
     @PositiveOrZero(message = "Le prix de vente doit être positif ou nul")
     private int prixVente;
 
-    @NotNull(message = "Le vendeur doit être défini")
+
     @Valid
     private User vendeur;
 
     @Valid
     private User acheteur;
 
-    @NotNull(message = "La catégorie doit être définie")
+    @NotNull()
     @Valid
     private Categorie categorie;
 
-    @NotNull(message = "L'état de l'article doit être défini")
+    @NotNull()
     private Etat_Article etatEnchere;
 
     @Valid
     private final List<Enchere> encheres = new ArrayList<>();
 
     @Valid
-    @NotNull(message = "Le lieu de retrait doit être défini")
+    @NotNull()
     private Retrait lieuRetrait;
 
 
