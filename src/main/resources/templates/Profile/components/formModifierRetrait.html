@@ -1,0 +1,53 @@
+<!-- Formulaire modifier retrait -->
+<form th:action="@{'/retraits/modifier/' + ${retrait.id}}"
+      method="POST"
+      class="retrait-form mt-3"
+      style="display:none;"
+      id="formAddRetrait"
+      th:fragment="formModifierRetrait">
+
+  <input type="hidden" name="viewName" value="retraits">
+
+  <div class="mb-2">
+    <label class="form-label fw-semibold">Rue</label>
+    <input type="text" class="form-control"
+           name="rue"
+           th:value="${retrait.getRue()}" required>
+    <span th:if="${erreurs != null and erreurs['rue'] != null}"
+          th:text="${erreurs['rue']}"
+          class="text-danger small"></span>
+  </div>
+
+  <div class="mb-2">
+    <label class="form-label fw-semibold">Code Postal</label>
+    <input type="text" class="form-control"
+           name="codePostal"
+           th:value="${retrait.getCodePostal()}" required>
+    <span th:if="${erreurs != null and erreurs['codePostal'] != null}"
+          th:text="${erreurs['codePostal']}"
+          class="text-danger small"></span>
+  </div>
+
+  <div class="mb-2">
+    <label class="form-label fw-semibold">Ville</label>
+    <input type="text" class="form-control"
+           name="ville"
+           th:value="${retrait.getVille()}" required>
+    <span th:if="${erreurs != null and erreurs['ville'] != null}"
+          th:text="${erreurs['ville']}"
+          class="text-danger small"></span>
+  </div>
+
+  <div class="d-flex gap-2 mt-2">
+    <button type="submit"
+            class="btn btn-primary w-50 rounded-pill fw-semibold">
+      Sauvegarder
+    </button>
+
+    <button type="button"
+            class="btn btn-secondary w-50 rounded-pill fw-semibold"
+            onclick="toggleForm(this, true)">
+      Annuler
+    </button>
+  </div>
+</form>

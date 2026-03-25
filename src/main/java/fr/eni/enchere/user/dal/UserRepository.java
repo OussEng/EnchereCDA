@@ -19,7 +19,7 @@ public class UserRepository {
     }
 
     public List<User> findAll(){
-        return jdbc.query("SELECT * FROM utilisateurs u", userRowMapper);
+        return jdbc.query("SELECT * FROM utilisateurs u WHERE u.role NOT IN('ROLE_SUPER_ADMIN', 'ROLE_ADMIN')", userRowMapper);
     }
 
     public void save(User user) {

@@ -8,13 +8,17 @@ import fr.eni.enchere.article.bo.enums.Etat_Article;
 import fr.eni.enchere.categorie.bll.CategorieService;
 import fr.eni.enchere.retrait.bll.RetraitService;
 import fr.eni.enchere.security.AuthenticatedUser;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -96,9 +100,18 @@ public class ArticleController {
     }
 
     @PostMapping("/create")
-    public String createVente(@ModelAttribute("venteForm") Article article){
+    public String createVente(@ModelAttribute("venteForm") @Valid Article article,
+                              BindingResult bindingResult, RedirectAttributes redirectAttributes){
+        if (bindingResult.hasErrors()) {
+            Map<String, String> erreurs = new HashMap<>();
+            bindingResult.getFieldErrors()
+                    .forEach(e -> erreurs.put(e.getField(), e.getDefaultMessage()));
+            redirectAttributes.addFlashAttribute("erreurs", erreurs);
+            return "redirect:/encheres";
+        }
 
-    articleService.create(article);
+        articleService.create(article);
+        redirectAttributes.addFlashAttribute("success", "Article créer avec succes!");
 
         return "redirect:/encheres";
     }

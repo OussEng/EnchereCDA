@@ -1,0 +1,51 @@
+<div class="modal-body p-4" th:fragment="formAddRetrait">
+  <form th:action="@{/retraits/ajouter}" method="POST">
+
+    <fieldset class="mb-3">
+      <label class="form-label fw-semibold">Rue</label>
+      <input type="text"
+             class="form-control rounded-3"
+             name="rue"
+             placeholder="Ex: 12 rue de la Paix" />
+      <span th:if="${erreurs != null and erreurs['rue'] != null}"
+            th:text="${erreurs['rue']}"
+            class="text-danger small"></span>
+    </fieldset>
+
+    <fieldset class="mb-3">
+      <label class="form-label fw-semibold">Code postal</label>
+      <input type="text"
+             class="form-control rounded-3"
+             name="codePostal"
+             placeholder="Ex: 75001" />
+      <span th:if="${erreurs != null and erreurs['codePostal'] != null}"
+            th:text="${erreurs['codePostal']}"
+            class="text-danger small"></span>
+    </fieldset>
+
+    <fieldset class="mb-3">
+      <label class="form-label fw-semibold">Ville</label>
+      <input type="text"
+             class="form-control rounded-3"
+             name="ville"
+             placeholder="Ex: Paris" />
+      <span th:if="${erreurs != null and erreurs['ville'] != null}"
+            th:text="${erreurs['ville']}"
+            class="text-danger small"></span>
+    </fieldset>
+
+    <!-- Footer boutons -->
+    <div class="d-flex justify-content-end gap-2">
+      <button type="button"
+              class="btn btn-outline-secondary rounded-pill px-4"
+              data-bs-dismiss="modal">
+        Annuler
+      </button>
+      <button type="submit"
+              class="btn btn-primary rounded-pill px-4 fw-semibold">
+        <i class="fas fa-save me-2"></i>Sauvegarder
+      </button>
+    </div>
+
+  </form>
+</div>

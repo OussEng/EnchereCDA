@@ -36,4 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.toggleForm = toggleForm; // <-- exposer pour le HTML
+
+    const ouvrirModal = document.querySelector('main').dataset.ouvrirModal === 'true';
+    if (ouvrirModal) {
+        showSection('retraits', document.querySelector('[onclick*="retraits"]'));
+        new bootstrap.Modal(document.getElementById('modalAjoutAdresse')).show();
+    }
 });
