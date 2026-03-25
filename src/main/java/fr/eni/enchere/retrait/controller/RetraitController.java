@@ -2,9 +2,11 @@ package fr.eni.enchere.retrait.controller;
 
 import fr.eni.enchere.retrait.bll.RetraitService;
 import fr.eni.enchere.retrait.bo.Retrait;
+import fr.eni.enchere.security.AuthenticatedUser;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +20,11 @@ import java.util.Map;
 public class RetraitController {
 
     private final RetraitService retraitService;
+    private final AuthenticatedUser authenticatedUser;
 
-    public RetraitController(RetraitService retraitService) {
+    public RetraitController(RetraitService retraitService, AuthenticatedUser authenticatedUser) {
         this.retraitService = retraitService;
+        this.authenticatedUser = authenticatedUser;
     }
 
     @PostMapping("/supprimer/{id}")
@@ -31,7 +35,7 @@ public class RetraitController {
 
     @PostMapping("/modifier/{id}")
     public String updateRetrait(@PathVariable Long id,
-                                @Valid Retrait retrait,
+                                @Valid @ModelAttribute Retrait retrait,
                                 BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes){
 
@@ -47,6 +51,12 @@ public class RetraitController {
         retrait.setId(id);
         retraitService.updateRetrait(retrait);
 
+        return "redirect:/profile#retraits";
+    }
+
+    @PostMapping("/ajouter")
+    public String createRetrait(@Valid @ModelAttribute Retrait retrait, AuthenticatedUser user){
+        retraitService.createRetrait(retrait, user.get());
         return "redirect:/profile#retraits";
     }
 }

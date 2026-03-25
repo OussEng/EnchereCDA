@@ -9,7 +9,7 @@ import java.util.Optional;
 @Component
 public interface IRetraitDAO {
 
-    void save(Retrait retrait, Long id);
+    void save(Retrait retrait, Long id); // id le l'user
 
     List<Retrait> findByUserId(Long id);
     Optional<Retrait> findById(Long id);

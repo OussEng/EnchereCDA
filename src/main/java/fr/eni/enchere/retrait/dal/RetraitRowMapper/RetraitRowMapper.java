@@ -22,7 +22,6 @@ public class RetraitRowMapper implements RowMapper<Retrait> {
         retrait.setRue(rs.getString("retrait_rue"));
         retrait.setCodePostal(rs.getString("retrait_code_postal"));
 
-
         return retrait;
     }
 }

@@ -6,10 +6,8 @@ public class Retrait {
     private String codePostal;
     private String ville;
 
-
     public Retrait() {
     }
-
 
     public String getVille() {
         return ville;

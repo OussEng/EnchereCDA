@@ -241,11 +241,85 @@
             </div>
           </div>
         <!-- fin Article -->
+
           <!-- Début Retrait -->
           <div id="retraits" style="display:none;">
             <h5 class="fw-bold mt-3 mb-3">
               <i class="fas fa-map-marker-alt me-2 text-primary"></i>Mes adresses de retrait
             </h5>
+            <!-- Bouton pour ouvrir la modal -->
+            <button type="button"
+                    class="btn btn-primary rounded-pill fw-semibold px-4"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalAjoutAdresse">
+              <i class="fas fa-plus me-2"></i>Ajouter une adresse
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="modalAjoutAdresse" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-4 border-0 shadow">
+
+                  <!-- Header -->
+                  <div class="modal-header border-0 pb-0"
+                       style="background: linear-gradient(135deg, #0d6efd 0%, #0a3d91 100%);
+                        border-radius: 1rem 1rem 0 0;">
+                    <h5 class="modal-title text-white fw-bold">
+                      <i class="fas fa-map-marker-alt me-2"></i>Ajouter une adresse
+                    </h5>
+                    <button type="button"
+                            class="btn-close btn-close-white"
+                            data-bs-dismiss="modal"
+                            aria-label="Fermer"></button>
+                  </div>
+
+                  <!-- Body -->
+                  <div class="modal-body p-4">
+                    <form th:action="@{/retraits/ajouter}" method="POST">
+
+                      <fieldset class="mb-3">
+                        <label class="form-label fw-semibold">Rue</label>
+                        <input type="text"
+                               class="form-control rounded-3"
+                               name="rue"
+                               placeholder="Ex: 12 rue de la Paix" />
+                      </fieldset>
+
+                      <fieldset class="mb-3">
+                        <label class="form-label fw-semibold">Code postal</label>
+                        <input type="text"
+                               class="form-control rounded-3"
+                               name="codePostal"
+                               placeholder="Ex: 75001" />
+                      </fieldset>
+
+                      <fieldset class="mb-3">
+                        <label class="form-label fw-semibold">Ville</label>
+                        <input type="text"
+                               class="form-control rounded-3"
+                               name="ville"
+                               placeholder="Ex: Paris" />
+                      </fieldset>
+
+                      <!-- Footer boutons -->
+                      <div class="d-flex justify-content-end gap-2">
+                        <button type="button"
+                                class="btn btn-outline-secondary rounded-pill px-4"
+                                data-bs-dismiss="modal">
+                          Annuler
+                        </button>
+                        <button type="submit"
+                                class="btn btn-primary rounded-pill px-4 fw-semibold">
+                          <i class="fas fa-save me-2"></i>Sauvegarder
+                        </button>
+                      </div>
+
+                    </form>
+                  </div>
+
+                </div>
+              </div>
+            </div>
 
             <div class="row g-3">
               <div class="col-md-6" th:each="retrait : ${retraits}">
@@ -280,7 +354,7 @@
                       </div>
                     </div>
 
-                    <!-- Formulaire -->
+                    <!-- Formulaire modifier retrait -->
                     <form th:action="@{'/retraits/modifier/' + ${retrait.id}}"
                           method="POST"
                           class="retrait-form mt-3"
