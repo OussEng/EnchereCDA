@@ -44,7 +44,8 @@ public class UserRepository {
                 nom = ?,
                 prenom = ?,
                 email = ?,
-                telephone = ?
+                telephone = ?,
+                credit = ?
             WHERE id = ?
             """,
                 user.getPseudo(),
@@ -52,6 +53,7 @@ public class UserRepository {
                 user.getPrenom(),
                 user.getEmail(),
                 user.getTelephone(),
+                user.getCredit(),
                 id
         );
     }
@@ -82,6 +84,10 @@ public class UserRepository {
             SELECT * FROM utilisateurs
             WHERE pseudo = ?         
         """, userRowMapper, pseudo).stream().findFirst();
+    }
+
+    public void updateCredit(User user) {
+        jdbc.update(" UPDATE utilisateurs SET credit = ? WHERE id = ? ", user.getCredit(), user.getId());
     }
 
     public void desactivateAccount(Long userId) {
