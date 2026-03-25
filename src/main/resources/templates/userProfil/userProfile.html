@@ -1,0 +1,18 @@
+<html data-th-replace="~{layout::layout(title=~{::title},content=~{::main})}" lang="eng">
+<title>Profil</title>
+<main class="container py-5">
+  <div class="p-4 mb-5 rounded-4 text-white text-center"
+       style="background: linear-gradient(135deg, #0d6efd 0%, #0a3d91 100%);">
+    <div class="position-relative d-inline-block mb-3">
+      <img src="https://randomuser.me/api/portraits/men/40.jpg"
+           class="rounded-circle border border-4 border-white shadow"
+           style="width: 100px; height: 100px; object-fit: cover;"
+           alt="Photo de profil">
+    </div>
+    <h2 class="fw-bold mb-1" th:text="${user.getPrenom() + ' ' + user.getNom()}">Prénom Nom</h2>
+    <p class="mb-0 opacity-75" th:text="'@' + ${user.getPseudo()}">Pseudo</p>
+    <p class="mb-0 opacity-75" th:text="'Email : ' + ${user.getEmail()}">Email</p>
+    <p class="mb-0 opacity-75" th:text="'Tel : ' + ${user.getTelephone()}">Téléphone</p>
+  </div>
+</main>
+
