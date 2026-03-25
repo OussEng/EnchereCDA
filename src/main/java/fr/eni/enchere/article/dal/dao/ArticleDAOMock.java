@@ -243,4 +243,9 @@ public class ArticleDAOMock implements IArticleDAO {
                 .orElseThrow(() -> new NoSuchElementException("Article introuvable avec l'id : " + id));
         articles.remove(existant);
     }
+
+    @Override
+    public List<Article> getByName(String v) {
+        return List.of();
+    }
 }
