@@ -9,6 +9,22 @@
         <p class="lead mb-0">Découvrez et remportez les meilleures enchères du moment</p>
     </div>
 
+    <!-- Barre de recherche -->
+    <div class="d-flex gap-2 align-items-center mb-5">
+        <form th:action="@{/encheres/search}" method="get" class="d-flex gap-2 flex-grow-1">
+            <input type="text" name="value" id="value"
+                   class="form-control form-control-lg rounded-pill shadow-sm"
+                   placeholder="Rechercher un article" />
+            <button type="submit" class="btn btn-primary btn-lg rounded-pill px-4 text-nowrap">
+                Rechercher
+            </button>
+            <a href="/encheres" class="btn btn-outline-secondary btn-lg rounded-pill px-4 text-nowrap">
+                Annuler
+            </a>
+        </form>
+
+    </div>
+
     <!-- Grille des articles -->
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
         <div class="col" th:each="article: ${articles}">

@@ -26,7 +26,7 @@ public class ArticleController {
     private final RetraitService retraitService;
     private final AuthenticatedUser auth;
 
-    public ArticleController(ArticleService articleService, CategorieService categorieService, RetraitService retraitService, AuthenticatedUser authenticatedUser, AuthenticatedUser auth) {
+    public ArticleController(ArticleService articleService, CategorieService categorieService, RetraitService retraitService, AuthenticatedUser auth) {
         this.articleService = articleService;
         this.categorieService = categorieService;
         this.retraitService = retraitService;
@@ -44,6 +44,18 @@ public class ArticleController {
 
         model.addAttribute("articles", articles);
         return "home";
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam String value, Model model){
+
+        if (!value.isEmpty()){
+            List<Article> articles = articleService.getByFilter(value);
+            model.addAttribute("articles", articles);
+            return "home";
+        } else {
+            return "redirect:/encheres";
+        }
     }
 
     @GetMapping("/{id}")

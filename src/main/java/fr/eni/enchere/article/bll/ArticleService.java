@@ -13,7 +13,6 @@ import fr.eni.enchere.user.bll.UserService;
 import fr.eni.enchere.user.bo.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -68,8 +67,8 @@ public class ArticleService {
         articleDAO.deleteById(id);
     }
 
-    public List<Article> getByFilter(){
-        return articleDAO.findAll();
+    public List<Article> getByFilter(String v){
+        return articleDAO.getByName(v);
     }
 
     @Transactional

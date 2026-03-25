@@ -54,4 +54,9 @@ public class ArticleDAO implements IArticleDAO{
     public void deleteById(Long id) {
 
     }
+
+    @Override
+    public List<Article> getByName(String v) {
+        return articleRepository.findByName(v);
+    }
 }
