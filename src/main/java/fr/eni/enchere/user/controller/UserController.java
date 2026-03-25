@@ -126,6 +126,7 @@ public class UserController {
 
     @GetMapping("/user/{pseudo}")
     public String getUserByPseudo(@Valid @PathVariable String pseudo , Model model){
+        model.addAttribute("articles", articleService.getByUserId(userService.getByPseudo(pseudo).getId()));
         model.addAttribute("user", userService.getByPseudo(pseudo));
         return "userProfil/userProfile";
     }
