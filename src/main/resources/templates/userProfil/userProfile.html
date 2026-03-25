@@ -1,0 +1,72 @@
+<html data-th-replace="~{layout::layout(title=~{::title},content=~{::main})}" lang="eng">
+<title>Profil</title>
+<main class="container py-5">
+  <section>
+    <div class="p-4 mb-5 rounded-4 text-white text-center"
+         style="background: linear-gradient(135deg, #0d6efd 0%, #0a3d91 100%);">
+      <div class="position-relative d-inline-block mb-3">
+        <img src="https://randomuser.me/api/portraits/men/40.jpg"
+             class="rounded-circle border border-4 border-white shadow"
+             style="width: 100px; height: 100px; object-fit: cover;"
+             alt="Photo de profil">
+      </div>
+      <h2 class="fw-bold mb-1" th:text="${user.getPrenom() + ' ' + user.getNom()}">Prénom Nom</h2>
+      <p class="mb-0 opacity-75" th:text="'@' + ${user.getPseudo()}">Pseudo</p>
+      <p class="mb-0 opacity-75" th:text="'Email : ' + ${user.getEmail()}">Email</p>
+      <p class="mb-0 opacity-75" th:text="'Tel : ' + ${user.getTelephone()}">Téléphone</p>
+    </div>
+  </section>
+
+  <section>
+    <!-- Grille des articles -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+      <div class="col" th:each="article: ${articles}">
+        <div class="card h-100 shadow-sm border-0 article-card">
+
+          <!-- Badge catégorie -->
+          <div class="position-relative">
+            <img src="https://placehold.co/400x220/0d6efd/ffffff?text=Article"
+                 class="card-img-top"
+                 style="height: 200px; object-fit: cover;"
+                 alt="Image article">
+            <span class="badge bg-primary position-absolute top-0 end-0 m-2 px-3 py-2 rounded-pill fs-7"
+                  th:text="${article.categorie.getLibelle()}">Catégorie</span>
+          </div>
+
+          <div class="card-body d-flex flex-column">
+            <!-- Nom de l'article -->
+            <h5 class="card-title fw-semibold text-dark mb-3"
+                th:text="${article.nom}">Nom de l'article</h5>
+
+            <!-- Prix de mise à prix -->
+            <div class="mt-auto">
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <small class="text-muted">Mise à prix</small>
+                <span class="fs-5 fw-bold text-primary d-flex align-items-center gap-1">
+                                <img src="/assets/mj.png"
+                                     alt="MAJOU"
+                                     style="width: 22px; height: 22px; object-fit: contain;">
+                                <span th:text="${article.miseAPrix}">0</span>
+                            </span>
+              </div>
+
+              <a th:href="'/encheres/' + ${article.getId()}"
+                 class="btn btn-primary w-100 rounded-pill fw-semibold">
+                🔍 Voir l'enchère
+              </a>
+            </div>
+          </div>
+
+          <!-- Pied de carte -->
+          <div class="card-footer bg-light border-0 text-center">
+            <small th:text="${article.etatEnchere.getLabel()}" class="text-muted"></small>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+</main>
+

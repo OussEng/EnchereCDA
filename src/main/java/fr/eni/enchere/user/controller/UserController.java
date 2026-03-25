@@ -73,8 +73,8 @@ public class UserController {
     @GetMapping("/{id}")
     public String getUserById(@PathVariable Long id, Model model){
         model.addAttribute("message", "Utilisateur récupéré avec succes");
-        model.addAttribute("userById", userService.getById(id));
-        return "/userProfil/profile";
+        model.addAttribute("user", userService.getById(id));
+        return "userProfil/profile";
     }
 
     @PostMapping
@@ -124,9 +124,12 @@ public class UserController {
         return "/userProfil/profile";
     }
 
-    @GetMapping("/recherche/pseudo")
-    public String getUserByPseudo(@Valid @RequestParam String pseudo , Model model){
-        model.addAttribute("userPseudo", userService.getByPseudo(pseudo));
-        return "/userProfil/profile";
+    @GetMapping("/user/{pseudo}")
+    public String getUserByPseudo(@Valid @PathVariable String pseudo , Model model){
+        model.addAttribute("articles", articleService.getByUserId(userService.getByPseudo(pseudo).getId()));
+        model.addAttribute("user", userService.getByPseudo(pseudo));
+        return "userProfil/userProfile";
     }
+
+
 }
