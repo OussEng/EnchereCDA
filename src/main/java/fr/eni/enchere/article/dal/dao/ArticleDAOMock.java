@@ -253,4 +253,14 @@ public class ArticleDAOMock implements IArticleDAO {
     public List<Article> findActive() {
         return List.of();
     }
+
+    @Override
+    public List<Article> findByUserId(Long id) {
+        return List.of();
+    }
+
+    @Override
+    public List<Article> findFinished() {
+        return List.of();
+    }
 }

@@ -23,4 +23,8 @@ public interface IArticleDAO {
     List<Article> getByName(String v);
 
     List<Article> findActive();
+
+    List<Article> findByUserId(Long id);
+
+    List<Article> findFinished();
 }

@@ -64,4 +64,14 @@ public class ArticleDAO implements IArticleDAO{
     public List<Article> findActive() {
         return articleRepository.findActive();
     }
+
+    @Override
+    public List<Article> findByUserId(Long id) {
+        return articleRepository.findByUserId(id);
+    }
+
+    @Override
+    public List<Article> findFinished() {
+        return articleRepository.findFinished();
+    }
 }
