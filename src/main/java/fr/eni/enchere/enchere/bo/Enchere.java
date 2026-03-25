@@ -2,16 +2,28 @@ package fr.eni.enchere.enchere.bo;
 
 import fr.eni.enchere.article.bo.Article;
 import fr.eni.enchere.user.bo.User;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public class Enchere {
 
     private Long id;
+
+    @NotNull(message = "La date de l'enchère est obligatoire")
     private LocalDateTime dateEnchere;
+
+    @Positive(message = "Le montant doit être supérieur à 0")
     private int montant;
+
+    @NotNull(message = "L'article doit être défini")
+    @Valid
     private Article article;
+
+    @NotNull(message = "L'utilisateur doit être défini")
+    @Valid
     private User encherit;
 
     public Enchere() {

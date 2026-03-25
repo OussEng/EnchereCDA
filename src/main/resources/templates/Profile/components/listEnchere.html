@@ -1,0 +1,38 @@
+<div class="col" th:each="enchere : ${user.encheres}" th:fragment="listEnchere">
+  <div class="card h-100 shadow-sm border-0 article-card">
+
+    <!-- Badge catégorie -->
+    <div class="position-relative">
+      <img src="https://placehold.co/400x220/0d6efd/ffffff?text=Enchère"
+           class="card-img-top"
+           style="height: 200px; object-fit: cover;"
+           alt="Image enchère">
+      <span class="badge bg-primary position-absolute top-0 end-0 m-2 px-3 py-2 rounded-pill fs-7"
+            th:text="${enchere.categorie.libelle}">Catégorie</span>
+    </div>
+
+    <div class="card-body d-flex flex-column">
+      <h5 class="card-title fw-semibold text-dark mb-3"
+          th:text="${enchere.nom}">Nom de l'enchère</h5>
+
+      <div class="mt-auto">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <small class="text-muted">Prix actuel</small>
+          <span class="fs-5 fw-bold text-primary d-flex align-items-center gap-1">
+                <img src="/assets/mj.png" alt="MAJOU" style="width: 22px; height: 22px; object-fit: contain;">
+                <span th:text="${enchere.prixActuel}">0</span>
+              </span>
+        </div>
+
+        <a th:href="'/articles/' + ${enchere.id}"
+           class="btn btn-primary w-100 rounded-pill fw-semibold">
+          Voir l'enchère
+        </a>
+      </div>
+    </div>
+
+    <div class="card-footer bg-light border-0 text-center">
+      <small th:text="${enchere.statut}" class="text-muted">Statut</small>
+    </div>
+  </div>
+</div>

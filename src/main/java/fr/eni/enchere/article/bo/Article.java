@@ -5,6 +5,11 @@ import fr.eni.enchere.categorie.bo.Categorie;
 import fr.eni.enchere.enchere.bo.Enchere;
 import fr.eni.enchere.retrait.bo.Retrait;
 import fr.eni.enchere.user.bo.User;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,21 +20,43 @@ import java.util.List;
 public class Article {
 
     private Long id;
+
+    @NotBlank(message = "Le nom ne peut pas être vide")
     private String nom;
+
     private String description;
+
+    @NotNull(message = "La date de début des enchères est obligatoire")
     private LocalDateTime dateDebutEncheres;
+
+    @NotNull(message = "La date de fin des enchères est obligatoire")
     private LocalDateTime dateFinEncheres;
+
+    @Positive(message = "La mise à prix doit être positive")
     private int miseAPrix;
+
+    @PositiveOrZero(message = "Le prix de vente doit être positif ou nul")
     private int prixVente;
 
+    @NotNull(message = "Le vendeur doit être défini")
+    @Valid
     private User vendeur;
+
+    @Valid
     private User acheteur;
 
+    @NotNull(message = "La catégorie doit être définie")
+    @Valid
     private Categorie categorie;
+
+    @NotNull(message = "L'état de l'article doit être défini")
     private Etat_Article etatEnchere;
 
+    @Valid
     private final List<Enchere> encheres = new ArrayList<>();
 
+    @Valid
+    @NotNull(message = "Le lieu de retrait doit être défini")
     private Retrait lieuRetrait;
 
 

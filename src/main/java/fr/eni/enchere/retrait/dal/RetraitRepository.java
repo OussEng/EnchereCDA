@@ -23,7 +23,6 @@ public class RetraitRepository {
     public void save(Retrait retrait, Long id) {
 
         jdbcTemplate.update("INSERT INTO retraits (utilisateur_id, rue,code_postal,ville) VALUES (?, ?, ?, ?)",id, retrait.getRue(), retrait.getCodePostal(),retrait.getVille());
-
     }
 
     public List<Retrait> findByUserId(Long id) {
@@ -33,8 +32,6 @@ public class RetraitRepository {
     public void delete(Long id) {
         jdbcTemplate.update("DELETE FROM retraits WHERE retraits.id = ?", id);
     }
-
-
 
     public void update(Retrait retrait) {
         jdbcTemplate.update("UPDATE retraits SET rue = ?, code_postal = ?, ville = ? WHERE retraits.id = ? ", retrait.getRue(),retrait.getCodePostal(),retrait.getVille(),retrait.getId());

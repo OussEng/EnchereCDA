@@ -2,6 +2,7 @@ package fr.eni.enchere.retrait.bll;
 
 import fr.eni.enchere.retrait.bo.Retrait;
 import fr.eni.enchere.retrait.dal.dao.IRetraitDAO;
+import fr.eni.enchere.user.bo.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,5 +31,9 @@ public class RetraitService {
 
     public void updateRetrait( Retrait retrait){
         retraitDAO.update( retrait);
+    }
+
+    public void createRetrait(Retrait retrait, User user){
+        retraitDAO.save(retrait, user.getId());
     }
 }
