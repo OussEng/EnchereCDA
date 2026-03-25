@@ -36,8 +36,10 @@
             <h1 class="display-6 fw-bold text-dark mb-1" th:text="${article.nom}">Nom de l'article</h1>
             <p class="text-muted mb-4">
                 Vendu par
-                <strong class="text-primary"
-                        th:text="${article.vendeur.nom} + ' ' + ${article.vendeur.prenom}">Vendeur</strong>
+                <a th:href="@{/profile/user/{pseudo}(pseudo=${article.vendeur.pseudo})}" class="text-decoration-none">
+                    <strong class="text-primary"
+                            th:text="${article.vendeur.nom} + ' ' + ${article.vendeur.prenom}">Vendeur</strong>
+                </a>
             </p>
 
             <!-- ─── Bloc prix ──────────────────────────────────────── -->
@@ -154,6 +156,10 @@
                 </ul>
             </div>
             <!-- ─────────────────────────────────────────────────────── -->
+
+            <!-- Afficher les articles vendu par l'utilisateur -->
+
+
 
         </div>
     </div>
