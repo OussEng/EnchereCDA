@@ -2,6 +2,7 @@
 package fr.eni.enchere.article.controller;
 
 import fr.eni.enchere.article.bll.ArticleService;
+import fr.eni.enchere.article.bll.StateHandler;
 import fr.eni.enchere.article.bo.Article;
 import fr.eni.enchere.article.bo.enums.Etat_Article;
 import fr.eni.enchere.categorie.bll.CategorieService;
@@ -25,12 +26,14 @@ public class ArticleController {
     private final CategorieService categorieService;
     private final RetraitService retraitService;
     private final AuthenticatedUser auth;
+    private final StateHandler stateHandler;
 
-    public ArticleController(ArticleService articleService, CategorieService categorieService, RetraitService retraitService, AuthenticatedUser auth) {
+    public ArticleController(ArticleService articleService, CategorieService categorieService, RetraitService retraitService, AuthenticatedUser auth, StateHandler stateHandler) {
         this.articleService = articleService;
         this.categorieService = categorieService;
         this.retraitService = retraitService;
         this.auth = auth;
+        this.stateHandler = stateHandler;
     }
     @GetMapping("")
     public String Redirect(){
@@ -115,18 +118,20 @@ public class ArticleController {
     public String bid(@PathVariable Long id, @RequestParam int amount, RedirectAttributes redirectAttributes) {
 
         Article article = articleService.getById(id).get();
+        stateHandler.handleState(article);
 
-        if (amount > auth.get().getCredit() ){
-            redirectAttributes.addFlashAttribute("error", "Vous n'aves pas assez de credit");
+        if (article.getEtatEnchere() == Etat_Article.TERMINEES){
+            redirectAttributes.addFlashAttribute("warning", "Cette enchère est terminée");
             return "redirect:/encheres/" + id;
         }
+
         if (article.getEtatEnchere() == Etat_Article.CREEE){
             redirectAttributes.addFlashAttribute("warning", "L'enchére n'est pas encore cemmencé");
             return "redirect:/encheres/" + id;
         }
 
-        if (article.getEtatEnchere() == Etat_Article.TERMINEES){
-            redirectAttributes.addFlashAttribute("warning", "Cette enchère est terminée");
+        if (amount > auth.get().getCredit() ){
+            redirectAttributes.addFlashAttribute("error", "Vous n'aves pas assez de credit");
             return "redirect:/encheres/" + id;
         }
 
@@ -144,8 +149,6 @@ public class ArticleController {
         }
 
 
-
-        System.out.println(amount + " " + id);
         return "redirect:/encheres/" + id;
     }
 

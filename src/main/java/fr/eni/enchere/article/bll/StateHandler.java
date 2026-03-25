@@ -36,31 +36,26 @@ public class StateHandler {
         this.userService = userService;
     }
 
-    @Scheduled(fixedRate = 30000)
-    public void handleState(){
 
-        List<Article> articles = articleDAO.findActive();
-
-        for (Article article : articles){
+    public void handleState(Article article){
             if (article.getEtatEnchere() == Etat_Article.CREEE){
-                if (article.getDateDebutEncheres().isEqual(LocalDateTime.now()) || article.getDateDebutEncheres().isAfter(LocalDateTime.now())){
+                if (article.getDateDebutEncheres().isEqual(LocalDateTime.now()) || article.getDateDebutEncheres().isBefore(LocalDateTime.now())){
                     article.setEtatEnchere(Etat_Article.EN_COURS);
                     articleDAO.update(article);
                 }
             }
 
-            if (article.getEtatEnchere() == Etat_Article.EN_COURS){
-                if (article.getDateFinEncheres().isEqual(LocalDateTime.now()) || article.getDateFinEncheres().isAfter(LocalDateTime.now())){
+            else if (article.getEtatEnchere() == Etat_Article.EN_COURS){
+                if (article.getDateFinEncheres().isEqual(LocalDateTime.now()) || article.getDateFinEncheres().isBefore(LocalDateTime.now())){
                     article.setEtatEnchere(Etat_Article.TERMINEES);
                     articleDAO.update(article);
                 }
             }
-
-            System.out.println("idk");
-
-        }
     }
 
-
-
+    @Scheduled(fixedRate = 30000)
+    public void handleStateAll()
+    {
+        articleDAO.findActive().forEach(this::handleState);
+    }
 }
