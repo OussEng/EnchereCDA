@@ -5,11 +5,16 @@ import fr.eni.enchere.article.bo.enums.Etat_Article;
 import fr.eni.enchere.article.dal.dao.IArticleDAO;
 import fr.eni.enchere.categorie.bll.CategorieService;
 import fr.eni.enchere.categorie.bo.Categorie;
+import fr.eni.enchere.enchere.bll.EnchereService;
+import fr.eni.enchere.enchere.bo.Enchere;
 import fr.eni.enchere.retrait.bll.RetraitService;
 import fr.eni.enchere.security.AuthenticatedUser;
+import fr.eni.enchere.user.bll.UserService;
 import fr.eni.enchere.user.bo.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,16 +25,23 @@ public class ArticleService {
     private final CategorieService categorieService;
     private final RetraitService retraitService;
     private final AuthenticatedUser auth;
+    private final EnchereService enchereService;
+    private final UserService userService;
+    private final StateHandler stateHandler;
 
-    public ArticleService(IArticleDAO articleDAO, CategorieService categorieService, RetraitService retraitService, AuthenticatedUser auth) {
+    public ArticleService(IArticleDAO articleDAO, CategorieService categorieService, RetraitService retraitService, AuthenticatedUser auth, EnchereService enchereService, UserService userService, StateHandler stateHandler) {
         this.articleDAO = articleDAO;
         this.categorieService = categorieService;
         this.retraitService = retraitService;
         this.auth = auth;
+        this.enchereService = enchereService;
+        this.userService = userService;
+        this.stateHandler = stateHandler;
     }
 
     public List<Article> getAll(){
-        return articleDAO.findAll();
+        stateHandler.handleState();
+        return articleDAO.findActive();
     }
 
     public void create(Article article){
@@ -43,6 +55,7 @@ public class ArticleService {
     }
 
     public Optional<Article> getById(Long id){
+        stateHandler.handleState();
         return articleDAO.findById(id);
     }
 
@@ -58,8 +71,54 @@ public class ArticleService {
         articleDAO.deleteById(id);
     }
 
-    public List<Article> getByFilter(){
-        return articleDAO.findAll();
+    public List<Article> getByFilter(String v){
+        stateHandler.handleState();
+        return articleDAO.getByName(v);
     }
+
+    @Transactional
+    public void bid(int amount, Article article) {
+        int previousPrice = article.getCurrentPrice();
+        User encherit = auth.get();
+        User lastBidder = article.getCurrentBidder();
+
+        if (lastBidder != null) {
+            lastBidder.setCredit(lastBidder.getCredit() + previousPrice);
+            userService.updateCredit(lastBidder);
+            encherit.setCredit(encherit.getCredit() - amount);
+            userService.updateCredit(encherit);
+        }
+
+
+        Enchere enchere = new Enchere();
+        enchere.setEncherit(encherit);
+        enchere.setDateEnchere(LocalDateTime.now());
+        enchere.setMontant(amount);
+        enchere.setArticle(article);
+
+
+
+
+        enchereService.create(enchere);
+    }
+
+    public void assignAuctionWinner(){
+
+        List<Article> articles = articleDAO.findAll();
+
+        for (Article article : articles) {
+            if (article.getEtatEnchere() == Etat_Article.TERMINEES){
+                article.setAcheteur(article.getCurrentBidder());
+                if (article.getAcheteur() == article.getCurrentBidder()){
+                    article.setEtatEnchere(Etat_Article.EFFECTUE);
+                }
+            }
+
+            articleDAO.update(article);
+        }
+
+
+    }
+
 
 }

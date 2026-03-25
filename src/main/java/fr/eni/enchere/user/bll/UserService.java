@@ -85,4 +85,8 @@ public class UserService {
     public User getByPseudo(String pseudo) {
         return userDAO.getByPseudo(pseudo).orElseThrow(() -> new UserNotFoundException("Utilisateur introuvable."));
     }
+
+    public void updateCredit(User user){
+        userDAO.updateCredit(user);
+    }
 }

@@ -57,4 +57,9 @@ public class UserDAO implements IUserDAO{
     public Optional<User> getByPseudo(String pseudo) {
         return userRepository.findByPseudo(pseudo);
     }
+
+    @Override
+    public void updateCredit(User user) {
+        userRepository.updateCredit(user);
+    }
 }
