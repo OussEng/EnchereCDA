@@ -291,9 +291,11 @@ public class ArticleRepository {
 
     }
 
-    public List<Article> findByName(String v) {
-        return jdbcTemplate.query("""
-            SELECT
+    public List<Article> findByUserId(Long id) {
+
+     return jdbcTemplate.query("""
+            
+             SELECT
                 a.id,
                 a.nom_article,
                 a.description,
@@ -328,7 +330,8 @@ public class ArticleRepository {
             INNER JOIN categories c    ON c.id  = a.categorie_id
             INNER JOIN retraits r      ON r.id  = a.lieu_retrait_id
             LEFT JOIN encheres e ON e.article_id = a.id
-            WHERE a.nom_article LIKE ? 
-                """,articleRowMapper,"%" + v + "%" );
+            WHERE v.id = ?
+           
+            """, articleRowMapper, id);
     }
 }

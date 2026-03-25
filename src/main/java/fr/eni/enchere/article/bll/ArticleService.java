@@ -40,7 +40,8 @@ public class ArticleService {
     }
 
     public List<Article> getAll(){
-        stateHandler.handleState();
+
+        stateHandler.handleStateAll();
         return articleDAO.findActive();
     }
 
@@ -55,7 +56,11 @@ public class ArticleService {
     }
 
     public Optional<Article> getById(Long id){
-        stateHandler.handleState();
+
+        stateHandler.handleStateAll();
+
+        
+
         return articleDAO.findById(id);
     }
 
@@ -72,7 +77,8 @@ public class ArticleService {
     }
 
     public List<Article> getByFilter(String v){
-        stateHandler.handleState();
+
+        stateHandler.handleStateAll();
         return articleDAO.getByName(v);
     }
 
@@ -117,6 +123,14 @@ public class ArticleService {
             articleDAO.update(article);
         }
 
+
+    }
+
+
+
+    public List<Article> getByUserId(Long id){
+
+        return articleDAO.findByUserId(id);
 
     }
 
