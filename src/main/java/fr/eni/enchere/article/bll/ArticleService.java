@@ -27,18 +27,21 @@ public class ArticleService {
     private final AuthenticatedUser auth;
     private final EnchereService enchereService;
     private final UserService userService;
+    private final StateHandler stateHandler;
 
-    public ArticleService(IArticleDAO articleDAO, CategorieService categorieService, RetraitService retraitService, AuthenticatedUser auth, EnchereService enchereService, UserService userService) {
+    public ArticleService(IArticleDAO articleDAO, CategorieService categorieService, RetraitService retraitService, AuthenticatedUser auth, EnchereService enchereService, UserService userService, StateHandler stateHandler) {
         this.articleDAO = articleDAO;
         this.categorieService = categorieService;
         this.retraitService = retraitService;
         this.auth = auth;
         this.enchereService = enchereService;
         this.userService = userService;
+        this.stateHandler = stateHandler;
     }
 
     public List<Article> getAll(){
-        return articleDAO.findAll();
+        stateHandler.handleState();
+        return articleDAO.findActive();
     }
 
     public void create(Article article){
@@ -52,6 +55,7 @@ public class ArticleService {
     }
 
     public Optional<Article> getById(Long id){
+        stateHandler.handleState();
         return articleDAO.findById(id);
     }
 
@@ -68,6 +72,7 @@ public class ArticleService {
     }
 
     public List<Article> getByFilter(String v){
+        stateHandler.handleState();
         return articleDAO.getByName(v);
     }
 
@@ -96,4 +101,24 @@ public class ArticleService {
 
         enchereService.create(enchere);
     }
+
+    public void assignAuctionWinner(){
+
+        List<Article> articles = articleDAO.findAll();
+
+        for (Article article : articles) {
+            if (article.getEtatEnchere() == Etat_Article.TERMINEES){
+                article.setAcheteur(article.getCurrentBidder());
+                if (article.getAcheteur() == article.getCurrentBidder()){
+                    article.setEtatEnchere(Etat_Article.EFFECTUE);
+                }
+            }
+
+            articleDAO.update(article);
+        }
+
+
+    }
+
+
 }

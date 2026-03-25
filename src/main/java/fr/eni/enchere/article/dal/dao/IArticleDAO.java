@@ -20,4 +20,6 @@ public interface IArticleDAO {
     void deleteById(Long id);
 
     List<Article> getByName(String v);
+
+    List<Article> findActive();
 }

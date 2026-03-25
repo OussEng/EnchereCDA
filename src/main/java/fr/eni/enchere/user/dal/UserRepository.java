@@ -44,7 +44,7 @@ public class UserRepository {
                 nom = ?,
                 prenom = ?,
                 email = ?,
-                telephone = ?
+                telephone = ?,
                 credit = ?
             WHERE id = ?
             """,
