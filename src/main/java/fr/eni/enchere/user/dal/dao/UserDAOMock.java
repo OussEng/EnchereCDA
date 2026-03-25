@@ -53,6 +53,13 @@ public class UserDAOMock implements IUserDAO{
     }
 
     @Override
+    public void desactivateAccount(Long id) {
+        utilisateurs.stream()
+                .filter(u -> u.getId().equals(id))
+                .forEach(u -> u.setActif(false));
+    }
+
+    @Override
     public List<User> getAll() {
         return utilisateurs;
     }

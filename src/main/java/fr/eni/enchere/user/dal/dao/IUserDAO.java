@@ -10,6 +10,7 @@ public interface IUserDAO {
     void save(User user);
     User update(Long id, User user);
     void deleteById(Long id);
+    void desactivateAccount(Long id);
     List<User> getAll();
     Optional<User> getById(Long id);
     Optional<User> getByEmail(String email);

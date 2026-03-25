@@ -44,8 +44,7 @@ public class UserRepository {
                 nom = ?,
                 prenom = ?,
                 email = ?,
-                telephone = ?,
-                mot_de_passe = ?,
+                telephone = ?
                 credit = ?
             WHERE id = ?
             """,
@@ -54,7 +53,6 @@ public class UserRepository {
                 user.getPrenom(),
                 user.getEmail(),
                 user.getTelephone(),
-                user.getMotDePasse(),
                 user.getCredit(),
                 id
         );
@@ -90,5 +88,10 @@ public class UserRepository {
 
     public void updateCredit(User user) {
         jdbc.update(" UPDATE utilisateurs SET credit = ? WHERE id = ? ", user.getCredit(), user.getId());
+    }
+
+    public void desactivateAccount(Long userId) {
+        String sql = "UPDATE utilisateurs SET actif = false WHERE id = ?";
+        jdbc.update(sql, userId);
     }
 }

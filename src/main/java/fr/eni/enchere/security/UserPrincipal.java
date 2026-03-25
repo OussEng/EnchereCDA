@@ -34,4 +34,9 @@ public class UserPrincipal implements UserDetails {
     public void setUser(User user) {
         this.user = user;
     }
+
+    @Override
+    public boolean isEnabled() {
+        return user.isActif();
+    }
 }

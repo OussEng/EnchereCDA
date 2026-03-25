@@ -34,6 +34,11 @@ public class UserDAO implements IUserDAO{
     }
 
     @Override
+    public void desactivateAccount(Long id) {
+        userRepository.desactivateAccount(id);
+    }
+
+    @Override
     public List<User> getAll() {
         return userRepository.findAll();
     }
