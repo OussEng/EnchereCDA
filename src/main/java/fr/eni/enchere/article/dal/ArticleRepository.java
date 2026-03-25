@@ -318,76 +318,6 @@ public class ArticleRepository {
         return articles;
 
     }
-
-    public List<Article> findFinished() {
-        List<Article> articles =     jdbcTemplate.query("""
-            SELECT
-                a.id,
-                a.nom_article,
-                a.description,
-                a.date_debut_encheres,
-                a.date_fin_encheres,
-                a.mise_a_prix,
-                a.prix_vente,
-                a.etat_vente,
-                v.id          AS vendeur_id,
-                v.pseudo      AS vendeur_pseudo,
-                v.nom         AS vendeur_nom,
-                v.prenom      AS vendeur_prenom,
-                v.email       AS vendeur_email,
-                v.telephone   AS vendeur_telephone,
-                v.credit      AS vendeur_credit,
-                ac.id         AS acheteur_id,
-                ac.pseudo     AS acheteur_pseudo,
-                ac.nom        AS acheteur_nom,
-                ac.prenom     AS acheteur_prenom,
-                ac.email      AS acheteur_email,
-                ac.telephone  AS acheteur_telephone,
-                ac.credit     AS acheteur_credit,
-                c.id          AS categorie_id,
-                c.libelle     AS categorie_libelle,
-                r.id          AS retrait_id,
-                r.rue         AS retrait_rue,
-                r.code_postal AS retrait_code_postal,
-                r.ville       AS retrait_ville
-            FROM articles a
-            INNER JOIN utilisateurs v  ON v.id  = a.vendeur_id
-            LEFT  JOIN utilisateurs ac ON ac.id = a.acheteur_id
-            INNER JOIN categories c    ON c.id  = a.categorie_id
-            INNER JOIN retraits r      ON r.id  = a.lieu_retrait_id
-            LEFT JOIN encheres e ON e.article_id = a.id
-            WHERE a.etat_vente = 'TERMINEES'
-            """, articleRowMapper);
-
-
-        for (Article article : articles) {
-            List<Enchere> encheres = jdbcTemplate.query("""
-                                                          SELECT
-                                                           e.id,
-                                                           e.date_enchere,
-                                                           e.montant,
-                                                           e.utilisateur_id,
-                                                           u.nom         AS utilisateur_nom,
-                                                           u.prenom      AS utilisateur_prenom,
-                                                            u.pseudo      AS utilisateur_pseudo,
-                                                            u.email       AS utilisateur_email,
-                                                             u.telephone   AS utilisateur_telephone,
-                                                          u.credit AS utilisateur_credit
-                                                              FROM encheres e
-                                                             INNER JOIN utilisateurs u ON u.id = e.utilisateur_id
-                                                             WHERE e.article_id = ?
-                                                        """, enchereRowMapper, article.getId());
-
-            for (Enchere enchere : encheres){
-                article.getEncheres().add(enchere);
-            }
-        }
-
-
-        return articles;
-
-    }
-
     public List<Article> findByUserId(Long id) {
 
      return jdbcTemplate.query("""
@@ -432,4 +362,44 @@ public class ArticleRepository {
             """, articleRowMapper, id);
     }
 
+    public List<Article> findByName(String v) {
+        return jdbcTemplate.query("""
+            SELECT
+                a.id,
+                a.nom_article,
+                a.description,
+                a.date_debut_encheres,
+                a.date_fin_encheres,
+                a.mise_a_prix,
+                a.prix_vente,
+                a.etat_vente,
+                v.id          AS vendeur_id,
+                v.pseudo      AS vendeur_pseudo,
+                v.nom         AS vendeur_nom,
+                v.prenom      AS vendeur_prenom,
+                v.email       AS vendeur_email,
+                v.telephone   AS vendeur_telephone,
+                v.credit      AS vendeur_credit,
+                ac.id         AS acheteur_id,
+                ac.pseudo     AS acheteur_pseudo,
+                ac.nom        AS acheteur_nom,
+                ac.prenom     AS acheteur_prenom,
+                ac.email      AS acheteur_email,
+                ac.telephone  AS acheteur_telephone,
+                ac.credit     AS acheteur_credit,
+                c.id          AS categorie_id,
+                c.libelle     AS categorie_libelle,
+                r.id          AS retrait_id,
+                r.rue         AS retrait_rue,
+                r.code_postal AS retrait_code_postal,
+                r.ville       AS retrait_ville
+            FROM articles a
+            INNER JOIN utilisateurs v  ON v.id  = a.vendeur_id
+            LEFT  JOIN utilisateurs ac ON ac.id = a.acheteur_id
+            INNER JOIN categories c    ON c.id  = a.categorie_id
+            INNER JOIN retraits r      ON r.id  = a.lieu_retrait_id
+            LEFT JOIN encheres e ON e.article_id = a.id
+            WHERE a.nom_article LIKE ? 
+                """,articleRowMapper,"%" + v + "%" );
+    }
 }
