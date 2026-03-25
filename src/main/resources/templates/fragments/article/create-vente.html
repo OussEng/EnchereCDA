@@ -30,6 +30,9 @@
                         <input type="text" name="nom" id="nom"
                                placeholder="Ex : Veste en cuir taille M"
                                class="form-control form-control-lg rounded-3">
+                        <span th:if="${erreurs != null and erreurs['nom'] != null}"
+                              th:text="${erreurs['nom']}"
+                              class="text-danger small"></span>
                     </div>
 
                     <!-- Description -->
@@ -49,6 +52,9 @@
                                     th:value="${categorie.id}"
                                     th:text="${categorie.libelle}"></option>
                         </select>
+                        <span th:if="${erreurs != null and erreurs['categorie'] != null}"
+                              th:text="${erreurs['categorie']}"
+                              class="text-danger small"></span>
                     </div>
 
                     <!-- Mise à prix -->
@@ -62,6 +68,9 @@
                                    class="form-control form-control-lg rounded-start-3">
                             <span class="input-group-text bg-primary text-white border-primary rounded-end-3 fw-semibold">MJ</span>
                         </div>
+                        <span th:if="${erreurs != null and erreurs['miseAPrix'] != null}"
+                              th:text="${erreurs['miseAPrix']}"
+                              class="text-danger small"></span>
                     </div>
 
                     <hr class="text-muted my-4">
@@ -73,12 +82,18 @@
                             <input type="datetime-local" name="dateDebutEncheres" id="dateDebutEncheres"
                                    class="form-control rounded-3"
                                    th:value="${#temporals.format(now, 'yyyy-MM-dd''T''HH:mm')}">
+                            <span th:if="${erreurs != null and erreurs['dateDebutEncheres'] != null}"
+                                  th:text="${erreurs['dateDebutEncheres']}"
+                                  class="text-danger small"></span>
                         </div>
                         <div class="col-md-6">
                             <label for="dateFinEncheres" class="form-label fw-semibold text-dark">🏁 Fin de l'enchère</label>
                             <input type="datetime-local" name="dateFinEncheres" id="dateFinEncheres"
                                    class="form-control rounded-3"
                                    th:value="${#temporals.format(nowPlusUnMois, 'yyyy-MM-dd''T''HH:mm')}">
+                            <span th:if="${erreurs != null and erreurs['dateFinEncheres'] != null}"
+                                  th:text="${erreurs['dateFinEncheres']}"
+                                  class="text-danger small"></span>
                         </div>
                     </div>
 

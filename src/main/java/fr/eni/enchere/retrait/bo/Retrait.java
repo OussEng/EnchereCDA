@@ -1,9 +1,19 @@
 package fr.eni.enchere.retrait.bo;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class Retrait {
     private Long id;
+
+    @NotBlank(message = "La rue ne peut pas etre null.")
     private String rue;
+
+    @NotBlank(message = "Le code postal ne peut pas etre null.")
+    @Size(max = 5, message = "Le code postal doit contenir 5 caractères" )
     private String codePostal;
+
+    @NotBlank(message = "La ville ne peut pas etre null.")
     private String ville;
 
     public Retrait() {

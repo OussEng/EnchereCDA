@@ -55,32 +55,20 @@ public class UserController {
         model.addAttribute("user", user);
         //model.addAttribute("enchere", enchereService.)
 
-        List<Retrait> retraits = retraitService.getRetraitsByUserId(1L);
+        List<Retrait> retraits = retraitService.getRetraitsByUserId(authenticatedUser.get().getId());
         model.addAttribute("retraits", retraits);
 
         List<Article> articles = articleService.findByVendeurId(authenticatedUser.get().getId());
         model.addAttribute("articles", articles);
 
-        return "/userProfil/profile";
-    }
-
-    @GetMapping("utilisateurs")
-    public String getAllUsers(Model model){
-        model.addAttribute("users", userService.getAll());
-        return "utilisateur";
+        return "/Profile/pages/profile";
     }
 
     @GetMapping("/{id}")
     public String getUserById(@PathVariable Long id, Model model){
         model.addAttribute("message", "Utilisateur récupéré avec succes");
         model.addAttribute("userById", userService.getById(id));
-        return "/userProfil/profile";
-    }
-
-    @PostMapping
-    public String createUser(@Valid @RequestBody User user, Model model){
-        model.addAttribute("newUser", "Utilisateur créer avec succes");
-        return "/userProfil/profile";
+        return "/Profile/pages/profile";
     }
 
     @PostMapping("/modif")
@@ -99,15 +87,16 @@ public class UserController {
 
         userService.update(user.getId(), user);
 
-        redirectAttributes.addFlashAttribute("succes", "Profil mis à jour avec succès !");
+        redirectAttributes.addFlashAttribute("success", "Profil mis à jour avec succès !");
 
         return "redirect:/profile";
     }
 
     @DeleteMapping("/supprimer-compte/{id}")
-    public String deleteUser(@PathVariable Long id, HttpServletRequest request) {
+    public String deleteUser(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         userService.deleteById(id);
         request.getSession().invalidate();
+        redirectAttributes.addFlashAttribute("success", "Profil supprimé avec succès !");
         return "redirect:/";
     }
 
@@ -119,14 +108,15 @@ public class UserController {
     }
 
     @GetMapping("/recherche/email")
-    public String getUserByEmail(@Valid @RequestParam String email, Model model){
+    public String getUserByEmail(@Valid @RequestParam String email, Model model, RedirectAttributes redirectAttributes){
         model.addAttribute("userEmail", userService.getByEmail(email));
-        return "/userProfil/profile";
+        redirectAttributes.addFlashAttribute("success", "Profil supprimé avec succès !");
+        return "/Profile/pages/profile";
     }
 
     @GetMapping("/recherche/pseudo")
     public String getUserByPseudo(@Valid @RequestParam String pseudo , Model model){
         model.addAttribute("userPseudo", userService.getByPseudo(pseudo));
-        return "/userProfil/profile";
+        return "/Profile/pages/profile";
     }
 }

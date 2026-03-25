@@ -1,0 +1,23 @@
+<div class="modal fade" id="modalAjoutAdresse" tabindex="-1" aria-hidden="true" th:fragment="modalFormAddRetrait">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+
+            <!-- Header -->
+            <div class="modal-header border-0 pb-0"
+                 style="background: linear-gradient(135deg, #0d6efd 0%, #0a3d91 100%);
+                        border-radius: 1rem 1rem 0 0;">
+                <h5 class="modal-title text-white fw-bold">
+                    <i class="fas fa-map-marker-alt me-2"></i>Ajouter une adresse
+                </h5>
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"
+                        aria-label="Fermer"></button>
+            </div>
+
+            <!-- Body -->
+            <div th:replace="~{Profile/components/formAddRetrait :: formAddRetrait}"></div>
+
+        </div>
+    </div>
+</div>

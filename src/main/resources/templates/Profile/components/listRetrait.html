@@ -1,0 +1,37 @@
+<div class="col-md-6" th:each="retrait : ${retraits}" th:fragment="listRetrait">
+  <div class="card rounded-3 shadow-sm border-0 retrait-card h-100">
+    <div class="card-body d-flex flex-column">
+
+      <!-- Affichage -->
+      <div class="retrait-display">
+        <address class="mb-3">
+          <p class="mb-1" th:text="${retrait.getRue()}">Rue exemple</p>
+          <p class="mb-0"
+             th:text="${retrait.getCodePostal()} + ' ' + ${retrait.getVille()}">
+            75000 Paris
+          </p>
+        </address>
+
+        <div class="d-flex gap-2">
+          <button type="button"
+                  class="btn btn-outline-primary w-50 rounded-pill fw-semibold"
+                  onclick="toggleForm(this)">
+            Modifier
+          </button>
+
+          <form th:action="@{'/retraits/supprimer/' + ${retrait.id}}"
+                method="POST"
+                class="w-50">
+            <button type="submit"
+                    class="btn btn-outline-danger w-100 rounded-pill fw-semibold">
+              Supprimer
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Formulaire modifier retrait -->
+      <div th:replace="~{Profile/components/formModifierRetrait :: formModifierRetrait}"></div>
+    </div>
+  </div>
+</div>

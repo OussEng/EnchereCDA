@@ -1,0 +1,18 @@
+<div class="row g-3" th:fragment="btnAddAdress">
+  <div class="col-md-6">
+    <div class="card rounded-3 shadow-sm border-0 h-100 d-flex align-items-center justify-content-center">
+
+      <button type="button"
+              class="btn btn-primary fw-semibold w-100 h-100"
+              data-bs-toggle="modal"
+              data-bs-target="#modalAjoutAdresse"
+              style="min-height: 120px;">
+        <i class="fas fa-plus me-2"></i>Ajouter une adresse
+      </button>
+
+    </div>
+  </div>
+
+  <div th:replace="~{Profile/components/listRetrait :: listRetrait}"></div>
+
+</div>
