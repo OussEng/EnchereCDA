@@ -2,11 +2,10 @@
 package fr.eni.enchere.article.controller;
 
 import fr.eni.enchere.article.bll.ArticleService;
-import fr.eni.enchere.article.bll.StateHandler;
+import fr.eni.enchere.article.bll.ArticleManager;
 import fr.eni.enchere.article.bo.Article;
 import fr.eni.enchere.article.bo.enums.Etat_Article;
 import fr.eni.enchere.categorie.bll.CategorieService;
-import fr.eni.enchere.categorie.bo.Categorie;
 import fr.eni.enchere.retrait.bll.RetraitService;
 import fr.eni.enchere.security.AuthenticatedUser;
 import org.springframework.stereotype.Controller;
@@ -26,14 +25,14 @@ public class ArticleController {
     private final CategorieService categorieService;
     private final RetraitService retraitService;
     private final AuthenticatedUser auth;
-    private final StateHandler stateHandler;
+    private final ArticleManager articleManager;
 
-    public ArticleController(ArticleService articleService, CategorieService categorieService, RetraitService retraitService, AuthenticatedUser auth, StateHandler stateHandler) {
+    public ArticleController(ArticleService articleService, CategorieService categorieService, RetraitService retraitService, AuthenticatedUser auth, ArticleManager articleManager) {
         this.articleService = articleService;
         this.categorieService = categorieService;
         this.retraitService = retraitService;
         this.auth = auth;
-        this.stateHandler = stateHandler;
+        this.articleManager = articleManager;
     }
     @GetMapping("")
     public String Redirect(){
@@ -63,8 +62,9 @@ public class ArticleController {
 
     @GetMapping("/{id}")
     public String detail(@PathVariable Long id, Model model){
-        Optional<Article> article = articleService.getById(id);
-       model.addAttribute("article", article.orElse(null));
+        Article article = articleService.getById(id).get();
+        articleManager.manageAuction(article);
+       model.addAttribute("article", article);
         return "fragments/article/view-article-detail";
     }
 
@@ -118,7 +118,7 @@ public class ArticleController {
     public String bid(@PathVariable Long id, @RequestParam int amount, RedirectAttributes redirectAttributes) {
 
         Article article = articleService.getById(id).get();
-        stateHandler.handleState(article);
+        articleManager.manageAuction(article);
 
         if (article.getEtatEnchere() == Etat_Article.TERMINEES){
             redirectAttributes.addFlashAttribute("warning", "Cette enchère est terminée");

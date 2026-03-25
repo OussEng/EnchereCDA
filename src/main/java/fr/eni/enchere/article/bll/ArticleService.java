@@ -4,7 +4,6 @@ import fr.eni.enchere.article.bo.Article;
 import fr.eni.enchere.article.bo.enums.Etat_Article;
 import fr.eni.enchere.article.dal.dao.IArticleDAO;
 import fr.eni.enchere.categorie.bll.CategorieService;
-import fr.eni.enchere.categorie.bo.Categorie;
 import fr.eni.enchere.enchere.bll.EnchereService;
 import fr.eni.enchere.enchere.bo.Enchere;
 import fr.eni.enchere.retrait.bll.RetraitService;
@@ -27,21 +26,20 @@ public class ArticleService {
     private final AuthenticatedUser auth;
     private final EnchereService enchereService;
     private final UserService userService;
-    private final StateHandler stateHandler;
+    private final ArticleManager articleManager;
 
-    public ArticleService(IArticleDAO articleDAO, CategorieService categorieService, RetraitService retraitService, AuthenticatedUser auth, EnchereService enchereService, UserService userService, StateHandler stateHandler) {
+    public ArticleService(IArticleDAO articleDAO, CategorieService categorieService, RetraitService retraitService, AuthenticatedUser auth, EnchereService enchereService, UserService userService, ArticleManager articleManager) {
         this.articleDAO = articleDAO;
         this.categorieService = categorieService;
         this.retraitService = retraitService;
         this.auth = auth;
         this.enchereService = enchereService;
         this.userService = userService;
-        this.stateHandler = stateHandler;
+        this.articleManager = articleManager;
     }
 
     public List<Article> getAll(){
-
-        stateHandler.handleStateAll();
+        articleManager.manageAllAuctions();
         return articleDAO.findActive();
     }
 
@@ -56,11 +54,6 @@ public class ArticleService {
     }
 
     public Optional<Article> getById(Long id){
-
-        stateHandler.handleStateAll();
-
-        
-
         return articleDAO.findById(id);
     }
 
@@ -77,8 +70,7 @@ public class ArticleService {
     }
 
     public List<Article> getByFilter(String v){
-
-        stateHandler.handleStateAll();
+        articleManager.handleStateAll();
         return articleDAO.getByName(v);
     }
 
@@ -106,24 +98,6 @@ public class ArticleService {
 
 
         enchereService.create(enchere);
-    }
-
-    public void assignAuctionWinner(){
-
-        List<Article> articles = articleDAO.findAll();
-
-        for (Article article : articles) {
-            if (article.getEtatEnchere() == Etat_Article.TERMINEES){
-                article.setAcheteur(article.getCurrentBidder());
-                if (article.getAcheteur() == article.getCurrentBidder()){
-                    article.setEtatEnchere(Etat_Article.EFFECTUE);
-                }
-            }
-
-            articleDAO.update(article);
-        }
-
-
     }
 
 
