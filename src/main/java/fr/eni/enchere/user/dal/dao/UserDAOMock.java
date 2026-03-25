@@ -84,4 +84,9 @@ public class UserDAOMock implements IUserDAO{
                 .filter(user -> user.getPseudo().equals(pseudo))
                 .findFirst();
     }
+
+    @Override
+    public void updateCredit(User user) {
+
+    }
 }

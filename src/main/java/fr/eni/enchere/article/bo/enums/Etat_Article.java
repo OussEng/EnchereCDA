@@ -5,6 +5,7 @@ public enum Etat_Article {
     CREEE("Créée"),
     EN_COURS("En cours"),
     TERMINEES("Terminées"),
+    ANNULEE("Annulée"),
     EFFECTUE("Effectué");
 
     private final String label;
@@ -18,5 +19,5 @@ public enum Etat_Article {
         return label;
     }
 
-    //fromLabel TODO
+    public String getDbValue() { return this.name(); }
 }

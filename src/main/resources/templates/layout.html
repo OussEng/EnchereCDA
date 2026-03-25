@@ -11,6 +11,28 @@
   <div data-th-replace="~{fragments/header :: header}"></div>
 </header>
 
+<div class="position-fixed top-20 start-0 w-100 d-flex justify-content-center mt-3">
+  <div th:if="${error}"
+       class="alert alert-danger alert-dismissible fade show"
+       role="alert">
+    <span th:text="${error}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+  <div th:if="${warning}"
+       class="alert alert-warning alert-dismissible fade show"
+       role="alert">
+    <span th:text="${warning}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <div th:if="${success}"
+       class="alert alert-success alert-dismissible fade show"
+       role="alert">
+    <span th:text="${success}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+</div>
+
 <main data-th-replace="${content}"></main>
 
 <footer>

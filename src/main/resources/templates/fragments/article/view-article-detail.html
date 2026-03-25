@@ -51,7 +51,7 @@
                     <div class="col-4 border-end border-white border-opacity-25 px-2">
                         <small class="d-block opacity-75 mb-1">Prix de départ</small>
                         <div class="d-flex align-items-center justify-content-center gap-1">
-                            <span class="fs-5 fw-semibold" th:text="${article.prixVente}">—</span>
+                            <span class="fs-5 fw-semibold" th:text="${article.getCurrentPrice()}">—</span>
                             <img src="/assets/mj.png" alt="MJ"
                                  style="width:22px;height:22px;object-fit:contain;">
                         </div>
@@ -61,7 +61,7 @@
                     <div class="col-4 border-end border-white border-opacity-25 px-2">
                         <small class="d-block opacity-75 mb-1">Meilleure enchère</small>
                         <div class="d-flex align-items-center justify-content-center gap-1">
-                            <span class="fs-4 fw-bold" th:text="${article.miseAPrix}">—</span>
+                            <span class="fs-4 fw-bold" th:text="${article.getCurrentPrice()}">—</span>
                             <img src="/assets/mj.png" alt="MJ"
                                  style="width:26px;height:26px;object-fit:contain;">
                         </div>
@@ -79,9 +79,10 @@
 
             <!-- Bouton enchérir -->
             <div class="d-grid mb-5">
-                <button class="btn btn-primary btn-lg rounded-pill fw-bold py-3 shadow">
-                    ⚡ Placer une enchère
-                </button>
+                <form th:action="@{/encheres/{id}/encherir(id=${article.id})}" method="post">
+                    <input type="number" name="amount" required>
+                    <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold py-3 shadow">⚡ Placer une enchère</button>
+                </form>
             </div>
 
             <!-- Description -->

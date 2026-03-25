@@ -59,4 +59,14 @@ public class ArticleDAO implements IArticleDAO{
     public List<Article> getByName(String v) {
         return articleRepository.findByName(v);
     }
+
+    @Override
+    public List<Article> findActive() {
+        return articleRepository.findActive();
+    }
+
+    @Override
+    public List<Article> findByUserId(Long id) {
+        return articleRepository.findByUserId(id);
+    }
 }
