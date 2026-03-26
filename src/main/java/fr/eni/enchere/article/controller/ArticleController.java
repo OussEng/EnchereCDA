@@ -66,10 +66,17 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    public String detail(@PathVariable Long id, Model model){
-        Article article = articleService.getById(id).get();
+    public String detail(@PathVariable Long id, Model model) {
+        Optional<Article> optionalArticle = articleService.getById(id);
+
+        if (optionalArticle.isEmpty()) {
+            return "redirect:/404";
+        }
+
+        Article article = optionalArticle.get();
         articleManager.manageAuction(article);
-       model.addAttribute("article", article);
+
+        model.addAttribute("article", article);
         return "fragments/article/view-article-detail";
     }
 

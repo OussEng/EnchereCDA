@@ -1,5 +1,6 @@
 package fr.eni.enchere.user.dal;
 
+import fr.eni.enchere.user.bo.Roles;
 import fr.eni.enchere.user.bo.User;
 import fr.eni.enchere.user.dal.UserRowMapper.UserRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,7 +20,7 @@ public class UserRepository {
     }
 
     public List<User> findAll(){
-        return jdbc.query("SELECT * FROM utilisateurs u WHERE u.role NOT IN('ROLE_SUPER_ADMIN', 'ROLE_ADMIN')", userRowMapper);
+        return jdbc.query("SELECT * FROM utilisateurs u WHERE u.role NOT IN('ROLE_SUPER_ADMIN')", userRowMapper);
     }
 
     public void save(User user) {
@@ -93,5 +94,10 @@ public class UserRepository {
     public void desactivateAccount(Long userId) {
         String sql = "UPDATE utilisateurs SET actif = false WHERE id = ?";
         jdbc.update(sql, userId);
+    }
+
+    public void updateRole(Long id, String role) {
+        String sql = "UPDATE utilisateurs SET role = ? WHERE id = ?";
+        jdbc.update(sql, role, id);
     }
 }

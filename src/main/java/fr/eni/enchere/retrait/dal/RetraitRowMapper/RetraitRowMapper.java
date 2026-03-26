@@ -1,6 +1,5 @@
 package fr.eni.enchere.retrait.dal.RetraitRowMapper;
 
-import fr.eni.enchere.enchere.bo.Enchere;
 import fr.eni.enchere.retrait.bo.Retrait;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;

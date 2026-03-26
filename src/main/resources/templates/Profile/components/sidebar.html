@@ -10,14 +10,11 @@
             <i class="fas fa-box me-2"></i>Mes adresses de retrait
           </a>
 
-          <a class="nav-link rounded-3 fw-semibold" href="#" onclick="showSection('encheres', this)">
-            <i class="fas fa-gavel me-2"></i>Mes enchères
-          </a>
           <a class="nav-link rounded-3 fw-semibold" href="#" onclick="showSection('articles', this)">
             <i class="fas fa-box me-2"></i>Mes articles
           </a>
           <hr>
-          <form th:action="@{/deconection}" method="POST">
+          <form th:action="@{/deconnexion}" method="POST">
             <button type="submit"
                     class="nav-link rounded-3 fw-semibold text-danger w-100 text-start border-0 bg-transparent">
               <i class="fas fa-sign-out-alt me-2"></i>Déconnexion

@@ -401,4 +401,5 @@ public class ArticleRepository {
             WHERE a.nom_article LIKE ? 
                 """,articleRowMapper,"%" + v + "%" );
     }
+
 }

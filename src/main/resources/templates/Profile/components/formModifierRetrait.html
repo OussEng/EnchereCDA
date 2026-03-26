@@ -1,53 +1,61 @@
-<!-- Formulaire modifier retrait -->
-<form th:action="@{'/retraits/modifier/' + ${retrait.id}}"
-      method="POST"
-      class="retrait-form mt-3"
-      style="display:none;"
-      id="formAddRetrait"
-      th:fragment="formModifierRetrait">
+<!-- Modal Modifier -->
+<div class="modal fade" th:fragment="formModifierRetrait" th:id="'modalModifier-' + ${retrait.id}"
+     tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow">
 
-  <input type="hidden" name="viewName" value="retraits">
+      <div class="modal-header border-0 pb-0"
+           style="background: linear-gradient(135deg, #0d6efd 0%, #0a3d91 100%); border-radius: 1rem 1rem 0 0;">
+        <h5 class="modal-title text-white fw-bold">
+          <i class="fas fa-pen me-2"></i>Modifier l'adresse
+        </h5>
+        <button type="button" class="btn-close btn-close-white"
+                data-bs-dismiss="modal"></button>
+      </div>
 
-  <div class="mb-2">
-    <label class="form-label fw-semibold">Rue</label>
-    <input type="text" class="form-control"
-           name="rue"
-           th:value="${retrait.getRue()}" required>
-    <span th:if="${erreurs != null and erreurs['rue'] != null}"
-          th:text="${erreurs['rue']}"
-          class="text-danger small"></span>
+      <div class="modal-body p-4">
+        <form th:action="@{'/retraits/modifier/' + ${retrait.id}}" method="POST">
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">
+              <i class="fas fa-road me-1 text-primary"></i>Rue
+            </label>
+            <input type="text" class="form-control rounded-3"
+                   name="rue" th:value="${retrait.getRue()}" />
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-4">
+              <label class="form-label fw-semibold">
+                <i class="fas fa-mail-bulk me-1 text-primary"></i>Code postal
+              </label>
+              <input type="text" class="form-control rounded-3"
+                     name="codePostal" th:value="${retrait.getCodePostal()}" />
+            </div>
+            <div class="col-8">
+              <label class="form-label fw-semibold">
+                <i class="fas fa-city me-1 text-primary"></i>Ville
+              </label>
+              <input type="text" class="form-control rounded-3"
+                     name="ville" th:value="${retrait.getVille()}" />
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 justify-content-end">
+            <button type="button"
+                    class="btn btn-outline-secondary rounded-pill px-4"
+                    data-bs-dismiss="modal">
+              <i class="fas fa-times me-2"></i>Annuler
+            </button>
+            <button type="submit"
+                    class="btn btn-primary rounded-pill px-4 fw-semibold">
+              <i class="fas fa-save me-2"></i>Sauvegarder
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
   </div>
-
-  <div class="mb-2">
-    <label class="form-label fw-semibold">Code Postal</label>
-    <input type="text" class="form-control"
-           name="codePostal"
-           th:value="${retrait.getCodePostal()}" required>
-    <span th:if="${erreurs != null and erreurs['codePostal'] != null}"
-          th:text="${erreurs['codePostal']}"
-          class="text-danger small"></span>
-  </div>
-
-  <div class="mb-2">
-    <label class="form-label fw-semibold">Ville</label>
-    <input type="text" class="form-control"
-           name="ville"
-           th:value="${retrait.getVille()}" required>
-    <span th:if="${erreurs != null and erreurs['ville'] != null}"
-          th:text="${erreurs['ville']}"
-          class="text-danger small"></span>
-  </div>
-
-  <div class="d-flex gap-2 mt-2">
-    <button type="submit"
-            class="btn btn-primary w-50 rounded-pill fw-semibold">
-      Sauvegarder
-    </button>
-
-    <button type="button"
-            class="btn btn-secondary w-50 rounded-pill fw-semibold"
-            onclick="toggleForm(this, true)">
-      Annuler
-    </button>
-  </div>
-</form>
+</div>
