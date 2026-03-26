@@ -102,7 +102,7 @@ public class ArticleController {
         model.addAttribute("now", now);
         model.addAttribute("nowPlusUnMois", now.plusMonths(1));
 
-        model.addAttribute("retraits", retraitService.getRetraitsByUserId(2L));
+        model.addAttribute("retraits", retraitService.getRetraitsByUserId(auth.get().getId()));
 
         return "fragments/article/create-vente.html";
     }
@@ -187,8 +187,13 @@ public class ArticleController {
         User encherit = userService.getById(auth.get().getId());
         articleManager.manageAuction(article);
 
+        if (article.getEtatEnchere() == Etat_Article.EFFECTUE){
+            redirectAttributes.addFlashAttribute("warning", "Cette enchère est " + article.getEtatEnchere().getLabel());
+            return "redirect:/encheres/" + id;
+        }
+
         if (article.getEtatEnchere() == Etat_Article.TERMINEES){
-            redirectAttributes.addFlashAttribute("warning", "Cette enchère est terminée");
+            redirectAttributes.addFlashAttribute("warning", "Cette enchère est " + article.getEtatEnchere().getLabel());
             return "redirect:/encheres/" + id;
         }
 
@@ -205,6 +210,15 @@ public class ArticleController {
 
         if (amount <= article.getCurrentPrice()){
             redirectAttributes.addFlashAttribute("error", "Le montant d'enchère doit être supérieur à " + article.getCurrentPrice());
+            return "redirect:/encheres/" + id;
+        }
+
+        if (Objects.equals(article.getVendeur().getId(), auth.get().getId())){
+            redirectAttributes.addFlashAttribute("error", "Vous pouvez pas s'encherir sur votre article");
+            return "redirect:/encheres/" + id;
+        }
+        if (article.getCurrentBidder() != null && Objects.equals(article.getCurrentBidder().getId(), auth.get().getId())) {
+            redirectAttributes.addFlashAttribute("warning", "Vous avez déjà enchéri sur cet article, attendez une contre-offre.");
             return "redirect:/encheres/" + id;
         }
 

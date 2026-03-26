@@ -33,14 +33,16 @@ public class UserController {
     private final ArticleService articleService;
     private final EnchereService enchereService;
     private final RetraitService retraitService;
+    private final AuthenticatedUser auth;
 
-    public UserController(AuthenticationManager authenticationManager, UserService userService, AuthenticatedUser authenticatedUser, ArticleService articleService, EnchereService enchereService, RetraitService retraitService) {
+    public UserController(AuthenticationManager authenticationManager, UserService userService, AuthenticatedUser authenticatedUser, ArticleService articleService, EnchereService enchereService, RetraitService retraitService, AuthenticatedUser auth) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.authenticatedUser = authenticatedUser;
         this.articleService = articleService;
         this.enchereService = enchereService;
         this.retraitService = retraitService;
+        this.auth = auth;
     }
 
     @GetMapping
@@ -53,6 +55,9 @@ public class UserController {
 
         List<Article> articles = articleService.getByUserId(user.getId());
         model.addAttribute("articles", articles);
+
+        model.addAttribute("mesArticles", articleService.getBidsByUser(auth.get().getId()));
+        model.addAttribute("currentUser", userService.getById(auth.get().getId()));
 
         return "/Profile/pages/profile";
     }

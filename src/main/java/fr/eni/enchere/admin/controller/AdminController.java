@@ -1,6 +1,8 @@
 package fr.eni.enchere.admin.controller;
 
 import fr.eni.enchere.article.bll.ArticleService;
+import fr.eni.enchere.categorie.bll.CategorieService;
+import fr.eni.enchere.categorie.bo.Categorie;
 import fr.eni.enchere.user.bll.UserService;
 import fr.eni.enchere.user.bo.Roles;
 import fr.eni.enchere.user.bo.User;
@@ -18,10 +20,12 @@ public class AdminController {
 
     private final UserService userService;
     private final ArticleService articleService;
+    private final CategorieService categorieService;
 
-    public AdminController(UserService userService, ArticleService articleService) {
+    public AdminController(UserService userService, ArticleService articleService, CategorieService categorieService) {
         this.userService = userService;
         this.articleService = articleService;
+        this.categorieService = categorieService;
     }
 
     @GetMapping
@@ -29,6 +33,8 @@ public class AdminController {
         model.addAttribute("users", userService.getAll());
         model.addAttribute("userSuperAdmin", userDetails.getUsername());
         model.addAttribute("articles", articleService.getAll());
+        model.addAttribute("categories", categorieService.getAll() );
+        model.addAttribute("newCategorie", new Categorie());
         return "admin/pages/admin";
     }
 
@@ -43,7 +49,7 @@ public class AdminController {
     @DeleteMapping("/supprimer-article/{id}")
     public String delete(@PathVariable Long id){
         articleService.deleteById(id);
-        return "home";
+        return "redirect:/admin";
     }
 
     @PostMapping("/modifier-role/{id}")
@@ -58,7 +64,18 @@ public class AdminController {
     @PostMapping("/supprimer/{id}")
     public String desactivateAccount(@PathVariable Long id, HttpServletRequest request) {
         userService.desactivateAccount(id);
-        request.getSession().invalidate();
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/ajouter-categorie")
+    public String addCategorie(@ModelAttribute Categorie categorie) {
+        categorieService.save(categorie);
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/supprimer-categorie/{id}")
+    public String deleteCategorie(@PathVariable Long id) {
+        categorieService.delete(id);
         return "redirect:/admin";
     }
 

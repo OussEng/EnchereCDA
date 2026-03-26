@@ -129,4 +129,12 @@ public class ArticleService {
         article.setEtatEnchere(Etat_Article.ANNULEE);
         articleDAO.update(article);
     }
+
+    public List<Article> getBidsByUser(Long userId) {
+        return articleDAO.findByBidder(userId);
+    }
+
+    public List<Article> getWonByUser(Long userId) {
+        return articleDAO.findWonByUser(userId);
+    }
 }

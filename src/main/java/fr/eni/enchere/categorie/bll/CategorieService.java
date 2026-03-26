@@ -23,5 +23,13 @@ public class CategorieService {
 
     public Optional<Categorie> getById(Long id) { return categorieDAO.findById(id); }
 
+    public void save(Categorie categorie) {
+        categorieDAO.save(categorie);
+    }
+
+    public void delete(Long id) {
+        categorieDAO.delete(id);
+    }
+
 
 }

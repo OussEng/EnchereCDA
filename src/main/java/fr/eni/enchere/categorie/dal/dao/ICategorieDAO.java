@@ -13,4 +13,9 @@ public interface ICategorieDAO {
 
     Optional<Categorie> findById(Long id);
 
+    void save(Categorie categorie);
+
+    public void delete(Long id);
+
+
 }

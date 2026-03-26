@@ -74,6 +74,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/admin/**").hasRole("SUPER_ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/encheres/").permitAll()
                         .requestMatchers(HttpMethod.GET, "/encheres/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/encheres/**").authenticated()
                         .requestMatchers("/profile/**").authenticated()
@@ -92,7 +93,7 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .deleteCookies("JSESSIONID")
-                        .logoutUrl("/deconection")
+                        .logoutUrl("/logout")
                         .logoutSuccessUrl("/")
                         .permitAll()
                 )

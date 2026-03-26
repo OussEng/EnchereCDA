@@ -27,4 +27,9 @@ public interface IArticleDAO {
     List<Article> findByUserId(Long id);
 
     List<Article> findFinished();
+
+    List<Article> findByBidder(Long id);
+    List<Article> findWonByUser(Long id);
+
+
 }

@@ -29,4 +29,12 @@ public class CategorieRepository {
     public Optional<Categorie> findById(Long id) {
         return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM categories c WHERE c.id = ?", categorieRowMapper, id));
     }
+
+    public void save(Categorie categorie) {
+        jdbcTemplate.update("INSERT INTO categories (libelle) VALUES (?)", categorie.getLibelle());
+    }
+
+    public void delete(Long id) {
+        jdbcTemplate.update("DELETE FROM categories WHERE id = ?", id);
+    }
 }

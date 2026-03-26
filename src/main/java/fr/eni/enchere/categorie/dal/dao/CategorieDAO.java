@@ -27,4 +27,14 @@ public class CategorieDAO implements ICategorieDAO{
     public Optional<Categorie> findById(Long id) {
         return categorieRepository.findById(id);
     }
+
+    @Override
+    public void save(Categorie categorie) {
+        categorieRepository.save(categorie);
+    }
+
+    @Override
+    public void delete(Long id) {
+        categorieRepository.delete(id);
+    }
 }

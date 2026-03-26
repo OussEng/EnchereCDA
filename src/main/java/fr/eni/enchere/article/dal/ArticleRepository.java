@@ -217,7 +217,7 @@ public class ArticleRepository {
             LEFT  JOIN utilisateurs ac ON ac.id = a.acheteur_id
             INNER JOIN categories c    ON c.id  = a.categorie_id
             INNER JOIN retraits r      ON r.id  = a.lieu_retrait_id
-            WHERE a.etat_vente NOT IN ('TERMINEES', 'ANNULEE','EFFECTUE');
+            WHERE a.etat_vente NOT IN ('TERMINEES', 'ANNULEE');
             """, articleRowMapper);
 
 
@@ -402,4 +402,51 @@ public class ArticleRepository {
                 """,articleRowMapper,"%" + v + "%" );
     }
 
+    public void delete(Long id) {
+        jdbcTemplate.update("DELETE FROM articles WHERE id = ?", id);
+    }
+
+    public List<Article> findByBidder(Long userId) {
+        String sql = """
+SELECT DISTINCT 
+    a.*,
+
+    v.nom AS vendeur_nom,
+    v.prenom AS vendeur_prenom,
+    v.pseudo AS vendeur_pseudo,
+    v.email AS vendeur_email,
+    v.telephone AS vendeur_telephone,
+
+    ach.nom AS acheteur_nom,
+    ach.prenom AS acheteur_prenom,
+    ach.pseudo AS acheteur_pseudo,
+
+    c.libelle AS categorie_libelle,
+
+    r.id AS retrait_id,
+    r.rue AS retrait_rue,
+    r.code_postal AS retrait_code_postal,
+    r.ville AS retrait_ville
+
+FROM articles a
+
+JOIN encheres e ON e.article_id = a.id
+
+JOIN utilisateurs v ON a.vendeur_id = v.id
+LEFT JOIN utilisateurs ach ON a.acheteur_id = ach.id
+
+JOIN categories c ON a.categorie_id = c.id
+JOIN retraits r ON a.lieu_retrait_id = r.id
+
+WHERE e.utilisateur_id = ?
+
+ORDER BY a.date_fin_encheres DESC
+""";
+
+        return jdbcTemplate.query(sql, articleRowMapper, userId);
+    }
+
+    public List<Article> findWonByUser(Long id) {
+        return jdbcTemplate.query("SELECT * FROM articles WHERE acheteur_id = ?", articleRowMapper, id);
+    }
 }

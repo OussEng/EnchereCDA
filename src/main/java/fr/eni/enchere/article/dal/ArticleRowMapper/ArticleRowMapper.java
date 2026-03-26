@@ -45,6 +45,9 @@ public class ArticleRowMapper implements RowMapper<Article> {
         if (!rs.wasNull()) {
             User acheteur = new User();
             acheteur.setId(acheteurId);
+            acheteur.setNom(rs.getString("acheteur_nom"));
+            acheteur.setPrenom(rs.getString("acheteur_prenom"));
+            acheteur.setPseudo(rs.getString("acheteur_pseudo"));
             article.setAcheteur(acheteur);
         }
 
