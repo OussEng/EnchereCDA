@@ -4,9 +4,11 @@ import fr.eni.enchere.article.bo.Article;
 import fr.eni.enchere.article.bo.enums.Etat_Article;
 import fr.eni.enchere.article.dal.dao.IArticleDAO;
 import fr.eni.enchere.categorie.bll.CategorieService;
+import fr.eni.enchere.categorie.bo.Categorie;
 import fr.eni.enchere.enchere.bll.EnchereService;
 import fr.eni.enchere.enchere.bo.Enchere;
 import fr.eni.enchere.retrait.bll.RetraitService;
+import fr.eni.enchere.retrait.bo.Retrait;
 import fr.eni.enchere.security.AuthenticatedUser;
 import fr.eni.enchere.user.bll.UserService;
 import fr.eni.enchere.user.bo.User;
@@ -109,4 +111,25 @@ public class ArticleService {
     }
 
 
+    public void updateByid(Long id, Article article) {
+
+        Categorie categorie = categorieService.getById(article.getCategorie().getId()).get();
+        Retrait retrait = retraitService.getRetraitById(article.getLieuRetrait().getId()).get();
+
+
+        article.setId(id);
+        article.setVendeur(auth.get());
+        article.setPrixVente(article.getMiseAPrix());
+        article.setCategorie(categorie);
+        article.setEtatEnchere(Etat_Article.CREEE);
+        article.setLieuRetrait(retrait);
+
+        articleDAO.update(article);
+
+    }
+
+    public void cancel(Article article) {
+        article.setEtatEnchere(Etat_Article.ANNULEE);
+        articleDAO.update(article);
+    }
 }

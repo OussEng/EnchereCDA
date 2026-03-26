@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/encheres")
@@ -120,16 +117,51 @@ public class ArticleController {
 
 
 
-    @GetMapping("/update/{id}")
-    public String update(@PathVariable Long id, Model model){
-
-        Article article = articleService.getById(id).get();
-
-        model.addAttribute("article", article);
+    @GetMapping("/{id}/modifier")
+    public String update(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes){
 
 
-        return "fragments/article/view-article-modifie.html";
+        Optional<Article> article = articleService.getById(id);
+
+        if (article.isPresent()){
+            if (!Objects.equals(article.get().getVendeur().getId(), auth.get().getId())){
+                redirectAttributes.addFlashAttribute("error", "Article n'est pas trouvé sur votre compte");
+                return "redirect:/encheres/";
+            }
+            model.addAttribute("article", article.get());
+            model.addAttribute("categories", categorieService.getAll());
+            model.addAttribute("retraits", retraitService.getRetraitsByUserId(auth.get().getId()));
+            return "fragments/article/view-article-modifie";
+        }
+
+        redirectAttributes.addFlashAttribute("error", "Article n'exist pas");
+
+
+        return "redirect:/encheres/";
     }
+
+
+    @PostMapping("/update/{id}")
+    public String updateArticle(@PathVariable Long id, @ModelAttribute Article article, RedirectAttributes redirectAttributes) {
+
+        Article ar = articleService.getById(id).orElseThrow();
+
+        if (!Objects.equals(ar.getVendeur().getId(), auth.get().getId())) {
+            redirectAttributes.addFlashAttribute("error", "Article n'est pas trouvé sur votre compte");
+            return "redirect:/encheres/";
+        }
+
+        if (ar.getEtatEnchere() != Etat_Article.CREEE) {
+            redirectAttributes.addFlashAttribute("error", "Impossible de modifier cet article car elle est " + ar.getEtatEnchere().getLabel());
+            return "redirect:/encheres/" + id;
+        }
+
+        articleManager.manageAuction(article);
+        articleService.updateByid(id, article);
+        redirectAttributes.addFlashAttribute("success", "L'article a été modifié avec succès");
+        return "redirect:/encheres/" + id;
+    }
+
 
     @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable Long id){
@@ -172,6 +204,26 @@ public class ArticleController {
         }
 
 
+        return "redirect:/encheres/" + id;
+    }
+
+    @PostMapping("/{id}/annuler")
+    public String cancelAuction(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+
+        Article article = articleService.getById(id).get();
+
+        if (!Objects.equals(article.getVendeur().getId(), auth.get().getId())) {
+            redirectAttributes.addFlashAttribute("error", "Vous n'êtes pas le vendeur de cette enchère");
+            return "redirect:/encheres/" + id;
+        }
+
+        if (article.getEtatEnchere() != Etat_Article.CREEE) {
+            redirectAttributes.addFlashAttribute("error", "Cette enchère ne peut plus être annulée");
+            return "redirect:/encheres/" + id;
+        }
+
+        articleService.cancel(article);
+        redirectAttributes.addFlashAttribute("success", "L'enchère a été annulée avec succès");
         return "redirect:/encheres/" + id;
     }
 

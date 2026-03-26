@@ -28,7 +28,7 @@
         <div class="col-lg-8">
             <div class="card border-0 shadow rounded-4 p-4 p-md-5">
 
-                <form th:action="@{/encheres/{id}/modifier(id=${article.id})}"
+                <form th:action="@{/encheres/update/{id}(id=${article.id})}"
                       method="post"
                       th:object="${article}">
 

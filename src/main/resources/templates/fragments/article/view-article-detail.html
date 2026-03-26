@@ -29,7 +29,7 @@
 
 
                 <div class="d-flex gap-2 mt-3"
-                     th:if="${#authentication.name == article.vendeur.pseudo}">
+                     th:if="${article.vendeur.id == #authentication.principal.user.id and article.creee}">
 
                     <a th:href="@{/encheres/{id}/modifier(id=${article.id})}"
                        class="btn btn-outline-primary rounded-pill flex-fill fw-semibold">
@@ -99,10 +99,16 @@
 
 
 
-            <div class="d-grid mb-5">
-                <form th:action="@{/encheres/{id}/encherir(id=${article.id})}" method="post">
-                    <input type="number" name="amount" required>
-                    <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold py-3 shadow">
+
+            <div class="d-grid gap-3 mb-5"
+                 th:if="${article.vendeur.id != #authentication.principal.user.id}">
+                <form th:action="@{/encheres/{id}/encherir(id=${article.id})}" method="post" class="p-4 bg-light rounded-4 shadow-sm">
+                    <div class="mb-3">
+                        <label for="amount" class="form-label fw-semibold">Montant de l'enchère :</label>
+                        <input type="number" class="form-control form-control-lg" id="amount" name="amount" placeholder="Entrez votre enchère" required min="1" step="1">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill fw-bold py-3 shadow-sm">
                         ⚡ Placer une enchère
                     </button>
                 </form>
@@ -203,9 +209,7 @@
                         Retour
                     </button>
                     <form th:action="@{/encheres/{id}/annuler(id=${article.id})}" method="post">
-                        <input type="hidden"
-                               th:name="${_csrf.parameterName}"
-                               th:value="${_csrf.token}">
+
                         <button type="submit" class="btn btn-danger rounded-pill fw-semibold">
                             Confirmer l'annulation
                         </button>

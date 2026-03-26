@@ -182,4 +182,8 @@ public class Article {
                 .map(Enchere::getEncherit)
                 .orElse(null);
     }
+
+    public boolean isCreee() {
+        return this.etatEnchere == Etat_Article.CREEE;
+    }
 }
