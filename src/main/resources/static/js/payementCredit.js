@@ -1,16 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
     const paymentText = document.getElementById('paymentText');
+    const inputMontant = document.getElementById('inputMontant');
     let currentAmount = 0;
     let currentPlan = '';
     let currentMJ = 0;
 
-    // Boutons fixes plans (ex: “Basic”, “Pro”)
     document.querySelectorAll('.payment-btn-plan').forEach(btn => {
         btn.addEventListener('click', () => {
             currentAmount = btn.dataset.amount;
             currentPlan = btn.dataset.plan;
-            currentMJ = 0; // pas de MJ ici
+            currentMJ = 0;
+
+            inputMontant.value = currentAmount;
+
             paymentText.textContent = `Vous allez payer ${currentAmount}€ pour le plan ${currentPlan}.`;
             paymentModal.show();
         });
@@ -26,6 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
         currentAmount = amount;
         currentPlan = 'Custom';
         currentMJ = 0;
+
+        inputMontant.value = currentAmount;
+
         paymentText.textContent = `Vous allez payer ${currentAmount}€ pour le plan personnalisé.`;
         paymentModal.show();
     });
@@ -36,6 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
             currentAmount = btn.dataset.amount;
             currentMJ = btn.dataset.mj;
             currentPlan = '';
+
+            inputMontant.value = currentAmount;
+
             paymentText.textContent = `Vous allez payer ${currentAmount}€ pour obtenir ${currentMJ} MJ.`;
             paymentModal.show();
         });
@@ -51,27 +60,34 @@ document.addEventListener('DOMContentLoaded', () => {
         currentMJ = mj;
         currentAmount = mj * 1; // 1 MJ = 1€
         currentPlan = '';
+
+        inputMontant.value = currentAmount;
+
         paymentText.textContent = `Vous allez payer ${currentAmount.toFixed(2)}€ pour obtenir ${currentMJ} MJ.`;
         paymentModal.show();
     });
 
-    // Formulaire de paiement
     document.getElementById('paymentForm').addEventListener('submit', function(e) {
-        e.preventDefault(); // Empêche l'envoi réel
+        // 1. On empêche l'envoi immédiat pour simuler le chargement
+        e.preventDefault();
 
-        const cardName = document.getElementById('cardName').value;
-        const cardNumber = document.getElementById('cardNumber').value;
-        const expiry = document.getElementById('expiry').value;
-        const cvv = document.getElementById('cvv').value;
+        const form = this;
+        const btnConfirm = document.getElementById('confirmBtn');
+        const btnSpinner = document.getElementById('btnSpinner');
+        const btnText = document.getElementById('btnText');
 
-        // Simulation de paiement
-        paymentModal.hide();
+        // 2. On change l'apparence du bouton (Loading...)
+        btnConfirm.disabled = true; // Évite les doubles clics
+        btnSpinner.classList.remove('d-none'); // Affiche le spinner
+        btnText.textContent = " Traitement en cours...";
 
-        let msg = `Paiement simulé de $${currentAmount.toFixed(2)}`;
-        if (currentMJ > 0) msg += ` pour ${currentMJ} MJ`;
-        if (currentPlan) msg += ` pour le plan ${currentPlan}`;
-        msg += ` réussi!\nCarte utilisée : ${cardName}, ${cardNumber}, Exp: ${expiry}, CVV: ${cvv}`;
+        // 3. On attend 3 secondes (3000ms)
+        setTimeout(() => {
+            // Optionnel : Une petite alerte juste avant l'envoi
+            console.log("Paiement validé par la banque fictive, envoi au serveur...");
 
-        alert(msg);
+            // 4. On envoie enfin le formulaire au Controller Java
+            form.submit();
+        }, 3000);
     });
 });

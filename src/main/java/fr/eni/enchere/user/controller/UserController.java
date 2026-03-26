@@ -58,8 +58,20 @@ public class UserController {
     }
 
     @GetMapping("/credits")
-    public String showCredits(){
+    public String showCredits(@AuthenticationPrincipal UserDetails userDetails,Model model){
+        User user = userService.getByPseudo(userDetails.getUsername());
+        model.addAttribute("user", user);
         return "/Credits/pages/credit";
+    }
+
+    @PostMapping("/ajouter-credits")
+    public String addCredit(@AuthenticationPrincipal UserDetails userDetails,@RequestParam int montant, RedirectAttributes redirectAttributes){
+        User user = userService.getByPseudo(userDetails.getUsername());
+        user.setCredit(user.getCredit() + montant);
+        userService.updateCredit(user);
+
+        redirectAttributes.addFlashAttribute("success", "Achat éffectué avec succes");
+        return "redirect:/profile/credits";
     }
 
 
@@ -69,13 +81,6 @@ public class UserController {
 
         model.addAttribute("user", userService.getById(id));
         return "userProfil/profile";
-    }
-
-    @PostMapping
-    public String createUser(@Valid @RequestBody User user, Model model){
-        model.addAttribute("newUser", "Utilisateur créer avec succes");
-        return "/userProfil/profile";
-
     }
 
     @PostMapping("/modif")

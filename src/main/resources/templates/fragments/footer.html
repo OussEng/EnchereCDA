@@ -1,5 +1,132 @@
 <div th:fragment="footer">
-    <footer></footer>
+    html<div th:fragment="footer" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <footer class="bg-dark text-light mt-5">
+        <div class="container py-5">
+            <div class="row g-4">
+
+                <!-- À propos -->
+                <div class="col-md-4">
+                    <a th:href="@{/}" class="d-flex align-items-center mb-3 text-decoration-none">
+                        <img th:src="@{/assets/logo.png}" alt="EnchèresPro" width="80" class="me-2">
+                    </a>
+                    <p class="text-secondary small">
+                        EnchèresPro est la plateforme de référence pour acheter et vendre aux enchères.
+                        Trouvez des articles uniques et remportez les meilleures offres.
+                    </p>
+                    <!-- Réseaux sociaux -->
+                    <div class="d-flex gap-3 mt-3">
+                        <a href="#" class="text-secondary fs-5 text-decoration-none">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-secondary fs-5 text-decoration-none">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-secondary fs-5 text-decoration-none">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-secondary fs-5 text-decoration-none">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="col-md-2 offset-md-1">
+                    <h6 class="text-white fw-semibold mb-3">
+                        <i class="fas fa-compass me-2 text-primary"></i>Navigation
+                    </h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a th:href="@{/}" class="text-secondary text-decoration-none small">
+                                <i class="fas fa-home me-2"></i>Accueil
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a th:href="@{/encheres}" class="text-secondary text-decoration-none small">
+                                <i class="fas fa-gavel me-2"></i>Articles
+                            </a>
+                        </li>
+                        <li class="mb-2" sec:authorize="isAuthenticated()">
+                            <a th:href="@{/profile}" class="text-secondary text-decoration-none small">
+                                <i class="fas fa-user me-2"></i>Mon profil
+                            </a>
+                        </li>
+                        <li class="mb-2" sec:authorize="isAuthenticated()">
+                            <a th:href="@{/encheres/create}" class="text-secondary text-decoration-none small">
+                                <i class="fas fa-store me-2"></i>Espace vendeur
+                            </a>
+                        </li>
+                        <li class="mb-2" sec:authorize="isAnonymous()">
+                            <a th:href="@{/auth}" class="text-secondary text-decoration-none small">
+                                <i class="fas fa-sign-in-alt me-2"></i>Connexion
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Liens utiles -->
+                <div class="col-md-2">
+                    <h6 class="text-white fw-semibold mb-3">
+                        <i class="fas fa-link me-2 text-primary"></i>Liens utiles
+                    </h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="#" class="text-secondary text-decoration-none small">
+                                <i class="fas fa-info-circle me-2"></i>À propos
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="text-secondary text-decoration-none small">
+                                <i class="fas fa-envelope me-2"></i>Contact
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="text-secondary text-decoration-none small">
+                                <i class="fas fa-shield-alt me-2"></i>Politique de confidentialité
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="text-secondary text-decoration-none small">
+                                <i class="fas fa-file-contract me-2"></i>CGU
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div class="col-md-3">
+                    <h6 class="text-white fw-semibold mb-3">
+                        <i class="fas fa-headset me-2 text-primary"></i>Contact
+                    </h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2 text-secondary small">
+                            <i class="fas fa-map-marker-alt me-2 text-primary"></i>Paris, France
+                        </li>
+                        <li class="mb-2 text-secondary small">
+                            <i class="fas fa-envelope me-2 text-primary"></i>contact@encherespro.fr
+                        </li>
+                        <li class="mb-2 text-secondary small">
+                            <i class="fas fa-phone me-2 text-primary"></i>+33 1 23 45 67 89
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <hr class="border-secondary mt-4">
+
+            <!-- Copyright -->
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center pt-2">
+                <p class="text-secondary small mb-2 mb-md-0">
+                    &copy; 2024 EnchèresPro — Tous droits réservés.
+                </p>
+                <p class="text-secondary small mb-0">
+                    Fait avec <i class="fas fa-heart text-danger mx-1"></i> par l'équipe EnchèresPro
+                </p>
+            </div>
+
+        </div>
+    </footer>
 </div>
 
 

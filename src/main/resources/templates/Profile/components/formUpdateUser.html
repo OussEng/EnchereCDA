@@ -58,7 +58,7 @@
           <input type="text" class="form-control rounded-start-3" required th:value="${user.getCredit()}" readonly />
           <span class="input-group-text rounded-end-3">
                     <img src="/assets/mj.png" alt="MAJOU" style="width: 20px; height: 20px; object-fit: contain;">
-                    <a href="@{/ajouter-des-credits}"> Ajouter des crédits</a>
+                    <a href="/profile/credits"> Ajouter des crédits</a>
                   </span>
           <span th:if="${erreurs != null and erreurs['credit'] != null}"
                 th:text="${erreurs['credit']}"
