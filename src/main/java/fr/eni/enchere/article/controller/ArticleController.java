@@ -8,6 +8,8 @@ import fr.eni.enchere.article.bo.enums.Etat_Article;
 import fr.eni.enchere.categorie.bll.CategorieService;
 import fr.eni.enchere.retrait.bll.RetraitService;
 import fr.eni.enchere.security.AuthenticatedUser;
+import fr.eni.enchere.user.bll.UserService;
+import fr.eni.enchere.user.bo.User;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,13 +29,15 @@ public class ArticleController {
     private final RetraitService retraitService;
     private final AuthenticatedUser auth;
     private final ArticleManager articleManager;
+    private final UserService userService;
 
-    public ArticleController(ArticleService articleService, CategorieService categorieService, RetraitService retraitService, AuthenticatedUser auth, ArticleManager articleManager) {
+    public ArticleController(ArticleService articleService, CategorieService categorieService, RetraitService retraitService, AuthenticatedUser auth, ArticleManager articleManager, UserService userService) {
         this.articleService = articleService;
         this.categorieService = categorieService;
         this.retraitService = retraitService;
         this.auth = auth;
         this.articleManager = articleManager;
+        this.userService = userService;
     }
     @GetMapping("")
     public String Redirect(){
@@ -173,6 +177,7 @@ public class ArticleController {
     public String bid(@PathVariable Long id, @RequestParam int amount, RedirectAttributes redirectAttributes) {
 
         Article article = articleService.getById(id).get();
+        User encherit = userService.getById(auth.get().getId());
         articleManager.manageAuction(article);
 
         if (article.getEtatEnchere() == Etat_Article.TERMINEES){
@@ -185,7 +190,7 @@ public class ArticleController {
             return "redirect:/encheres/" + id;
         }
 
-        if (amount > auth.get().getCredit() ){
+        if (amount > encherit.getCredit() ){
             redirectAttributes.addFlashAttribute("error", "Vous n'aves pas assez de credit");
             return "redirect:/encheres/" + id;
         }

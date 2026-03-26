@@ -79,25 +79,22 @@ public class ArticleService {
     @Transactional
     public void bid(int amount, Article article) {
         int previousPrice = article.getCurrentPrice();
-        User encherit = auth.get();
-        User lastBidder = article.getCurrentBidder();
+        User encherit = userService.getById(auth.get().getId());
+        User lastBidder = article.getCurrentBidder() != null ? userService.getById(article.getCurrentBidder().getId()) : null;
 
         if (lastBidder != null) {
             lastBidder.setCredit(lastBidder.getCredit() + previousPrice);
             userService.updateCredit(lastBidder);
-            encherit.setCredit(encherit.getCredit() - amount);
-            userService.updateCredit(encherit);
         }
 
+        encherit.setCredit(encherit.getCredit() - amount);
+        userService.updateCredit(encherit);
 
         Enchere enchere = new Enchere();
         enchere.setEncherit(encherit);
         enchere.setDateEnchere(LocalDateTime.now());
         enchere.setMontant(amount);
         enchere.setArticle(article);
-
-
-
 
         enchereService.create(enchere);
     }

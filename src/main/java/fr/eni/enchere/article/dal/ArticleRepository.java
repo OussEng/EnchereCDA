@@ -217,7 +217,6 @@ public class ArticleRepository {
             LEFT  JOIN utilisateurs ac ON ac.id = a.acheteur_id
             INNER JOIN categories c    ON c.id  = a.categorie_id
             INNER JOIN retraits r      ON r.id  = a.lieu_retrait_id
-            LEFT JOIN encheres e ON e.article_id = a.id
             WHERE a.etat_vente NOT IN ('TERMINEES', 'ANNULEE','EFFECTUE');
             """, articleRowMapper);
 
