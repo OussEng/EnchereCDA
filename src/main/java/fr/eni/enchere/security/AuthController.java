@@ -33,7 +33,13 @@ public class AuthController {
 
     @GetMapping
     public String auth(){
-        return "auth";
+        return "Auth/pages/auth";
+    }
+
+    @GetMapping("/mot-de-passe-oublie")
+    public String mdpOublier(RedirectAttributes redirectAttributes){
+        redirectAttributes.addFlashAttribute("success", "Un mail vous à été envoyer, vous pouvez modifier votre mot de passe.");
+        return "Auth/pages/mdpOublier";
     }
 
     @PostMapping("/inscription")
@@ -61,6 +67,8 @@ public class AuthController {
 
             HttpSession session = request.getSession(true);
             session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+
+            redirectAttributes.addFlashAttribute("success", "Inscription réussie.");
 
         } catch (Exception e) {
             System.out.println("Erreur login : " + e.getMessage());

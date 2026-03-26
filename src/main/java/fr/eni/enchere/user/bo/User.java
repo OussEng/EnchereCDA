@@ -11,29 +11,29 @@ import java.util.List;
 public class User {
     private Long id;
 
-    @NotBlank(message = "Le pseudo ne peut pas etre vide." )
+    @NotBlank(message = "Veuillez saisir votre pseudo.")
     private String pseudo;
 
-    @NotBlank(message = "Le prénom ne peut pas etre vide." )
+    @NotBlank(message = "Veuillez saisir votre prénom.")
     private String prenom;
 
-    @NotBlank(message = "Le nom ne peut pas etre vide." )
+    @NotBlank(message = "Veuillez saisir votre nom de famille.")
     private String nom;
 
-    @Email
-    @NotBlank(message = "Le mail ne peut pas etre vide." )
+    @Email(message = "Veuillez saisir une adresse email valide.")
+    @NotBlank(message = "Veuillez saisir votre email.")
     private String email;
 
-    @Size(min = 9, max = 10, message = "Veuillez entrer un numéro de téléphone valide.")
+    @Size(min = 9, max = 10, message = "Veuillez saisir un numéro de téléphone valide (9 à 10 chiffres).")
     private String telephone;
 
-    @NotBlank(message = "Le mot de passe ne peut pas être vide.")
-    @Size(min = 8, message = "Le mot de passe doit contenir au moins 8 caractères.")
+    @NotBlank(message = "Veuillez saisir votre mot de passe.")
+    @Size(min = 8, message = "Votre mot de passe doit contenir au moins 8 caractères.")
     private String motDePasse;
 
     private boolean actif = true;
 
-    @PositiveOrZero(message = "Le crédit ne peut pas etre inférieur à 0.")
+    @PositiveOrZero(message = "Le crédit ne peut pas être inférieur à zéro.")
     private int credit = 0;
 
     private final List<Retrait> adresses = new ArrayList<>();

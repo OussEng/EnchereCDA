@@ -6,18 +6,12 @@ import fr.eni.enchere.enchere.bll.EnchereService;
 import fr.eni.enchere.retrait.bll.RetraitService;
 import fr.eni.enchere.retrait.bo.Retrait;
 import fr.eni.enchere.security.AuthenticatedUser;
-import fr.eni.enchere.security.UserPrincipal;
 import fr.eni.enchere.user.bll.UserService;
 import fr.eni.enchere.user.bo.User;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,19 +44,24 @@ public class UserController {
     }
 
     @GetMapping
-    public String getUser( Model model) {
-        User user = userService.getById(authenticatedUser.get().getId());
+    public String getUser(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        User user = userService.getByPseudo(userDetails.getUsername());
         model.addAttribute("user", user);
-        //model.addAttribute("enchere", enchereService.)
 
-        List<Retrait> retraits = retraitService.getRetraitsByUserId(authenticatedUser.get().getId());
+        List<Retrait> retraits = retraitService.getRetraitsByUserId(user.getId());
         model.addAttribute("retraits", retraits);
 
-        List<Article> articles = articleService.findByVendeurId(authenticatedUser.get().getId());
+        List<Article> articles = articleService.getByUserId(user.getId());
         model.addAttribute("articles", articles);
 
         return "/Profile/pages/profile";
     }
+
+    @GetMapping("/credits")
+    public String showCredits(){
+        return "/Credits/pages/credit";
+    }
+
 
     @GetMapping("/{id}")
     public String getUserById(@PathVariable Long id, Model model){
@@ -98,14 +97,6 @@ public class UserController {
         redirectAttributes.addFlashAttribute("success", "Profil mis à jour avec succès !");
 
         return "redirect:/profile";
-    }
-
-    @DeleteMapping("/supprimer-compte/{id}")
-    public String deleteUser(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        userService.deleteById(id);
-        request.getSession().invalidate();
-        redirectAttributes.addFlashAttribute("success", "Profil supprimé avec succès !");
-        return "redirect:/";
     }
 
     @PostMapping("/supprimer/{id}")

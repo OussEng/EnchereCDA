@@ -3,6 +3,7 @@ package fr.eni.enchere.user.bll;
 import fr.eni.enchere.exeception.AlreadyExistsException;
 import fr.eni.enchere.exeception.UserNotFoundException;
 import fr.eni.enchere.security.AuthenticatedUser;
+import fr.eni.enchere.user.bo.Roles;
 import fr.eni.enchere.user.bo.User;
 import fr.eni.enchere.user.dal.dao.IUserDAO;
 import org.springframework.context.annotation.Profile;
@@ -88,5 +89,9 @@ public class UserService {
 
     public void updateCredit(User user){
         userDAO.updateCredit(user);
+    }
+
+    public void updateRole(Long id, String role){
+        userDAO.updateRole(id, role);
     }
 }

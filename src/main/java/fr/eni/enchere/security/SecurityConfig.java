@@ -8,15 +8,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-
-import javax.sql.DataSource;
 
 @Configuration
 public class SecurityConfig {
@@ -74,10 +70,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/admin/**").hasRole("SUPER_ADMIN")
-                        .requestMatchers(HttpMethod.GET, "encheres/**").authenticated()
+                        // Formulaire et création réservés aux connectés
+                        .requestMatchers(HttpMethod.GET,"/encheres/create").authenticated()
                         .requestMatchers("/profile/**").authenticated()
-                        .requestMatchers("/**").permitAll()
-                        .anyRequest().denyAll()
+                        .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/auth").permitAll()
@@ -91,7 +87,7 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .deleteCookies("JSESSIONID")
-                        .logoutUrl("/deconection")
+                        .logoutUrl("/deconnexion")
                         .logoutSuccessUrl("/")
                         .permitAll()
                 )

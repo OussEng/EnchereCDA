@@ -1,5 +1,6 @@
 package fr.eni.enchere.user.dal.dao;
 
+import fr.eni.enchere.user.bo.Roles;
 import fr.eni.enchere.user.bo.User;
 import org.springframework.context.annotation.Profile;
 import java.util.List;
@@ -16,4 +17,5 @@ public interface IUserDAO {
     Optional<User> getByEmail(String email);
     Optional<User> getByPseudo(String pseudo);
     void updateCredit(User user);
+    void updateRole(Long id, String roles);
 }

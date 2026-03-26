@@ -1,0 +1,35 @@
+<html data-th-replace="~{layout::layout(title=~{::title},content=~{::main})}" lang="fr"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<title>404 — Page introuvable</title>
+<main class="container py-5">
+
+    <div class="p-5 mb-5 rounded-4 text-white text-center d-flex align-items-center justify-content-center flex-column"
+         style="background: linear-gradient(135deg, #0d6efd 0%, #0a3d91 100%); min-height: 60vh;">
+
+        <div class="py-5">
+            <i class="fas fa-map-signs mb-4" style="font-size: 5rem; opacity: 0.8;"></i>
+
+            <h1 class="fw-bold text-white"
+                style="font-size: 8rem; line-height: 1;">404</h1>
+
+            <p class="fs-3 fw-semibold mt-3 mb-2">Page introuvable</p>
+
+            <p class="opacity-75 mb-5">
+                La page que vous cherchez n'existe pas ou a été déplacée.
+            </p>
+
+            <div class="d-flex gap-3 flex-wrap justify-content-center">
+                <a th:href="@{/}"
+                   class="btn btn-light fw-semibold rounded-pill px-4 py-2">
+                    <i class="fas fa-home me-2"></i>Retour à l'accueil
+                </a>
+                <a th:href="@{/auth}"
+                   class="btn btn-outline-light fw-semibold rounded-pill px-4 py-2"
+                   sec:authorize="isAnonymous()">
+                    <i class="fas fa-sign-in-alt me-2"></i>Se connecter
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+</html>
