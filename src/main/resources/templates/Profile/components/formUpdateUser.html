@@ -53,12 +53,12 @@
       </div>
 
       <div class="col-md-6">
-        <label class="form-label fw-semibold">Crédit</label>
+        <label class="form-label fw-semibold">Mes crédits MAJOU</label>
         <div class="input-group">
           <input type="text" class="form-control rounded-start-3" required th:value="${user.getCredit()}" readonly />
           <span class="input-group-text rounded-end-3">
                     <img src="/assets/mj.png" alt="MAJOU" style="width: 20px; height: 20px; object-fit: contain;">
-                    <a href="/profile/credits"> Ajouter des crédits</a>
+                    <a href="/profile/credits"> Ajouter des crédits MAJOU</a>
                   </span>
           <span th:if="${erreurs != null and erreurs['credit'] != null}"
                 th:text="${erreurs['credit']}"
