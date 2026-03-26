@@ -37,7 +37,7 @@ public class AdminController {
         userService.deleteById(id);
         request.getSession().invalidate();
         redirectAttributes.addFlashAttribute("success", "Profil supprimé avec succès !");
-        return "redirect:/";
+        return "redirect:/admin";
     }
 
     @DeleteMapping("/supprimer-article/{id}")
@@ -56,9 +56,8 @@ public class AdminController {
     }
 
     @PostMapping("/supprimer/{id}")
-    public String desactivateAccount(@PathVariable Long id, HttpServletRequest request) {
+    public String desactivateAccount(@PathVariable Long id) {
         userService.desactivateAccount(id);
-        request.getSession().invalidate();
         return "redirect:/admin";
     }
 
