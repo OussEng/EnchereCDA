@@ -1,4 +1,5 @@
-<html data-th-replace="~{layout::layout(title=~{::title},content=~{::main})}" lang="fr">
+<html data-th-replace="~{layout::layout(title=~{::title},content=~{::main})}" lang="fr"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <title th:text="${article.nom}">Détail article</title>
 <main class="container py-5">
 
@@ -79,10 +80,24 @@
 
             <!-- Bouton enchérir -->
             <div class="d-grid mb-5">
-                <form th:action="@{/encheres/{id}/encherir(id=${article.id})}" method="post">
-                    <input type="number" name="amount" required>
-                    <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold py-3 shadow">⚡ Placer une enchère</button>
+                <form th:action="@{/encheres/{id}/encherir(id=${article.id})}"
+                      method="post"
+                      sec:authorize="isAuthenticated()">
+
+                    <div class="input-group mb-3">
+                        <input type="number" name="amount" class="form-control" placeholder="Votre montant" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill fw-bold py-3 shadow">
+                        ⚡ Placer une enchère
+                    </button>
                 </form>
+
+                <div sec:authorize="isAnonymous()">
+                    <a th:href="@{/auth}" class="btn btn-outline-primary btn-lg w-100 rounded-pill fw-bold py-3 shadow">
+                        🔑 Connectez-vous pour enchérir
+                    </a>
+                </div>
             </div>
 
             <!-- Description -->
