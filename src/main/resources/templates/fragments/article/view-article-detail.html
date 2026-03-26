@@ -79,22 +79,23 @@
             <!-- ─────────────────────────────────────────────────────── -->
 
             <!-- Bouton enchérir -->
-            <div class="d-grid mb-5">
-                <form th:action="@{/encheres/{id}/encherir(id=${article.id})}"
-                      method="post"
-                      sec:authorize="isAuthenticated()">
+            <div class="mb-5 text-center"> <form th:action="@{/encheres/{id}/encherir(id=${article.id})}"
+                                                 method="post"
+                                                 sec:authorize="isAuthenticated()"
+                                                 class="d-flex flex-column align-items-center gap-3">
 
-                    <div class="input-group mb-3">
-                        <input type="number" name="amount" class="form-control" placeholder="Votre montant" required>
-                    </div>
+                <div style="max-width: 250px;" class="w-100 text-start">
+                    <label class="form-label fw-bold small text-uppercase">Votre offre</label>
+                    <input type="number" name="amount" class="form-control" placeholder="Montant en MJ" required>
+                </div>
 
-                    <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill fw-bold py-3 shadow">
-                        ⚡ Placer une enchère
-                    </button>
-                </form>
+                <button type="submit" class="btn btn-primary rounded-pill fw-bold px-5 py-2 shadow-sm">
+                    ⚡ Placer une enchère
+                </button>
+            </form>
 
-                <div sec:authorize="isAnonymous()">
-                    <a th:href="@{/auth}" class="btn btn-outline-primary btn-lg w-100 rounded-pill fw-bold py-3 shadow">
+                <div sec:authorize="isAnonymous()" class="d-flex justify-content-center">
+                    <a th:href="@{/auth}" class="btn btn-outline-primary rounded-pill fw-bold px-5 py-2 shadow-sm">
                         🔑 Connectez-vous pour enchérir
                     </a>
                 </div>
