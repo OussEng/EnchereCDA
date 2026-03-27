@@ -1,5 +1,6 @@
 package fr.eni.enchere.user.dal.dao;
 
+import fr.eni.enchere.user.bo.Roles;
 import fr.eni.enchere.user.bo.User;
 import fr.eni.enchere.user.dal.UserRepository;
 import org.springframework.context.annotation.Profile;
@@ -61,5 +62,10 @@ public class UserDAO implements IUserDAO{
     @Override
     public void updateCredit(User user) {
         userRepository.updateCredit(user);
+    }
+
+    @Override
+    public void updateRole(Long id, String roles) {
+        userRepository.updateRole(id, roles);
     }
 }

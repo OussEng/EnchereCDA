@@ -263,4 +263,14 @@ public class ArticleDAOMock implements IArticleDAO {
     public List<Article> findFinished() {
         return List.of();
     }
+
+    @Override
+    public List<Article> findByBidder(Long id) {
+        return List.of();
+    }
+
+    @Override
+    public List<Article> findWonByUser(Long id) {
+        return List.of();
+    }
 }

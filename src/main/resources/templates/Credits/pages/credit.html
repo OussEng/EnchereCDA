@@ -1,0 +1,81 @@
+<html data-th-replace="~{layout::layout(title=~{::title},content=~{::main})}" lang="fr">
+<title>Mes crédits — Enchères</title>
+<main class="container py-5">
+    <div class="container py-5" id="pricing">
+        <!-- Title -->
+        <h2 class="display-5 fw-light text-center mb-2">Achetez des MJ</h2>
+        <p class="fs-5 text-muted text-center mb-5">
+            Ajoutez des crédits à votre compte pour participer aux enchères.
+        </p>
+
+        <!-- Pricing Cards -->
+        <div class="row row-cols-1 row-cols-md-4 mb-3 text-center">
+            <!-- 50 MJ -->
+            <div class="col mb-4">
+                <div class="card shadow-sm rounded-3">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-normal">50 MJ</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">50 <img src="/assets/mj.png" alt="MJ" style="width:24px;height:24px;"></h1>
+                        <p class="text-muted">Prix : 50€</p>
+                        <button class="w-100 btn btn-lg btn-primary payment-btn" data-amount="50" data-mj="50">
+                            Acheter 50 MJ
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 100 MJ -->
+            <div class="col mb-4">
+                <div class="card shadow-sm rounded-3">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-normal">100 MJ</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">100 <img src="/assets/mj.png" alt="MJ" style="width:24px;height:24px;"></h1>
+                        <p class="text-muted">Prix : 100€</p>
+                        <button class="w-100 btn btn-lg btn-primary payment-btn" data-amount="100" data-mj="100">
+                            Acheter 100 MJ
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 500 MJ -->
+            <div class="col mb-4">
+                <div class="card shadow-sm rounded-3 border-primary">
+                    <div class="card-header py-3 text-white bg-primary border-primary">
+                        <h4 class="my-0 fw-normal">500 MJ</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">500 <img src="/assets/mj.png" alt="MJ" style="width:24px;height:24px;"></h1>
+                        <p class="text-muted">Prix : 500€</p>
+                        <button class="w-100 btn btn-lg btn-primary payment-btn" data-amount="500" data-mj="500">
+                            Acheter 500 MJ
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom MJ -->
+            <div class="col mb-4">
+                <div class="card shadow-sm rounded-3">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-normal">Personnalisé</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">💰</h1>
+                        <p>Choisissez votre montant en MJ</p>
+                        <input type="number" class="form-control mb-3" id="customMJ" placeholder="Nombre de MJ" min="1">
+                        <button class="w-100 btn btn-lg btn-primary" id="customMJBtn">Acheter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de paiement -->
+    <div th:replace="~{Credits/components/modalPayementCard :: modalPayementCard}"></div>
+</main>
+</html>

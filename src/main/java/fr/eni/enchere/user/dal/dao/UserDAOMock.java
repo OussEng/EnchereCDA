@@ -89,4 +89,9 @@ public class UserDAOMock implements IUserDAO{
     public void updateCredit(User user) {
 
     }
+
+    @Override
+    public void updateRole(Long id, String roles) {
+
+    }
 }

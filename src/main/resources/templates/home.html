@@ -2,14 +2,14 @@
 <title>Accueil — Enchères</title>
 <main class="container py-5">
 
-    <!-- Hero Banner -->
+
     <div class="p-5 mb-5 rounded-4 text-white text-center"
          style="background: linear-gradient(135deg, #0d6efd 0%, #0a3d91 100%);">
         <h1 class="display-5 fw-bold">🏷️ Bienvenue sur EnchèresPro</h1>
         <p class="lead mb-0">Découvrez et remportez les meilleures enchères du moment</p>
     </div>
 
-    <!-- Barre de recherche -->
+
     <div class="d-flex gap-2 align-items-center mb-5">
         <form th:action="@{/encheres/search}" method="get" class="d-flex gap-2 flex-grow-1">
             <input type="text" name="value" id="value"
@@ -25,46 +25,81 @@
 
     </div>
 
-    <!-- Grille des articles -->
+
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
         <div class="col" th:each="article: ${articles}">
-            <div class="card h-100 shadow-sm border-0 article-card">
+            <div class="card h-100 shadow-sm border-0 article-card"
+                 th:classappend="${article.etatEnchere.name() == 'TERMINEES'} ? 'opacity-50' : ''">
 
-                <!-- Badge catégorie -->
+
                 <div class="position-relative">
                     <img src="https://placehold.co/400x220/0d6efd/ffffff?text=Article"
                          class="card-img-top"
                          style="height: 200px; object-fit: cover;"
+                         th:classappend="${#lists.contains({'CREEE', 'EFFECTUE'}, article.etatEnchere.name())} ? 'opacity-50' : ''"
                          alt="Image article">
-                    <span class="badge bg-primary position-absolute top-0 end-0 m-2 px-3 py-2 rounded-pill fs-7"
+
+                    <span class="badge bg-primary position-absolute top-0 end-0 m-2 px-3 py-2 rounded-pill fs-7 border border-white"
                           th:text="${article.categorie.getLibelle()}">Catégorie</span>
+
+
+                    <span th:if="${article.etatEnchere.name() == 'CREEE'}"
+                          class="badge bg-warning text-dark position-absolute top-0 start-0 m-2 px-3 py-2 rounded-pill fs-7">
+                    À venir
+                </span>
+                    <span th:if="${article.etatEnchere.name() == 'TERMINEES'}"
+                          class="badge bg-secondary position-absolute top-0 start-0 m-2 px-3 py-2 rounded-pill fs-7">
+                    Terminée
+                </span>
                 </div>
 
                 <div class="card-body d-flex flex-column">
-                    <!-- Nom de l'article -->
                     <h5 class="card-title fw-semibold text-dark mb-3"
                         th:text="${article.nom}">Nom de l'article</h5>
 
-                    <!-- Prix de mise à prix -->
                     <div class="mt-auto">
                         <div class="d-flex align-items-center justify-content-between mb-3">
                             <small class="text-muted">Mise à prix</small>
                             <span class="fs-5 fw-bold text-primary d-flex align-items-center gap-1">
-                                <img src="/assets/mj.png"
-                                     alt="MAJOU"
-                                     style="width: 22px; height: 22px; object-fit: contain;">
-                                <span th:text="${article.miseAPrix}">0</span>
-                            </span>
+                            <img src="/assets/mj.png" alt="MAJOU"
+                                 style="width: 22px; height: 22px; object-fit: contain;">
+                            <span th:text="${article.getCurrentPrice()}">0</span>
+                        </span>
                         </div>
 
-                        <a th:href="'/encheres/' + ${article.getId()}"
+
+                        <a th:if="${article.etatEnchere.name() == 'EN_COURS'}"
+                           th:href="'/encheres/' + ${article.getId()}"
                            class="btn btn-primary w-100 rounded-pill fw-semibold">
-                            🔍 Voir l'enchère
+                            Voir l'enchère
                         </a>
+
+                        <a th:if="${article.etatEnchere.name() == 'CREEE'}"
+                           th:href="'/encheres/' + ${article.getId()}"
+                           class="btn btn-outline-warning w-100 rounded-pill fw-semibold">
+                            Bientôt disponible
+                        </a>
+
+                        <a th:if="${article.etatEnchere.name() == 'EFFECTUE'}"
+                           th:href="'/encheres/' + ${article.getId()}"
+                           class="btn btn-outline-secondary w-100 rounded-pill fw-semibold">
+                            Voir le résultat
+                        </a>
+
+                        <span th:if="${article.etatEnchere.name() == 'EFFECTUE'}"
+                              class="position-absolute top-0 start-0 m-2 bg-danger rounded-circle d-flex align-items-center justify-content-center"
+                              style="width: 28px; height: 28px;"
+                              title="Vendu">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                             <path d="M12 2H2v10l9.29 9.29a1 1 0 0 0 1.42 0l8.58-8.58a1 1 0 0 0 0-1.42Z"/>
+                                 <circle cx="7" cy="7" r="1" fill="white" stroke="none"/>
+                             </svg>
+</span>
+
                     </div>
                 </div>
 
-                <!-- Pied de carte -->
+
                 <div class="card-footer bg-light border-0 text-center">
                     <small th:text="${article.etatEnchere.getLabel()}" class="text-muted"></small>
                 </div>

@@ -65,10 +65,22 @@
                                     </a>
                                 </li>
 
+                                <li>
+                                    <a class="dropdown-item" href="/profile/credits">
+                                        <i class="bi bi-person me-2"></i> Mes crédits
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/encheres/create}">
+                                        <i class="bi bi-person me-2"></i> Mon espace vendeur
+                                    </a>
+                                </li>
+
                                 <li><hr class="dropdown-divider"></li>
 
                                 <li>
-                                    <form th:action="@{/deconnexion}" method="post">
+                                    <form th:action="@{/logout}" method="post">
                                         <button class="dropdown-item text-danger" type="submit">
                                             <i class="bi bi-box-arrow-right me-2"></i> Déconnexion
                                         </button>

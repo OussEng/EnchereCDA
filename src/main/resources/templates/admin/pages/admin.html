@@ -46,129 +46,15 @@
           </div>
         </div>
       </div>
-
-      <div class="col-12 col-md-6 col-lg-3">
-        <div class="card border-0 shadow-sm">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
-              <div>
-                <h6 class="text-muted mb-2">Enchères en cours</h6>
-                <h3 class="mb-0">0</h3>
-              </div>
-              <div class="bg-success bg-opacity-10 p-3 rounded">
-                <i class="fas fa-newspaper text-success"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-md-6 col-lg-3">
-        <div class="card border-0 shadow-sm">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
-              <div>
-                <h6 class="text-muted mb-2">Enchères terminer</h6>
-                <h3 class="mb-0">0</h3>
-              </div>
-              <div class="bg-success bg-opacity-10 p-3 rounded">
-                <i class="fas fa-newspaper text-success"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
 
     <!-- Users Table -->
-    <div class="row g-3 mb-4">
-      <div class="col-12">
-        <div class="card border-0 shadow-sm">
-          <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Liste des Utilisateurs</h5>
-            <button class="btn btn-outline-primary btn-sm">
-              <i class="fas fa-user-plus me-1"></i>Ajouter
-            </button>
-          </div>
-          <div class="card-body p-0">
-            <table class="table mb-0">
-              <thead class="table-light">
-              <tr>
-                <th>Id</th>
-                <th>Pseudo</th>
-                <th>Prénom Nom</th>
-                <th>Email</th>
-                <th>Téléphone</th>
-                <th>Crédits</th>
-                <th>Actifs</th>
-                <th>Rôle</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr th:each="user : ${users}">
-                <td th:text="${user.id}">1</td>
-                <td th:text="${user.getPseudo()}">@John123</td>
-                <td th:text="${user.getPrenom()} + ' ' + ${user.getNom()}">John Doe</td>
-                <td th:text="${user.getEmail()}">john@example.com</td>
-                <td th:text="${user.getTelephone()}">0</td>
-                <td th:text="${user.getCredit()} + ' crédits'">0</td>
-                <td class="text-center">
-                  <span class="d-inline-block rounded"
-                        th:classappend="${user.isActif()} ? 'bg-success' : 'bg-danger'"
-                        style="width: 20px; height: 20px;">
-                  </span>
-                </td>
-                <td th:text="${user.getRoles()}">USER</td>
-                <td>
-                  <a th:href="@{'/admin/users/edit/' + ${user.id}}" class="btn btn-sm btn-outline-primary me-1">Modifier</a>
-                  <a th:href="@{'/admin/users/delete/' + ${user.id}}" class="btn btn-sm btn-outline-danger">Supprimer</a>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div th:replace="~{admin/components/userTable :: userTable}"></div>
 
     <!-- Articles Table -->
-    <div class="row g-3">
-      <div class="col-12">
-        <div class="card border-0 shadow-sm">
-          <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Liste des Articles</h5>
-            <a href="/admin/articles/add" class="btn btn-outline-success btn-sm">
-              <i class="fas fa-plus me-1"></i>Ajouter
-            </a>
-          </div>
-          <div class="card-body p-0">
-            <table class="table mb-0">
-              <thead class="table-light">
-              <tr>
-                <th>Id</th>
-                <th>Titre</th>
-                <th>Auteur</th>
-                <th>Date de création</th>
-                <th>Actions</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr th:each="article : ${articles}">
-                <td th:text="${article.getId()}">1</td>
-                <td th:text="${article.getNom()}">Titre Article</td>
-<!--                <td th:text="${#dates.format(article.createdAt,'dd/MM/yyyy')}">25/03/2026</td>-->
-                <td>
-                  <a th:href="@{'/admin/articles/edit/' + ${article.id}}" class="btn btn-sm btn-outline-primary me-1">Modifier</a>
-                  <a th:href="@{'/admin/articles/delete/' + ${article.id}}" class="btn btn-sm btn-outline-danger">Supprimer</a>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div th:replace="~{admin/components/articleTable :: articleTable}"></div>
+
+    <div th:replace="~{admin/components/categorie :: categorieTable}"></div>
 
   </div>
 </main>

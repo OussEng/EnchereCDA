@@ -18,18 +18,6 @@
 
           <div th:replace="~{Profile/components/formUpdateUser :: formUpdateUser}"></div>
 
-          <!-- Section Mes enchères -->
-          <section id="encheres" style="display:none;">
-            <h5 class="fw-bold mt-3 mb-3"><i class="fas fa-gavel me-2 text-primary"></i>
-              Mes enchères
-            </h5>
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
-              <div th:replace="~{Profile/components/listEnchere :: listEnchere}"></div>
-
-            </div>
-          </section>
-        <!-- fin Enchere -->
-
           <!-- Section Mes articles -->
           <section id="articles" style="display:none;">
             <h5 class="fw-bold mt-3 mb-3"><i class="fas fa-box me-2 text-primary"></i>
@@ -52,6 +40,8 @@
 
             <div th:replace="~{Profile/components/btnAddAdress :: btnAddAdress}"></div>
           </section>
+
+          <div th:replace="~{Profile/components/mes-Encheres :: mesEncheres}"></div>
           <!-- fin retraits -->
         </div>
       </div>

@@ -52,7 +52,7 @@ public class ArticleDAO implements IArticleDAO{
 
     @Override
     public void deleteById(Long id) {
-
+        articleRepository.delete(id);
     }
 
     @Override
@@ -73,5 +73,15 @@ public class ArticleDAO implements IArticleDAO{
     @Override
     public List<Article> findFinished() {
         return articleRepository.findFinished();
+    }
+
+    @Override
+    public List<Article> findByBidder(Long id) {
+        return articleRepository.findByBidder(id);
+    }
+
+    @Override
+    public List<Article> findWonByUser(Long id) {
+        return articleRepository.findWonByUser(id);
     }
 }

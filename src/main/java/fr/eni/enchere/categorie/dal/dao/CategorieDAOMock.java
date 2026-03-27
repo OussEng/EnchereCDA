@@ -75,4 +75,14 @@ public class CategorieDAOMock implements ICategorieDAO {
                 .findFirst();
     }
 
+    @Override
+    public void save(Categorie categorie) {
+
+    }
+
+    @Override
+    public void delete(Long id) {
+
+    }
+
 }

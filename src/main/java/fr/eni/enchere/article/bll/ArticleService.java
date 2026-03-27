@@ -4,9 +4,11 @@ import fr.eni.enchere.article.bo.Article;
 import fr.eni.enchere.article.bo.enums.Etat_Article;
 import fr.eni.enchere.article.dal.dao.IArticleDAO;
 import fr.eni.enchere.categorie.bll.CategorieService;
+import fr.eni.enchere.categorie.bo.Categorie;
 import fr.eni.enchere.enchere.bll.EnchereService;
 import fr.eni.enchere.enchere.bo.Enchere;
 import fr.eni.enchere.retrait.bll.RetraitService;
+import fr.eni.enchere.retrait.bo.Retrait;
 import fr.eni.enchere.security.AuthenticatedUser;
 import fr.eni.enchere.user.bll.UserService;
 import fr.eni.enchere.user.bo.User;
@@ -77,25 +79,22 @@ public class ArticleService {
     @Transactional
     public void bid(int amount, Article article) {
         int previousPrice = article.getCurrentPrice();
-        User encherit = auth.get();
-        User lastBidder = article.getCurrentBidder();
+        User encherit = userService.getById(auth.get().getId());
+        User lastBidder = article.getCurrentBidder() != null ? userService.getById(article.getCurrentBidder().getId()) : null;
 
         if (lastBidder != null) {
             lastBidder.setCredit(lastBidder.getCredit() + previousPrice);
             userService.updateCredit(lastBidder);
-            encherit.setCredit(encherit.getCredit() - amount);
-            userService.updateCredit(encherit);
         }
 
+        encherit.setCredit(encherit.getCredit() - amount);
+        userService.updateCredit(encherit);
 
         Enchere enchere = new Enchere();
         enchere.setEncherit(encherit);
         enchere.setDateEnchere(LocalDateTime.now());
         enchere.setMontant(amount);
         enchere.setArticle(article);
-
-
-
 
         enchereService.create(enchere);
     }
@@ -109,4 +108,33 @@ public class ArticleService {
     }
 
 
+    public void updateByid(Long id, Article article) {
+
+        Categorie categorie = categorieService.getById(article.getCategorie().getId()).get();
+        Retrait retrait = retraitService.getRetraitById(article.getLieuRetrait().getId()).get();
+
+
+        article.setId(id);
+        article.setVendeur(auth.get());
+        article.setPrixVente(article.getMiseAPrix());
+        article.setCategorie(categorie);
+        article.setEtatEnchere(Etat_Article.CREEE);
+        article.setLieuRetrait(retrait);
+
+        articleDAO.update(article);
+
+    }
+
+    public void cancel(Article article) {
+        article.setEtatEnchere(Etat_Article.ANNULEE);
+        articleDAO.update(article);
+    }
+
+    public List<Article> getBidsByUser(Long userId) {
+        return articleDAO.findByBidder(userId);
+    }
+
+    public List<Article> getWonByUser(Long userId) {
+        return articleDAO.findWonByUser(userId);
+    }
 }

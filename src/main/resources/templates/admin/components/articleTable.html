@@ -1,0 +1,36 @@
+<div class="row g-3" th:fragment="articleTable">
+  <div class="col-12">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Liste des Articles</h5>
+      </div>
+      <div class="card-body p-0">
+        <table class="table mb-0">
+          <thead class="table-light">
+          <tr>
+            <th>Id</th>
+            <th>Titre</th>
+            <th>Vendeur</th>
+            <th>Date début enchère</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="article : ${articles}">
+            <td th:text="${article.getId()}">1</td>
+            <td th:text="${article.getNom()}">1</td>
+            <td th:text="${article.getVendeur().getPseudo()}">Titre Article</td>
+            <td th:text="${#temporals.format(article.dateDebutEncheres, 'dd/MM/yyyy HH:mm')}"></td>
+            <td>
+              <form th:action="@{'/admin/supprimer-article/' + ${article.id}}" method="post">
+                <input type="hidden" name="_method" value="DELETE"/>
+                <button type="submit" class="btn btn-sm btn-outline-danger">Supprimer</button>
+              </form>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
