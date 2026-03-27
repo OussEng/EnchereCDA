@@ -89,7 +89,8 @@ INSERT INTO utilisateurs (pseudo, nom, prenom, email, telephone, mot_de_passe, c
                                                                                            ('mmartin', 'Martin', 'Marie', 'marie.martin@email.com', '0623456789', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 1200),
                                                                                            ('pleroy', 'Leroy', 'Pierre', 'pierre.leroy@email.com', '0634567890', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 300),
                                                                                            ('sberard', 'Berard', 'Sophie', 'sophie.berard@email.com', '0645678901', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 800),
-                                                                                           ('tmoreau', 'Moreau', 'Thomas', 'thomas.moreau@email.com', '0656789012', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 150);
+                                                                                           ('tmoreau', 'Moreau', 'Thomas', 'thomas.moreau@email.com', '0656789012', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 150),
+                                                                                            ('admin', 'admin', 'admin', 'admin@email.com', '0656789012', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 150);
 
 -- Retraits
 INSERT INTO retraits (utilisateur_id, rue, code_postal, ville) VALUES

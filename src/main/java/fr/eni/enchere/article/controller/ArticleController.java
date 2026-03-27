@@ -121,7 +121,7 @@ public class ArticleController {
         articleService.create(article);
         redirectAttributes.addFlashAttribute("success", "Article créer avec succes!");
 
-        return "redirect:/encheres";
+        return "redirect:/profile";
     }
 
 
