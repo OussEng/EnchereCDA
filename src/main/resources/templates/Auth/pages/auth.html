@@ -1,0 +1,48 @@
+<html data-th-replace="~{layout::layout(title=~{::title},content=~{::main})}" lang="fr">
+<title>Authentification — Enchères</title>
+<main class="container py-5">
+
+  <!-- Hero Banner -->
+  <div class="p-5 mb-5 rounded-4 text-white text-center"
+       style="background: linear-gradient(135deg, #0d6efd 0%, #0a3d91 100%);">
+    <h1 class="display-5 fw-bold">🏷️ EnchèresPro</h1>
+    <p class="lead mb-0">Connectez-vous ou créez un compte pour participer</p>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-4">
+
+          <!-- Tabs -->
+          <ul class="nav nav-pills nav-fill mb-4" id="authTabs">
+            <li class="nav-item">
+              <button class="nav-link active rounded-pill fw-semibold" data-tab="connexion">
+                Connexion
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link rounded-pill fw-semibold" data-tab="inscription">
+                Inscription
+              </button>
+            </li>
+          </ul>
+
+          <!-- Erreur globale -->
+          <div th:if="${erreur != null}"
+               class="alert alert-danger rounded-3"
+               th:text="${erreur}">
+          </div>
+
+          <!-- ===== CONNEXION ===== -->
+          <div th:replace="~{Auth/components/formLogin :: formLogin}"></div>
+
+          <!-- ===== INSCRIPTION ===== -->
+          <div th:replace="~{Auth/components/formRegister :: formRegister}"></div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</html>

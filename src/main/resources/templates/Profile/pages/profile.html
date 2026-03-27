@@ -1,0 +1,51 @@
+<html data-th-replace="~{layout::layout(title=~{::title},content=~{::main})}" lang="fr">
+<title>Mon Profil — Enchères</title>
+<main class="container py-5"
+      th:data-ouvrir-modal="${ouvrirModal != null and ouvrirModal}">
+
+  <!-- User Banner -->
+  <div th:replace="~{Profile/components/userBanner :: userBanner}"></div>
+
+  <div class="row g-4">
+
+    <!-- Sidebar --->
+    <div th:replace="~{Profile/components/sidebar :: sidebar}"></div>
+
+    <!-- Contenu principal -->
+    <div class="col-lg-9">
+      <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
+
+          <div th:replace="~{Profile/components/formUpdateUser :: formUpdateUser}"></div>
+
+          <!-- Section Mes articles -->
+          <section id="articles" style="display:none;">
+            <h5 class="fw-bold mt-3 mb-3"><i class="fas fa-box me-2 text-primary"></i>
+              Mes articles
+            </h5>
+            <!--  List Article -->
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+              <div th:replace="~{Profile/components/listArticle :: listArticle}"></div>
+            </div>
+          </section>
+          <!-- Fin Mes articles -->
+
+          <!-- Début Retrait -->
+          <section id="retraits" style="display:none;" th:data-ouvrir-modal="${ouvrirModal != null and ouvrirModal}">
+            <h5 class="fw-bold mt-3 mb-3">
+              <i class="fas fa-map-marker-alt me-2 text-primary"></i>Mes adresses de retrait
+            </h5>
+            <!-- Modal -->
+            <div th:replace="~{Profile/components/modalFormAddRetrait :: modalFormAddRetrait}"></div>
+
+            <div th:replace="~{Profile/components/btnAddAdress :: btnAddAdress}"></div>
+          </section>
+
+          <div th:replace="~{Profile/components/mes-Encheres :: mesEncheres}"></div>
+          <!-- fin retraits -->
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</html>

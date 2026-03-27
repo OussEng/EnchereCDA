@@ -1,0 +1,249 @@
+<html data-th-replace="~{layout::layout(title=~{::title},content=~{::main})}" lang="fr"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<title th:text="${article.nom}">Détail article</title>
+<main class="container py-5">
+
+
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-primary">Accueil</a></li>
+            <li class="breadcrumb-item active text-muted" th:text="${article.nom}">Article</li>
+        </ol>
+    </nav>
+
+    <div class="row g-5">
+
+
+        <div class="col-lg-5">
+            <div class="sticky-top" style="top: 1.5rem;">
+                <img src="https://placehold.co/600x450/0d6efd/ffffff?text=Photo"
+                     class="img-fluid rounded-4 shadow w-100"
+                     style="object-fit: cover; max-height: 420px;"
+                     alt="Photo de l'article">
+
+                <div class="text-center mt-3">
+                    <span class="badge rounded-pill px-4 py-2 fs-6"
+                          style="background-color: #0a3d91;"
+                          th:text="${article.categorie.getLibelle()}"></span>
+                </div>
+
+
+                <div class="d-flex gap-2 mt-3"
+                     th:if="${article.vendeur.id == #authentication.principal.user.id and article.creee}">
+
+                    <a th:href="@{/encheres/{id}/modifier(id=${article.id})}"
+                       class="btn btn-outline-primary rounded-pill flex-fill fw-semibold">
+                        Modifier
+                    </a>
+
+                    <button type="button"
+                            class="btn btn-outline-danger rounded-pill flex-fill fw-semibold"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalAnnuler">
+                        Annuler
+                    </button>
+                </div>
+
+
+            </div>
+        </div>
+
+
+        <div class="col-lg-7">
+
+
+            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 mb-2"
+                  th:text="${article.categorie.libelle}">Catégorie</span>
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <h1 class="display-6 fw-bold text-dark mb-0" th:text="${article.nom}">Nom de l'article</h1>
+
+                <span th:if="${article.getAcheteur() != null and article.getAcheteur().getId() != null}"
+                      class="bg-success rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                      style="width: 28px; height: 28px;"
+                      title="Article vendu">
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+         fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+  </span>
+            </div>
+            <p class="text-muted mb-4">
+                Vendu par
+                <a th:href="@{/profile/user/{pseudo}(pseudo=${article.vendeur.pseudo})}" class="text-decoration-none">
+                    <strong class="text-primary"
+                            th:text="${article.vendeur.nom} + ' ' + ${article.vendeur.prenom}">Vendeur</strong>
+                </a>
+
+
+                <span th:if="${article.getAcheteur() != null and article.getAcheteur().getId() != null}">
+                    &nbsp;· Acheté par
+                    <a th:href="@{/profile/user/{pseudo}(pseudo=${article.getAcheteur().pseudo})}" class="text-decoration-none">
+                    <strong class="text-success"
+                    th:text="${article.getAcheteur().nom} + ' ' + ${article.getAcheteur().prenom}">Acheteur</strong>
+                    </a>
+                </span>
+            </p>
+
+            <div class="p-4 rounded-4 mb-4 text-white"
+                 style="background: linear-gradient(135deg, #0d6efd, #0a3d91);">
+                <div class="row text-center g-0">
+
+
+                    <div class="col-4 border-end border-white border-opacity-25 px-2">
+                        <small class="d-block opacity-75 mb-1">Prix de départ</small>
+                        <div class="d-flex align-items-center justify-content-center gap-1">
+                            <span class="fs-5 fw-semibold" th:text="${article.getCurrentPrice()}">—</span>
+                            <img src="/assets/mj.png" alt="MJ"
+                                 style="width:22px;height:22px;object-fit:contain;">
+                        </div>
+                    </div>
+
+
+                    <div class="col-4 border-end border-white border-opacity-25 px-2">
+                        <small class="d-block opacity-75 mb-1">Meilleure enchère</small>
+                        <div class="d-flex align-items-center justify-content-center gap-1">
+                            <span class="fs-4 fw-bold" th:text="${article.getCurrentPrice()}">—</span>
+                            <img src="/assets/mj.png" alt="MJ"
+                                 style="width:26px;height:26px;object-fit:contain;">
+                        </div>
+                    </div>
+
+
+                    <div class="col-4 px-2">
+                        <small class="d-block opacity-75 mb-1">Fin des enchères</small>
+                        <span class="fs-6 fw-semibold"
+                              th:text="${#temporals.format(article.dateFinEncheres, 'dd/MM HH:mm')}">—</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="d-grid gap-3 mb-5"
+                 th:if="${article.vendeur.id != #authentication.principal.user.id}">
+                <form th:action="@{/encheres/{id}/encherir(id=${article.id})}" method="post"
+                      class="p-4 bg-light rounded-4 shadow-sm">
+                    <div class="mb-3">
+                        <label for="amount" class="form-label fw-semibold">Montant de l'enchère :</label>
+                        <input type="number" class="form-control form-control-lg" id="amount" name="amount"
+                               placeholder="Entrez votre enchère" required min="1" step="1">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill fw-bold py-3 shadow-sm">
+                        ⚡ Placer une enchère
+                    </button>
+                </form>
+            </div>
+
+
+            <div class="mb-4">
+                <h5 class="fw-bold text-dark mb-2">📄 Description</h5>
+                <p class="text-secondary lh-lg" th:text="${article.description}">
+                    Aucune description disponible.
+                </p>
+            </div>
+
+            <hr class="text-muted">
+
+
+            <div class="mt-4">
+                <h5 class="fw-bold text-dark mb-3">📍 Lieu de retrait</h5>
+                <div class="d-flex align-items-start gap-3 p-3 bg-light rounded-3 border">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width:42px;height:42px;font-size:1.1rem;">🏠
+                    </div>
+                    <address class="mb-0 text-secondary lh-lg">
+                        <span th:text="${article.lieuRetrait.rue}">Rue</span><br>
+                        <span th:text="${article.lieuRetrait.codePostal}">Code postal</span>
+                        <span th:text="${article.lieuRetrait.ville}">Ville</span>
+                    </address>
+                </div>
+            </div>
+
+
+            <div class="mt-5">
+                <h5 class="fw-bold text-dark mb-3">
+                    🏷️ Historique des enchères
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill ms-2"
+                          th:text="${#lists.size(article.encheres)}">0</span>
+                </h5>
+
+
+                <div class="alert alert-light border text-center text-muted py-4"
+                     th:if="${#lists.isEmpty(article.encheres)}">
+                    Aucune enchère placée pour le moment. Soyez le premier !
+                </div>
+
+
+                <ul class="list-group list-group-flush" th:unless="${#lists.isEmpty(article.getSortedEncheres())}">
+                    <li class="list-group-item px-0 py-3 d-flex justify-content-between align-items-center"
+                        th:each="enchere, iter : ${article.getSortedEncheres()}">
+
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="badge rounded-circle d-flex align-items-center justify-content-center fw-bold"
+                                  th:classappend="${iter.first} ? 'text-bg-primary' : 'text-bg-light border text-muted'"
+                                  style="width:32px;height:32px;font-size:.8rem;"
+                                  th:text="${iter.count}">1</span>
+
+                            <div>
+                                <span class="fw-semibold"
+                                      th:classappend="${iter.first} ? 'text-primary' : 'text-dark'"
+                                      th:text="${enchere.encherit.prenom} + ' ' + ${enchere.encherit.nom}">Nom</span>
+                                <small class="d-block text-muted"
+                                       th:text="${#temporals.format(enchere.dateEnchere, 'dd/MM/yyyy à HH:mm')}">date</small>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-2">
+                            <strong th:classappend="${iter.first} ? 'text-primary fs-5' : 'text-muted'"
+                                    th:text="${enchere.montant}">0</strong>
+                            <img src="/assets/mj.png" alt="MJ"
+                                 style="width:22px;height:22px;object-fit:contain;">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- ─────────────────────────────────────────────────────────── -->
+
+            <!-- Afficher les articles vendu par l'utilisateur -->
+
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalAnnuler" tabindex="-1"
+         aria-labelledby="modalAnnulerLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow">
+
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="modalAnnulerLabel">Annuler l'article</h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+
+                <div class="modal-body text-muted">
+                    Êtes-vous sûr de vouloir annuler cet article ?
+                    Cette action est <strong>irréversible</strong>.
+                </div>
+
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button"
+                            class="btn btn-outline-secondary rounded-pill"
+                            data-bs-dismiss="modal">
+                        Retour
+                    </button>
+                    <form th:action="@{/encheres/{id}/annuler(id=${article.id})}" method="post">
+
+                        <button type="submit" class="btn btn-danger rounded-pill fw-semibold">
+                            Confirmer l'annulation
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</main>
+</html>

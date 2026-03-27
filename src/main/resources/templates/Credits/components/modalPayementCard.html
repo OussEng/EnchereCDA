@@ -1,0 +1,50 @@
+<div th:fragment="modalPayementCard" class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Paiement par carte</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form th:action="@{/profile/ajouter-credits}" method="POST" id="paymentForm">
+                <div class="modal-body">
+                    <p id="paymentText"></p>
+
+                    <input type="hidden" name="montant" id="inputMontant">
+
+                    <!-- Formulaire de paiement fictif -->
+                    <div class="mb-3">
+                        <label for="cardName" class="form-label">Nom sur la carte</label>
+                        <input type="text" class="form-control" id="cardName" th:value="${user.getPrenom() + ' ' + user.getNom()}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="cardNumber" class="form-label">Numéro de carte</label>
+                        <input type="text" class="form-control" id="cardNumber" value="4111 1111 1111 1111" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="expiry" class="form-label">Date d’expiration</label>
+                            <input type="text" class="form-control" id="expiry" value="12/28" required>
+                        </div>
+                        <div class="col mb-3">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <input type="text" class="form-control" id="cvv" value="123" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn" data-bs-dismiss="modal">Annuler</button>
+
+                    <button type="submit" class="btn btn-primary" id="confirmBtn">
+                        <i id="btnIcon" class="fa-solid fa-credit-card me-2"></i>
+                        <i id="btnSpinner" class="fa-solid fa-circle-notch fa-spin d-none me-2"></i>
+                        <span id="btnText">Confirmer le paiement</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

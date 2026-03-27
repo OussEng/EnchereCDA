@@ -1,0 +1,38 @@
+<div class="modal-body p-4" th:fragment="modalFormUpdateRole">
+  <form th:action="@{'/admin/modifier-role/' + ${user.id}}" method="POST">
+
+    <p class="text-muted mb-3">
+      <i class="fas fa-user me-2"></i>
+      <span th:text="${user.pseudo}">pseudo</span>
+    </p>
+
+    <div class="mb-4">
+      <label class="form-label fw-semibold">
+        <i class="fas fa-shield-alt me-1 text-primary"></i>Rôle
+      </label>
+      <select class="form-select rounded-3" name="role">
+        <option value="ROLE_USER"
+                th:selected="${user.roles.name() == 'USER'}">
+          <i class="fas fa-user"></i> Utilisateur
+        </option>
+        <option value="ROLE_ADMIN"
+                th:selected="${user.roles.name() == 'ADMIN'}">
+          <i class="fas fa-user-shield"></i> Administrateur
+        </option>
+      </select>
+    </div>
+
+    <div class="d-flex gap-2 justify-content-end">
+      <button type="button"
+              class="btn btn-outline-secondary rounded-pill px-4"
+              data-bs-dismiss="modal">
+        <i class="fas fa-times me-2"></i>Annuler
+      </button>
+      <button type="submit"
+              class="btn btn-primary rounded-pill px-4 fw-semibold">
+        <i class="fas fa-save me-2"></i>Sauvegarder
+      </button>
+    </div>
+
+  </form>
+</div>

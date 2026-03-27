@@ -1,0 +1,55 @@
+<div class="row g-3" th:fragment="categorieTable">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Liste des Catégories</h5>
+                <button class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#addCategorieModal">
+                    <i class="fas fa-plus me-1"></i>Ajouter
+                </button>
+            </div>
+            <div class="card-body p-0">
+                <table class="table mb-0">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Id</th>
+                        <th>Libelle</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="categorie : ${categories}">
+                        <td th:text="${categorie.id}"></td>
+                        <td th:text="${categorie.libelle}"></td>
+                        <td>
+                            <form th:action="@{'/admin/supprimer-categorie/' + ${categorie.id}}" method="post">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal inside same fragment -->
+    <div class="modal fade" id="addCategorieModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ajouter une catégorie</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/admin/ajouter-categorie}" method="post" th:object="${newCategorie}">
+                        <div class="mb-3">
+                            <label class="form-label">Libellé</label>
+                            <input type="text" class="form-control" th:field="*{libelle}" required/>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Ajouter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

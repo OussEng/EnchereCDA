@@ -1,0 +1,127 @@
+<html data-th-replace="~{layout::layout(title=~{::title},content=~{::main})}" lang="fr">
+<title>Création d'un article</title>
+<main class="container py-5">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-primary">Accueil</a></li>
+            <li class="breadcrumb-item active text-muted">Créer une vente</li>
+        </ol>
+    </nav>
+
+    <!-- Hero Banner -->
+    <div class="p-4 mb-5 rounded-4 text-white"
+         style="background: linear-gradient(135deg, #0d6efd 0%, #0a3d91 100%);">
+        <h1 class="fw-bold mb-1">Mettre un article en vente</h1>
+        <p class="mb-0 opacity-75">Remplissez les informations ci-dessous pour créer votre enchère.</p>
+    </div>
+
+    <!-- Formulaire -->
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow rounded-4 p-4 p-md-5">
+
+                <form th:action="@{/encheres/create}" method="post" th:object="${newArticle}">
+
+                    <!-- Nom de l'article -->
+                    <div class="mb-4">
+                        <label for="nom" class="form-label fw-semibold text-dark">Nom de l'article</label>
+                        <input type="text" name="nom" id="nom"
+                               placeholder="Ex : Veste en cuir taille M"
+                               class="form-control form-control-lg rounded-3">
+                        <span th:if="${erreurs != null and erreurs['nom'] != null}"
+                              th:text="${erreurs['nom']}"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-4">
+                        <label for="description" class="form-label fw-semibold text-dark">Description</label>
+                        <textarea name="description" id="description" rows="3"
+                                  placeholder="Décrivez votre article (état, caractéristiques…)"
+                                  class="form-control rounded-3"></textarea>
+                    </div>
+
+                    <!-- Catégorie -->
+                    <div class="mb-4">
+                        <label for="categorie" class="form-label fw-semibold text-dark">Catégorie</label>
+                        <select name="categorie.id" id="categorie" class="form-select rounded-3">
+                            <option value="" selected disabled>-- Sélectionner une catégorie --</option>
+                            <option th:each="categorie: ${categories}"
+                                    th:value="${categorie.id}"
+                                    th:text="${categorie.libelle}"></option>
+                        </select>
+                        <span th:if="${erreurs != null and erreurs['categorie'] != null}"
+                              th:text="${erreurs['categorie']}"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <!-- Mise à prix -->
+                    <div class="mb-4">
+                        <label for="miseAPrix" class="form-label fw-semibold text-dark">
+                            <img src="/assets/mj.png" alt="MJ" style="width:18px;height:18px;object-fit:contain;"> Mise à prix
+                        </label>
+                        <div class="input-group">
+                            <input type="number" name="miseAPrix" id="miseAPrix" min="0"
+                                   placeholder="0"
+                                   class="form-control form-control-lg rounded-start-3">
+                            <span class="input-group-text bg-primary text-white border-primary rounded-end-3 fw-semibold">MJ</span>
+                        </div>
+                        <span th:if="${erreurs != null and erreurs['miseAPrix'] != null}"
+                              th:text="${erreurs['miseAPrix']}"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <hr class="text-muted my-4">
+
+                    <!-- Dates -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <label for="dateDebutEncheres" class="form-label fw-semibold text-dark">📅 Début de l'enchère</label>
+                            <input type="datetime-local" name="dateDebutEncheres" id="dateDebutEncheres"
+                                   class="form-control rounded-3"
+                                   th:value="${#temporals.format(now, 'yyyy-MM-dd''T''HH:mm')}">
+                            <span th:if="${erreurs != null and erreurs['dateDebutEncheres'] != null}"
+                                  th:text="${erreurs['dateDebutEncheres']}"
+                                  class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="dateFinEncheres" class="form-label fw-semibold text-dark">🏁 Fin de l'enchère</label>
+                            <input type="datetime-local" name="dateFinEncheres" id="dateFinEncheres"
+                                   class="form-control rounded-3"
+                                   th:value="${#temporals.format(nowPlusUnMois, 'yyyy-MM-dd''T''HH:mm')}">
+                            <span th:if="${erreurs != null and erreurs['dateFinEncheres'] != null}"
+                                  th:text="${erreurs['dateFinEncheres']}"
+                                  class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <!-- Lieu de retrait -->
+                    <div class="mb-5">
+                        <label for="lieuRetrait" class="form-label fw-semibold text-dark">📍 Lieu de retrait</label>
+                        <select name="lieuRetrait.id" id="lieuRetrait" class="form-select rounded-3">
+                            <option value="" selected disabled>-- Sélectionner un lieu de retrait --</option>
+                            <option th:each="retrait: ${retraits}"
+                                    th:value="${retrait.id}"
+                                    th:text="${retrait.rue}"></option>
+                        </select>
+                    </div>
+
+                    <!-- Boutons -->
+                    <div class="d-flex gap-3 flex-wrap justify-content-end">
+                        <button type="reset" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold">
+                            Annuler
+                        </button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm">
+                            Enregistrer l'article
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</main>
+</html>

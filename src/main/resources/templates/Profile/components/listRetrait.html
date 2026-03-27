@@ -1,0 +1,45 @@
+<div class="col-md-6" th:each="retrait : ${retraits}" th:fragment="listRetrait">
+  <div class="card rounded-3 shadow-sm border-0 h-100">
+    <div class="card-body d-flex flex-column gap-3">
+
+      <!-- Adresse -->
+      <div class="d-flex align-items-start gap-3 p-3 rounded-3 bg-light border">
+        <div class="text-primary mt-1">
+          <i class="fas fa-map-marker-alt fa-lg"></i>
+        </div>
+        <address class="mb-0 flex-grow-1">
+          <p class="fw-semibold mb-1" th:text="${retrait.getRue()}">Rue exemple</p>
+          <p class="text-muted mb-0">
+            <i class="fas fa-city me-1 small"></i>
+            <span th:text="${retrait.getCodePostal() + ' ' + retrait.getVille()}">75000 Paris</span>
+          </p>
+        </address>
+      </div>
+
+      <!-- Boutons -->
+      <div class="d-flex gap-2 mt-auto">
+
+        <!-- Modifier → ouvre la modal -->
+        <button type="button"
+                class="btn btn-primary rounded-pill fw-semibold flex-grow-1"
+                data-bs-toggle="modal"
+                th:data-bs-target="'#modalModifier-' + ${retrait.id}">
+          <i class="fas fa-pen me-2"></i>Modifier
+        </button>
+
+        <!-- Supprimer -->
+        <form th:action="@{'/retraits/supprimer/' + ${retrait.id}}" method="POST">
+          <button type="submit"
+                  class="btn btn-outline-danger rounded-pill fw-semibold px-3"
+                  onclick="return confirm('Supprimer cette adresse ?')">
+            <i class="fas fa-trash"></i>
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <div th:replace="~{Profile/components/formModifierRetrait :: formModifierRetrait}"></div>
+
+</div>

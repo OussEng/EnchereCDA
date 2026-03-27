@@ -1,0 +1,100 @@
+<div th:fragment="header" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+            <div class="container">
+
+                <!-- Logo -->
+                <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+                    <img th:src="@{/assets/logo.png}" alt="EnchèresPro" width="90" class="me-2">
+                </a>
+
+                <!-- Toggle mobile -->
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Menu -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+
+                    <!-- Liens principaux -->
+                    <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">
+                                <i class="bi bi-house-door me-1"></i> Accueil
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/encheres">
+                                <i class="bi bi-hammer me-1"></i> Articles
+                            </a>
+                        </li>
+
+                        <li class="nav-item" sec:authorize="isAuthenticated() and hasRole('ROLE_ADMIN')">
+                            <a class="nav-link" href="/categories">
+                                <i class="bi bi-tags me-1"></i> Catégories
+                            </a>
+                        </li>
+
+                        <li class="nav-item" sec:authorize="isAuthenticated() and hasRole('ROLE_SUPER_ADMIN')">
+                            <a class="nav-link" href="/admin">
+                                <i class="bi bi-shield-lock me-1"></i> Administration
+                            </a>
+                        </li>
+
+                        <!-- Connexion -->
+                        <li class="nav-item" sec:authorize="isAnonymous()">
+                            <a class="btn btn-outline-light ms-lg-3" th:href="@{/auth}">
+                                <i class="bi bi-box-arrow-in-right me-1"></i> Connexion
+                            </a>
+                        </li>
+
+                        <!-- Profil -->
+                        <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center"
+                               href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle me-1"></i> Mon compte
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/profile}">
+                                        <i class="bi bi-person me-2"></i> Profil
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item" href="/profile/credits">
+                                        <i class="bi bi-person me-2"></i> Mes crédits
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/encheres/create}">
+                                        <i class="bi bi-person me-2"></i> Mon espace vendeur
+                                    </a>
+                                </li>
+
+                                <li><hr class="dropdown-divider"></li>
+
+                                <li>
+                                    <form th:action="@{/logout}" method="post">
+                                        <button class="dropdown-item text-danger" type="submit">
+                                            <i class="bi bi-box-arrow-right me-2"></i> Déconnexion
+                                        </button>
+                                    </form>
+                                </li>
+
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+</div>
+
