@@ -39,7 +39,7 @@ Un panneau d'administration (restreint à `SUPER_ADMIN`) offre une supervision c
 |--------|-------------|
 | Langage | Java 17 |
 | Framework | Spring Boot 3.5.11 |
-| Sécurité | Spring Security 6 · BCrypt |
+| Sécurité | Spring Security · BCrypt |
 | Vue | Thymeleaf |
 | Persistance | **Spring JDBC (JdbcTemplate) — pas d'ORM** |
 | Base de données | MySQL |
@@ -117,6 +117,9 @@ fr.eni.enchere/
 **Gestion centralisée des exceptions** — Un `@ControllerAdvice` global (`GlobalExceptionHandler`) intercepte les exceptions métier et les redirige vers des pages d'erreur adaptées, évitant toute fuite de stack trace vers l'utilisateur final.
 
 ---
+## Diagramme use case
+
+![usecase](https://github.com/user-attachments/assets/c11b3ea2-e9ea-4e64-a435-52fa5dcfa3be)
 
 ## Schéma de base de données
 
@@ -124,6 +127,16 @@ fr.eni.enchere/
 
 ## Diagramme de classes
 ![class](https://github.com/user-attachments/assets/090f0a12-8eb4-47ad-81dc-df84ae8de264)
+
+## Maquettage
+
+*Exemples de maquettes :*
+
+![desktop](https://github.com/user-attachments/assets/b2e6cf26-c691-455d-b360-9fba40e56978)
+
+![mobile](https://github.com/user-attachments/assets/23cc70b4-1e56-4df0-baab-e4b5175832b9)
+
+
 
 ### Machine à états des articles
 
